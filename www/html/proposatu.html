@@ -1,0 +1,83 @@
+<div id="proposatu" data-role="page" data-theme="a" data-add-back-btn="true" data-back-btn-text="Atzera">
+	<div data-role="header" data-position="fixed"> 
+		<h1>Proposatu</h1>
+		<a href="../index.html" data-icon="home" class="ui-btn-right">Hasiera</a>
+	</div>
+	
+	<div data-role="content">
+		<form id="proposatu-form" data-ajax="false" enctype="multipart/form-data">
+			<h1>Proposatu zerbait</h1>
+			<div>
+				<p>Webgune honen oinarria zuek egindako proposamenak dira, inongo dudarik gabe eta bertan biltzen doan informazioa Euskal Herriari buruzko altxor bat da azken finean, dena herrika sailkatuta.</p>
+				<p>Proposamena oso azkar egin dezakezu, testu honen azpiko eremuak banaka-banaka betez.</p>
+				<p>Milesker eta egin proposamenak beldurrik gabe!</p>
+			</div>
+			
+			<ul data-role="listview">
+				<li data-role="fieldcontain">
+					<label for="proposamen-berria-lurraldea">Zein lurraldetan dago? *</label>
+					<select name="proposamen-berria-lurraldea" id="proposamen-berria-lurraldea"></select>
+				</li>
+				
+				<li data-role="fieldcontain">
+					<label for="proposamen-berria-herria">Zein herritan dago? *</label>
+					<select name="proposamen-berria-herria" id="proposamen-berria-herria"></select>
+				</li>
+				
+				<li data-role="fieldcontain">
+					<label for="proposamen-berria-atala">Zer gomendatu nahi duzu? *</label>
+					<select name="proposamen-berria-atala" id="proposamen-berria-atala"></select>
+				</li>
+				
+				<li data-role="fieldcontain">
+					<label for="proposamen-berria-izena">Gomendioaren izena *:</label>
+		  			<input type="text" name="proposamen-berria-izena" id="proposamen-berria-izena" value="" data-theme="b" />
+		  		</li>
+		  		
+		  		<li data-role="fieldcontain">	
+		  			<label id="proposamen-berria-deskribapena-labela" for="proposamen-berria-deskribapena">Gomendioaren deskribapena *:</label>
+		  			<span id="proposamen-berria-deskribapena-kont">255</span>
+					<textarea maxlength="255" name="proposamen-berria-deskribapena" id="proposamen-berria-deskribapena" data-theme="b"></textarea>
+				</li>
+				
+				<li data-role="fieldcontain">
+					<label for="proposamen-berria-url-div">Badu webgunerik? <div>Adb.: www.argia.com</div></label>
+					<div id="proposamen-berria-url-div">
+		  				<input type="text" name="proposamen-berria-url" id="proposamen-berria-url" value="" data-theme="b" />
+		  			</div>
+		  		</li>
+		  		
+				<li data-role="fieldcontain">
+					<label for="proposamen-berria-argazkia-div">Gehitu argazkia mesedez:</label>
+				
+					<div id="proposamen-berria-argazkia-div">
+						<div id="proposamen-berria-argazkia-mezua">Ez duzu argazkirik gehitu oraindik.</div>
+						<img style="display:none;" name="proposamen-berria-argazkia-aurrebista" id="proposamen-berria-argazkia-aurrebista" src="" />
+		  		
+		  				<span id="proposamen-berria-kendu-argazkia-botoia-span"></span>
+		  				
+						<button id="proposamen-berria-atera-argazkia-botoia" type="button" onclick="ateraArgazkia()">Atera argazkia kamararekin</button>
+						<button id="proposamen-berria-aukeratu-argazkia-botoia" type="button" onclick="eskuratuArgazkia(pictureSource.SAVEDPHOTOALBUM)">Hautatu argazkia mugikorretik</button>
+					</div>
+				</li>
+				
+				<li data-role="fieldcontain">
+					<label for="proposamen-berria-kokapena-div">Helbidea:</label>
+					<div id="proposamen-berria-kokapena-div">
+		  				<div id="proposamen-berria-kokapena-helbidea" name="proposamen-berria-kokapena-helbidea"></div>
+		  				<a id="proposamen-berria-kokapena" href="proposatu-mapa.html" data-role="button">Kokatu mapan</a>
+		  			</div>
+		  		</li>
+		  		
+		  		<li data-role="fieldcontain">
+		  			<label id="proposamen-berria-lege-oharra-label" for="proposamen-berria-lege-oharra">
+		  			<input type="checkbox" id="proposamen-berria-lege-oharra" name="proposamen-berria-lege-oharra" />Onartzen ditut Ihesi-ren erabilera baldintzak eta CC-BY-SA lizentzia esleitzen diot bai idatzitakoari baita irudiari ere.</label>
+		  		</li>
+		  		
+		  		<li data-role="fieldcontain">
+		  			<input type="submit" value="Bidali" />
+		  		</li>
+		  	</ul>
+  		</form>
+	</div><!-- /content -->  
+</div><!-- /page -->
