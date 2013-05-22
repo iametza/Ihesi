@@ -23,6 +23,8 @@ gen/
 local.properties
 
 # IOS / Xcode
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
 build/*
 *.pbxuser
 !default.pbxuser
