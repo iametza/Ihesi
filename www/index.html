@@ -107,9 +107,17 @@
 		    // eta aplikazioa blokeatuta gelditzen baitzen, ez baitzegoen atzera egiteko modurik.
 		    // Ikusi: http://stackoverflow.com/questions/15067412/cordova-2-3-0-open-links-in-safari-on-ios
             $(document).on('click', '.external', function(event) {
-                event.preventDefault();
+				event.preventDefault();
+                
                 var url = $(this).attr('href');
-                irekiURLnabigatzailean(url);
+                var that = this;
+                
+                // Hau gabe botoia emanda bezala gelditzen da.
+                var timeoutID = window.setTimeout(function() {
+						$(that).removeClass("ui-btn-active");
+						irekiURLnabigatzailean(url);
+			  		}, 300
+				);
             });
             
 		    $(document).on("click", "#proposatu-mapa-botoiak-utzi", function() {
