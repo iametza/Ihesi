@@ -261,6 +261,20 @@
 				}
 			});
 			
+			$(document).on("pagehide", "#kategoriak", function() {
+				// Elkarrizketa bat irekitzean (data-rel="dialog") "#&ui-state=dialog" gehitzen zaio aurreko orriaren url-ari eta leihoaren historian agertzen da.
+				// Hori dela eta, elkarrizketa itxi eta aurreko orrira itzultzean Atzera botoia bi aldiz sakatu behar dugu azken aurreko orrira joateko.
+				// Konponbide bezala elkarrizketa ixtean historian orri bat atzera joango gara.
+				window.history.back();
+			});
+			
+			$(document).on("pagehide", "#lurraldeak", function() {
+				// Elkarrizketa bat irekitzean (data-rel="dialog") "#&ui-state=dialog" gehitzen zaio aurreko orriaren url-ari eta leihoaren historian agertzen da.
+				// Hori dela eta, elkarrizketa itxi eta aurreko orrira itzultzean Atzera botoia bi aldiz sakatu behar dugu azken aurreko orrira joateko.
+				// Konponbide bezala elkarrizketa ixtean historian orri bat atzera joango gara.
+				window.history.back();
+			});
+			
 			function bistaratuHautatuUnekoPosizioa() {
 				// div-a garbitu
 				$("#hautatu-kokapena-gorputza").empty();
