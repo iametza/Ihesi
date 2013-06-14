@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03BC7E95176B5D2B00FD4181 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BC7E94176B5D2B00FD4181 /* Default-568h@2x.png */; };
+		03BC7E97176B61EC00FD4181 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 03BC7E96176B61EC00FD4181 /* Default-568h@2x.png */; };
 		03C12C97174CD6C100FAD937 /* www in Resources */ = {isa = PBXBuildFile; fileRef = 03C12C96174CD6C100FAD937 /* www */; };
 		1D3623260D0F684500981E51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
@@ -57,6 +59,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		03BC7E94176B5D2B00FD4181 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		03BC7E96176B61EC00FD4181 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		03C12C96174CD6C100FAD937 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = ../www; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -153,6 +157,8 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				03BC7E96176B61EC00FD4181 /* Default-568h@2x.png */,
+				03BC7E94176B5D2B00FD4181 /* Default-568h@2x.png */,
 				F840E1F0165FE0F500CFE078 /* config.xml */,
 				03C12C96174CD6C100FAD937 /* www */,
 				301BF52D109A57CC0062928A /* CordovaLib.xcodeproj */,
@@ -332,6 +338,8 @@
 				D4A0D8761607E02300AEF8BB /* Default-568h@2x~iphone.png in Resources */,
 				30FC414916E50CA1004E6F35 /* icon-72@2x.png in Resources */,
 				03C12C97174CD6C100FAD937 /* www in Resources */,
+				03BC7E95176B5D2B00FD4181 /* Default-568h@2x.png in Resources */,
+				03BC7E97176B61EC00FD4181 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,7 +479,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: iametza interaktiboa S.L.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: iametza interaktiboa S.L.";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -497,6 +506,8 @@
 					"-all_load",
 					"-Obj-C",
 				);
+				PROVISIONING_PROFILE = "CB1F588C-4FC0-40A1-9A7C-CE0C81E1341E";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "CB1F588C-4FC0-40A1-9A7C-CE0C81E1341E";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				USER_HEADER_SEARCH_PATHS = "";
