@@ -228,13 +228,13 @@
 				// bestela geokokapena erabiltzen saiatu behar dugu.
 				if (idUnekoHerria != undefined) {
 					$("#sarrera-irudia-testua-lerroa-span").text(unekoHerria + ' (' + unekoLurraldea + ')');
-				} else {
+				} else if (geokokatzetik === true) {
 					// Geokokapena eskuratzen ari garela adierazi
 					$("#sarrera-irudia-testua-lerroa-span").text('Kokapena eskuratzen...');
 					
 					// Uneko posizioa eskuratzen saiatu eta mapa edo errore-mezua bistaratu
 					// timeout: milisegundo kopuru hori igarotakoan ez bada posizioa eskuratu google_maps_errorea atzera-dei funtzioa exekutatuko da.
-				    navigator.geolocation.getCurrentPosition(onSuccess, google_maps_errorea, {timeout: 10000});
+				    navigator.geolocation.getCurrentPosition(onSuccess, onError, {timeout: 10000});
 					
 					// Posizioa eskuratu bitartean sarrerako orriko botoiak desgaitu behar dira
 					desgaituSarrerakoBotoiak();
@@ -251,6 +251,11 @@
 						// Helbidea eskuratzeko atzera-dei funtzio bat erabili beharra dago, geokodetzailearen funtzioa asinkronoa baita.
 						// Atzera-dei funtzioak botoiak berriz gaitu behar ditu -> Ikusi herriarenDatuakGorde funtzioa
 						itzuliUnekoHelbidea(latLng, herriarenDatuakGorde);
+				    }
+				    
+				    function onError(errorea) {
+				    	geokokatzetik = false;
+				    	google_maps_errorea(errorea);
 				    }
 				}
 			});
