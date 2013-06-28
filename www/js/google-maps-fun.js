@@ -518,7 +518,7 @@ function google_maps_errorea(error) {
 // 42.883008
 // http://eu.wikipedia.org/wiki/Euskal_Herriko_erdigunea
 // R (km-tan) = 6378 - 21 * sin(lat)
-var LURRAREN_ERRADIOA = 6371 - 21 * Math.sin(42.883008); // km
+var LURRAREN_ERRADIOA = 6378 - 21 * Math.sin(42.883008); // km
 
 //Angelu bat gradutan hartzen du eta radianetan itzuli.
 function radianetara(gradutan) {
