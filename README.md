@@ -16,15 +16,7 @@ Webgunean gomendioak herrien, zonaldeen eta lurraldeen arabera antolatuta daude 
 
 ## Deskargak
 
-<a href="https://play.google.com/store/apps/details?id=com.iametza.ihesi">
-  <img alt="Android aplikazioa Google Play-n"
-       src="https://developer.android.com/images/brand/en_app_rgb_wo_45.png" />
-</a>
-
-<a href="https://itunes.apple.com/us/app/ihesi/id621256000">
-  <img alt="iPhonerako aplikazioa AppStore-an"
-       src="http://www.iametza.com/Available_on_the_App_Store_Badge_US-UK_135x40.png" />
-</a>
+[![Android aplikazioa Google Play-n](https://developer.android.com/images/brand/en_app_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.iametza.ihesi) [![iPhonerako aplikazioa AppStore-an](http://www.iametza.com/Available_on_the_App_Store_Badge_US-UK_135x40.png)](https://itunes.apple.com/us/app/ihesi/id621256000)
 
 ## Lizentzia
 
