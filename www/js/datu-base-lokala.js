@@ -3,14 +3,15 @@ function existitzenDaDB(tx) {
 } 
 
 function existitzenDaDBarrakasta(tx, results) {
-	//alert("Datu-basea dagoeneko existitzen da.");
+	// Datu-basea dagoeneko existitzen da. Argitaratutako azken bertsioa den egiaztatuko dugu. 
+	// Aplikazioak dagoeneko azken bertsioa erabiltzen badu, zerbitzarira konektatuko gara eguneraketarik badagoen ikusteko.
 	
-	// Herriak taula aldatu egin da. Ezabatu eta berriz sortuko dugu
-	prestatuHerriakTaula(tx);
+	
+	// Datu-basearen bertsio zahar bat erabiltzen ari bada berriz, datu-basea ezabatu eta berriz sortuko dugu.
 }
 
 function ezDaExistitzenDB(tx) {
-	//alert("Datu-basea ez da existitzen. Datuak txertatu behar dira.");
+	// Datu-basea ez da existitzen. Datu-base lokal berria sortu behar da.
 	tx.executeSql("CREATE TABLE `existitzenDa` (`id` INTEGER PRIMARY KEY NOT NULL, `balioa` TEXT NOT NULL);");
 	tx.executeSql("INSERT INTO `existitzenDa` (`id`, `balioa`) VALUES(1, 'Bai');");
 	
