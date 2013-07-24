@@ -142,8 +142,8 @@
 			function onDeviceReady() {
 		        ihesidb = window.openDatabase("Ihesi", "1.0", "IhesiDB", 5000000);
 		        
-		        // Datu-basea ez bada existitzen sortu egin behar da
-		        ihesidb.transaction(existitzenDaDB, ezDaExistitzenDB2);
+		        // Datu-basea ez bada existitzen edo zaharra bada berriz sortu behar da
+		        ihesidb.transaction(eskuratuBertsioaDB, ezDaExistitzenDB2);
 		        
 		        pictureSource=navigator.camera.PictureSourceType;
 		        destinationType=navigator.camera.DestinationType;

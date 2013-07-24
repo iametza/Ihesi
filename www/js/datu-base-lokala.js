@@ -1,20 +1,31 @@
-function existitzenDaDB(tx) {
-	tx.executeSql('SELECT count(*) FROM existitzenDa', [], existitzenDaDBarrakasta, ezDaExistitzenDB);
+function eskuratuBertsioaDB(tx) {
+	tx.executeSql('SELECT db_bertsioa FROM ezarpenak', [], eskuratuBertsioaDBarrakasta, zaharraEdoBDrikEz);
 } 
 
-function existitzenDaDBarrakasta(tx, results) {
+function eskuratuBertsioaDBarrakasta(tx, results) {
 	// Datu-basea dagoeneko existitzen da. Argitaratutako azken bertsioa den egiaztatuko dugu. 
 	// Aplikazioak dagoeneko azken bertsioa erabiltzen badu, zerbitzarira konektatuko gara eguneraketarik badagoen ikusteko.
-	
-	
-	// Datu-basearen bertsio zahar bat erabiltzen ari bada berriz, datu-basea ezabatu eta berriz sortuko dugu.
+	if (results.rows.item(0).db_bertsioa == "2.0") {
+		console.log("Azken bertsioa");
+		
+		// Zerbitzarira konektatu eguneraketarik badagoen egiaztatzeko.
+		
+	} else { // Datu-basearen bertsio zahar bat erabiltzen ari bada berriz, datu-baseko taulak ezabatu eta berriz sortuko ditugu.
+		console.log("Bertsio zaharra");
+		eguneratuDB(tx);
+	}
 }
 
-function ezDaExistitzenDB(tx) {
-	// Datu-basea ez da existitzen. Datu-base lokal berria sortu behar da.
-	tx.executeSql("CREATE TABLE `existitzenDa` (`id` INTEGER PRIMARY KEY NOT NULL, `balioa` TEXT NOT NULL);");
-	tx.executeSql("INSERT INTO `existitzenDa` (`id`, `balioa`) VALUES(1, 'Bai');");
+function zaharraEdoBDrikEz(tx) {
+	console.log("DBrik ez edo zaharra");
+	// Datu-basea ez da existitzen edo db_bertsioa eremua erabiltzen hasi aurrekoa da. Datu-base lokal berria sortu behar da.
+	tx.executeSql("CREATE TABLE `ezarpenak` (`id` INTEGER PRIMARY KEY NOT NULL, `db_bertsioa` TEXT NOT NULL);");
+	tx.executeSql("INSERT INTO `ezarpenak` (`id`, `db_bertsioa`) VALUES(1, '2.0');");
 	
+	eguneratuDB(tx);
+}
+
+function eguneratuDB(tx) {
 	prestatuHerriakAzpiatalakTaula(tx);
 	prestatuLurraldeakTaula(tx);
 	prestatuHerriakItzulpenaTaula(tx);
