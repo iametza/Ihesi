@@ -15,11 +15,11 @@ function ezDaExistitzenDB(tx) {
 	tx.executeSql("INSERT INTO `existitzenDa` (`id`, `balioa`) VALUES(1, 'Bai');");
 	
 	prestatuHerriakAzpiatalakTaula(tx);
-	prestatuHerriakTaula(tx);
-	prestatuHerriakElementuakTaula(tx);
-	prestatuHerriakInteresaTaula(tx);
 	prestatuLurraldeakTaula(tx);
 	prestatuHerriakItzulpenaTaula(tx);
+	prestatuHerriakTaula(tx);
+	prestatuHerriakInteresaTaula(tx);
+	prestatuHerriakElementuakTaula(tx);
 	prestatuHerriakElementuakBotoakTaula(tx);
 }
 
