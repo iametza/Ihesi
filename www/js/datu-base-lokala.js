@@ -5,7 +5,7 @@ function eskuratuBertsioaDB(tx) {
 function eskuratuBertsioaDBarrakasta(tx, results) {
 	// Datu-basea dagoeneko existitzen da. Argitaratutako azken bertsioa den egiaztatuko dugu. 
 	// Aplikazioak dagoeneko azken bertsioa erabiltzen badu, zerbitzarira konektatuko gara eguneraketarik badagoen ikusteko.
-	if (results.rows.item(0).db_bertsioa == "2.0") {
+	if (results.rows.item(0).db_bertsioa == ezarpenak.db_bertsioa) {
 		console.log("Azken bertsioa");
 		
 		// Zerbitzarira konektatu eguneraketarik badagoen egiaztatzeko.
@@ -20,7 +20,7 @@ function zaharraEdoBDrikEz(tx) {
 	console.log("DBrik ez edo zaharra");
 	// Datu-basea ez da existitzen edo db_bertsioa eremua erabiltzen hasi aurrekoa da. Datu-base lokal berria sortu behar da.
 	tx.executeSql("CREATE TABLE `ezarpenak` (`id` INTEGER PRIMARY KEY NOT NULL, `db_bertsioa` TEXT NOT NULL);");
-	tx.executeSql("INSERT INTO `ezarpenak` (`id`, `db_bertsioa`) VALUES(1, '2.0');");
+	tx.executeSql("INSERT INTO `ezarpenak` (`id`, `db_bertsioa`) VALUES(1, '" + ezarpenak.db_bertsioa + "');");
 	
 	eguneratuDB(tx);
 }
