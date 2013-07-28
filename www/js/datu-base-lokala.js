@@ -962,6 +962,34 @@ function eguneratuZerbitzaritikArrakasta(tx, results) {
 	console.log("Azken herria gehitutako data: " + herriak_azken_alta_data);	
 	console.log("Azken proposamena gehitutako data: " + herriak_elementuak_azken_alta_data);
 	console.log("Azken herriak_interesa taulako azken id-a: " + herriak_interesa_azken_id);
+	
+	$.ajax({
+		type: 'GET',
+		url: 'http://argia2012.ametza.com/ihesi/mugikorrak/eguneraketak.php',
+		contentType: "application/json",
+		dataType: 'jsonp',
+		data: {'herriak_azken_alta_data': herriak_azken_alta_data, 'herriak_elementuak_azken_alta_data': herriak_elementuak_azken_alta_data, 'herriak_interesa_azken_id': herriak_interesa_azken_id},
+		crossDomain: true,
+		success: function(res) {
+			console.log("badaude: " + res.badaude);
+			
+			// Azken eguneraketaz geroztik datu-basean aldaketak egon badira
+			if (res.badaude) {
+				// Aldatutako taulak eguneratu behar dira datu-base lokalean
+				console.log(res.taulak);
+			}
+		},
+		error: function(e) {
+			// Erabiltzaileari jakinarazi errore bat gertatu dela.
+			/*navigator.notification.alert(
+				'Errore bat gertatu da zerbitzariarekin konektatzean.', // mezua
+				undefined,         							// atzera-deia
+				'Oharra',            						// izenburua
+				'Ados'                 	 					// botoiaren testua
+			);*/
+			console.log("Errorea: " + e.message);
+		}
+	});
 }
 
 // Transakzioan errore bat gertatzean exekutatzen da
