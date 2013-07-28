@@ -9,6 +9,7 @@ function eskuratuBertsioaDBarrakasta(tx, results) {
 		console.log("Azken bertsioa");
 		
 		// Zerbitzarira konektatu eguneraketarik badagoen egiaztatzeko.
+		eguneratuZerbitzaritik(tx);
 		
 	} else { // Datu-basearen bertsio zahar bat erabiltzen ari bada berriz, datu-baseko taulak ezabatu eta berriz sortuko ditugu.
 		console.log("Bertsio zaharra");
@@ -940,6 +941,20 @@ function txertatuHerrikoElementuBerria(tx, id_gomendioa, izena, deskribapena, we
 	
 	// Atzera-deia exekutatu
 	atzera_deia();
+}
+
+function eguneratuZerbitzaritik(tx) {
+	tx.executeSql('SELECT MAX(herriak.alta_data) as herriak_azken_alta_data FROM herriak',
+				  [],
+				  function(tx, results){eguneratuZerbitzaritikArrakasta(tx, results)},
+				  function(tx, err){errorCB(tx, err, "eguneratuZerbitzaritik-exec")}
+	);
+}
+
+function eguneratuZerbitzaritikArrakasta(tx, results) {
+	var herriak_azken_alta_data = results.rows.item(0).herriak_azken_alta_data;
+	
+	console.log("Azken herria gehitutako data: " + herriak_azken_alta_data);	
 }
 
 // Transakzioan errore bat gertatzean exekutatzen da
