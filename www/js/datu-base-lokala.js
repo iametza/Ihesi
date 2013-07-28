@@ -1014,7 +1014,10 @@ function eguneratuZerbitzaritikArrakasta(tx, results) {
 									      tmp[i]['ordena'] + ", " + tmp[i]['fk_herria'] + ");");
 						}
 					}
-				}
+				},
+				function(tx, err){
+					errorCB(tx, err, "Errorea tauletan errenkada berriak txertatzean.")
+				});
 			}
 		},
 		error: function(e) {
