@@ -972,11 +972,49 @@ function eguneratuZerbitzaritikArrakasta(tx, results) {
 		crossDomain: true,
 		success: function(res) {
 			console.log("badaude: " + res.badaude);
+			var tmp;
 			
 			// Azken eguneraketaz geroztik datu-basean aldaketak egon badira
 			if (res.badaude) {
 				// Aldatutako taulak eguneratu behar dira datu-base lokalean
 				console.log(res.taulak);
+				
+				tolosadb.transaction(function(tx) {
+					// herriak taula aldatu bada datu-base lokalean eguneratu behar da
+					if (res.taulak['herriak']) {
+						tmp = res.taulak['herriak'];
+						
+						for (var i = 0; i < tmp.length; i++) {
+							tx.executeSql("INSERT INTO `herriak` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['alta_data'] + "', '" + tmp[i]['izena'] + "', '" + 
+									      tmp[i]['fk_lurraldea'] + "', '" + tmp[i]['testua'] + "', " + tmp[i]['sorrera'] + ", " + tmp[i]['biztanleak'] + ", " +
+									      tmp[i]['gps'] + "', '" + tmp[i]['web'] + "', " + tmp[i]['festak'] + ", " + tmp[i]['argazkia'] + ", " +
+									      tmp[i]['gmaps_lat'] + "', '" + tmp[i]['gmaps_lng'] + "', " + tmp[i]['gmaps_zoom'] + ", " + tmp[i]['gmaps_bista'] + ", " +
+									      tmp[i]['gmaps_eskubia_lat'] + ", " + tmp[i]['gmaps_eskubia_lng'] + ", " + tmp[i]['gmaps_eskubia_zoom'] + ");");
+						}
+					}
+					
+					// herriak_elementuak taula aldatu bada datu-base lokalean eguneratu behar da
+					if (res.taulak['herriak_elementuak']) {
+						tmp = res.taulak['herriak_elementuak'];
+						
+						for (var i = 0; i < tmp.length; i++) {
+							tx.executeSql("INSERT INTO `herriak_elementuak` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['alta_data'] + "', '" + tmp[i]['izena'] + "', '" + 
+									      tmp[i]['deskribapena'] + "', '" + tmp[i]['url'] + "', " + tmp[i]['irudia'] + ", " + tmp[i]['irudiaren_bidea'] + ", " +
+									      tmp[i]['gmaps_lat'] + "', '" + tmp[i]['gmaps_lng'] + "', " + tmp[i]['gmaps_zoom'] + ", " + tmp[i]['fk_herria'] + ", " +
+									      tmp[i]['fk_azpiatala'] + ", " + tmp[i]['erabiltzailea'] + ");");
+						}
+					}
+					
+					// herriak_interesa taula aldatu bada datu-base lokalean eguneratu behar da
+					if (res.taulak['herriak_interesa']) {
+						tmp = res.taulak['herriak_interesa'];
+						
+						for (var i = 0; i < tmp.length; i++) {
+							tx.executeSql("INSERT INTO `herriak_interesa` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['izenburua'] + "', '" + tmp[i]['url'] + "', '" + 
+									      tmp[i]['ordena'] + ", " + tmp[i]['fk_herria'] + ");");
+						}
+					}
+				}
 			}
 		},
 		error: function(e) {
