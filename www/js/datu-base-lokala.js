@@ -944,7 +944,10 @@ function txertatuHerrikoElementuBerria(tx, id_gomendioa, izena, deskribapena, we
 }
 
 function eguneratuZerbitzaritik(tx) {
-	tx.executeSql('SELECT MAX(herriak.alta_data) as herriak_azken_alta_data FROM herriak',
+	tx.executeSql('SELECT MAX(herriak.alta_data) as herriak_azken_alta_data, ' + 
+				  'MAX(herriak_elementuak.alta_data) as herriak_elementuak_azken_alta_data, ' +
+				  'MAX(herriak_interesa.id) as herriak_interesa_azken_id ' +
+				  'FROM herriak, herriak_elementuak, herriak_interesa',
 				  [],
 				  function(tx, results){eguneratuZerbitzaritikArrakasta(tx, results)},
 				  function(tx, err){errorCB(tx, err, "eguneratuZerbitzaritik-exec")}
@@ -953,8 +956,12 @@ function eguneratuZerbitzaritik(tx) {
 
 function eguneratuZerbitzaritikArrakasta(tx, results) {
 	var herriak_azken_alta_data = results.rows.item(0).herriak_azken_alta_data;
+	var herriak_elementuak_azken_alta_data = results.rows.item(0).herriak_elementuak_azken_alta_data;
+	var herriak_interesa_azken_id = results.rows.item(0).herriak_interesa_azken_id;
 	
 	console.log("Azken herria gehitutako data: " + herriak_azken_alta_data);	
+	console.log("Azken proposamena gehitutako data: " + herriak_elementuak_azken_alta_data);
+	console.log("Azken herriak_interesa taulako azken id-a: " + herriak_interesa_azken_id);
 }
 
 // Transakzioan errore bat gertatzean exekutatzen da
