@@ -20,8 +20,8 @@ function eskuratuBertsioaDBarrakasta(tx, results) {
 function zaharraEdoBDrikEz(tx) {
 	console.log("DBrik ez edo zaharra");
 	// Datu-basea ez da existitzen edo db_bertsioa eremua erabiltzen hasi aurrekoa da. Datu-base lokal berria sortu behar da.
-	tx.executeSql("CREATE TABLE `ezarpenak` (`id` INTEGER PRIMARY KEY NOT NULL, `db_bertsioa` TEXT NOT NULL);");
-	tx.executeSql("INSERT INTO `ezarpenak` (`id`, `db_bertsioa`) VALUES(1, '" + ezarpenak.db_bertsioa + "');");
+	tx.executeSql("CREATE TABLE `ezarpenak` (`id` INTEGER PRIMARY KEY NOT NULL, `db_bertsioa` TEXT NOT NULL, `herriak_elementuak_botoak_azken_id` TEXT NOT NULL);");
+	tx.executeSql("INSERT INTO `ezarpenak` (`id`, `db_bertsioa`, `herriak_elementuak_botoak_azken_id`) VALUES(1, '" + ezarpenak.db_bertsioa + "', '365');");
 	
 	eguneratuDB(tx);
 }
@@ -946,8 +946,9 @@ function txertatuHerrikoElementuBerria(tx, id_gomendioa, izena, deskribapena, we
 function eguneratuZerbitzaritik(tx) {
 	tx.executeSql('SELECT MAX(herriak.alta_data) as herriak_azken_alta_data, ' + 
 				  'MAX(herriak_elementuak.alta_data) as herriak_elementuak_azken_alta_data, ' +
-				  'MAX(herriak_interesa.id) as herriak_interesa_azken_id ' +
-				  'FROM herriak, herriak_elementuak, herriak_interesa',
+				  'MAX(herriak_interesa.id) as herriak_interesa_azken_id, ' +
+				  'ezarpenak.herriak_elementuak_botoak_azken_id as herriak_elementuak_botoak_azken_id ' +
+				  'FROM herriak, herriak_elementuak, herriak_interesa, ezarpenak',
 				  [],
 				  function(tx, results){eguneratuZerbitzaritikArrakasta(tx, results)},
 				  function(tx, err){errorCB(tx, err, "eguneratuZerbitzaritik-exec")}
@@ -961,8 +962,7 @@ function eguneratuZerbitzaritikArrakasta(tx, results) {
 	var herriak_elementuak_azken_alta_data = '2013-05-09 19:12:07';
 	//var herriak_interesa_azken_id = results.rows.item(0).herriak_interesa_azken_id;
 	var herriak_interesa_azken_id = '105';
-	//var herriak_elementuak_botoak_azken_id = results.rows.item(0).herriak_elementuak_botoak_azken_id;
-	var herriak_elementuak_botoak_azken_id = '368';
+	var herriak_elementuak_botoak_azken_id = results.rows.item(0).herriak_elementuak_botoak_azken_id;
 	
 	console.log("Azken herria gehitutako data: " + herriak_azken_alta_data);	
 	console.log("Azken proposamena gehitutako data: " + herriak_elementuak_azken_alta_data);
