@@ -21,7 +21,7 @@ function zaharraEdoBDrikEz(tx) {
 	console.log("DBrik ez edo zaharra");
 	// Datu-basea ez da existitzen edo db_bertsioa eremua erabiltzen hasi aurrekoa da. Datu-base lokal berria sortu behar da.
 	tx.executeSql("CREATE TABLE `ezarpenak` (`id` INTEGER PRIMARY KEY NOT NULL, `db_bertsioa` TEXT NOT NULL, `herriak_elementuak_botoak_azken_id` TEXT NOT NULL);");
-	tx.executeSql("INSERT INTO `ezarpenak` (`id`, `db_bertsioa`, `herriak_elementuak_botoak_azken_id`) VALUES(1, '" + ezarpenak.db_bertsioa + "', '365');");
+	tx.executeSql("INSERT INTO `ezarpenak` (`id`, `db_bertsioa`, `herriak_elementuak_botoak_azken_id`) VALUES(1, '" + ezarpenak.db_bertsioa + "', '" + ezarpenak.herriak_elementuak_botoak_azken_id + "');");
 	
 	eguneratuDB(tx);
 }
