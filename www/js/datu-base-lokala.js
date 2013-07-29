@@ -1,5 +1,6 @@
-function eskuratuBertsioaDB(tx) {
-	tx.executeSql('SELECT db_bertsioa FROM ezarpenak', [], eskuratuBertsioaDBarrakasta, zaharraEdoBDrikEz);
+function eskuratuBertsioaDB(tx) { 
+	tx.executeSql('SELECT db_bertsioa, herriak_azken_alta_data, herriak_elementuak_azken_alta_data, herriak_interesa_azken_id, herriak_elementuak_botoak_azken_id ' +
+			      'FROM ezarpenak', [], eskuratuBertsioaDBarrakasta, zaharraEdoBDrikEz);
 } 
 
 function eskuratuBertsioaDBarrakasta(tx, results) {
@@ -9,7 +10,7 @@ function eskuratuBertsioaDBarrakasta(tx, results) {
 		console.log("Azken bertsioa");
 		
 		// Zerbitzarira konektatu eguneraketarik badagoen egiaztatzeko.
-		eguneratuZerbitzaritik(tx);
+		eguneratuZerbitzaritik(tx, results);
 		
 	} else { // Datu-basearen bertsio zahar bat erabiltzen ari bada berriz, datu-baseko taulak ezabatu eta berriz sortuko ditugu.
 		console.log("Bertsio zaharra");
@@ -20,8 +21,11 @@ function eskuratuBertsioaDBarrakasta(tx, results) {
 function zaharraEdoBDrikEz(tx) {
 	console.log("DBrik ez edo zaharra");
 	// Datu-basea ez da existitzen edo db_bertsioa eremua erabiltzen hasi aurrekoa da. Datu-base lokal berria sortu behar da.
-	tx.executeSql("CREATE TABLE `ezarpenak` (`id` INTEGER PRIMARY KEY NOT NULL, `db_bertsioa` TEXT NOT NULL, `herriak_elementuak_botoak_azken_id` TEXT NOT NULL);");
-	tx.executeSql("INSERT INTO `ezarpenak` (`id`, `db_bertsioa`, `herriak_elementuak_botoak_azken_id`) VALUES(1, '" + ezarpenak.db_bertsioa + "', '" + ezarpenak.herriak_elementuak_botoak_azken_id + "');");
+	tx.executeSql("CREATE TABLE `ezarpenak` (`id` INTEGER PRIMARY KEY NOT NULL, `db_bertsioa` TEXT NOT NULL, " + 
+			      "`herriak_azken_alta_data` TEXT NOT NULL, `herriak_elementuak_azken_alta_data` TEXT NOT NULL, " +
+			      "`herriak_interesa_azken_id` TEXT NOT NULL, `herriak_elementuak_botoak_azken_id` TEXT NOT NULL);");
+	tx.executeSql("INSERT INTO `ezarpenak` (`id`, `db_bertsioa`, `herriak_azken_alta_data`, `herriak_elementuak_azken_alta_data`, `herriak_interesa_azken_id`, `herriak_elementuak_botoak_azken_id`) " + 
+			      "VALUES(1, '" + ezarpenak.db_bertsioa + "', '" + ezarpenak.herriak_azken_alta_data + "', '" + ezarpenak.herriak_elementuak_azken_alta_data + "', '" + ezarpenak.herriak_interesa_azken_id + "', '" + ezarpenak.herriak_elementuak_botoak_azken_id + "');");
 	
 	eguneratuDB(tx);
 }
@@ -943,25 +947,13 @@ function txertatuHerrikoElementuBerria(tx, id_gomendioa, izena, deskribapena, we
 	atzera_deia();
 }
 
-function eguneratuZerbitzaritik(tx) {
-	tx.executeSql('SELECT MAX(herriak.alta_data) as herriak_azken_alta_data, ' + 
-				  'MAX(herriak_elementuak.alta_data) as herriak_elementuak_azken_alta_data, ' +
-				  'MAX(herriak_interesa.id) as herriak_interesa_azken_id, ' +
-				  'ezarpenak.herriak_elementuak_botoak_azken_id as herriak_elementuak_botoak_azken_id ' +
-				  'FROM herriak, herriak_elementuak, herriak_interesa, ezarpenak',
-				  [],
-				  function(tx, results){eguneratuZerbitzaritikArrakasta(tx, results)},
-				  function(tx, err){errorCB(tx, err, "eguneratuZerbitzaritik-exec")}
-	);
-}
-
-function eguneratuZerbitzaritikArrakasta(tx, results) {
-	//var herriak_azken_alta_data = results.rows.item(0).herriak_azken_alta_data;
-	var herriak_azken_alta_data = '2012-10-22 18:44:03';
-	//var herriak_elementuak_azken_alta_data = results.rows.item(0).herriak_elementuak_azken_alta_data;
-	var herriak_elementuak_azken_alta_data = '2013-05-09 19:12:07';
-	//var herriak_interesa_azken_id = results.rows.item(0).herriak_interesa_azken_id;
-	var herriak_interesa_azken_id = '105';
+function eguneratuZerbitzaritik(tx, results) {
+	var herriak_azken_alta_data = results.rows.item(0).herriak_azken_alta_data;
+	//var herriak_azken_alta_data = '2012-10-22 18:44:03';
+	var herriak_elementuak_azken_alta_data = results.rows.item(0).herriak_elementuak_azken_alta_data;
+	//var herriak_elementuak_azken_alta_data = '2013-05-09 19:12:07';
+	var herriak_interesa_azken_id = results.rows.item(0).herriak_interesa_azken_id;
+	//var herriak_interesa_azken_id = '105';
 	var herriak_elementuak_botoak_azken_id = results.rows.item(0).herriak_elementuak_botoak_azken_id;
 	
 	console.log("Azken herria gehitutako data: " + herriak_azken_alta_data);	
@@ -1004,6 +996,9 @@ function eguneratuZerbitzaritikArrakasta(tx, results) {
 								      tmp[i]['gmaps_lat'] + "', '" + tmp[i]['gmaps_lng'] + "', '" + tmp[i]['gmaps_zoom'] + "', '" + tmp[i]['gmaps_bista'] + "', '" +
 								      tmp[i]['gmaps_eskubia_lat'] + "', '" + tmp[i]['gmaps_eskubia_lng'] + "', '" + tmp[i]['gmaps_eskubia_zoom'] + "');");*/
 						}
+						
+						console.log("UPDATE ezarpenak SET herriak_azken_alta_data = " + res.taulak['herriak_azken_alta_data'] + ";");
+						//tx.executeSql("UPDATE ezarpenak SET herriak_azken_alta_data = " + res.taulak['herriak_azken_alta_data'] + ";");
 					}
 					
 					// herriak_elementuak taula aldatu bada datu-base lokalean eguneratu behar da
@@ -1021,6 +1016,9 @@ function eguneratuZerbitzaritikArrakasta(tx, results) {
 									      tmp[i]['gmaps_lat'] + "', '" + tmp[i]['gmaps_lng'] + "', " + tmp[i]['gmaps_zoom'] + ", " + tmp[i]['fk_herria'] + ", " +
 									      tmp[i]['fk_azpiatala'] + ", " + tmp[i]['erabiltzailea'] + ");");*/
 						}
+						
+						console.log("UPDATE ezarpenak SET herriak_elementuak_azken_alta_data = " + res.taulak['herriak_elementuak_azken_alta_data'] + ";");
+						//tx.executeSql("UPDATE ezarpenak SET herriak_elementuak_azken_alta_data = " + res.taulak['herriak_elementuak_azken_alta_data'] + ";");
 					}
 					
 					// herriak_interesa taula aldatu bada datu-base lokalean eguneratu behar da
@@ -1033,6 +1031,9 @@ function eguneratuZerbitzaritikArrakasta(tx, results) {
 /*							tx.executeSql("INSERT INTO `herriak_interesa` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['izenburua'] + "', '" + tmp[i]['url'] + "', '" + 
 									      tmp[i]['ordena'] + ", " + tmp[i]['fk_herria'] + ");");*/
 						}
+						
+						console.log("UPDATE ezarpenak SET herriak_interesa_azken_id = " + res.taulak['herriak_interesa_azken_id'] + ";");
+						//tx.executeSql("UPDATE ezarpenak SET herriak_interesa_azken_id = " + res.taulak['herriak_interesa_azken_id'] + ";");
 					}
 					
 					// herriak_elementuak_botoak taula aldatu bada datu-base lokalean eguneratu behar da
