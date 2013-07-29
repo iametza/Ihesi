@@ -1049,6 +1049,9 @@ function eguneratuZerbitzaritikArrakasta(tx, results) {
 /*								tx.executeSql("UPDATE `herriak_elementuak_botoak` SET boto_neg = boto_neg + 1 WHERE id_elementua = " + tmp['id_elementua'] + ";");*/
 							}
 						}
+						
+						console.log("UPDATE ezarpenak SET herriak_elementuak_botoak_azken_id = " + res.taulak['herriak_elementuak_botoak_azken_id'] + ";");
+						tx.executeSql("UPDATE ezarpenak SET herriak_elementuak_botoak_azken_id = " + res.taulak['herriak_elementuak_botoak_azken_id'] + ";");
 					}
 				},
 				function(tx, err){
