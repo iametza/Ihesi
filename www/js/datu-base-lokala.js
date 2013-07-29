@@ -955,7 +955,8 @@ function eguneratuZerbitzaritik(tx) {
 }
 
 function eguneratuZerbitzaritikArrakasta(tx, results) {
-	var herriak_azken_alta_data = results.rows.item(0).herriak_azken_alta_data;
+	//var herriak_azken_alta_data = results.rows.item(0).herriak_azken_alta_data;
+	var herriak_azken_alta_data = '2012-10-22 18:44:03';
 	var herriak_elementuak_azken_alta_data = results.rows.item(0).herriak_elementuak_azken_alta_data;
 	var herriak_interesa_azken_id = results.rows.item(0).herriak_interesa_azken_id;
 	
@@ -985,11 +986,17 @@ function eguneratuZerbitzaritikArrakasta(tx, results) {
 						tmp = res.taulak['herriak'];
 						
 						for (var i = 0; i < tmp.length; i++) {
-							tx.executeSql("INSERT INTO `herriak` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['alta_data'] + "', '" + tmp[i]['izena'] + "', '" + 
-									      tmp[i]['fk_lurraldea'] + "', '" + tmp[i]['testua'] + "', " + tmp[i]['sorrera'] + ", " + tmp[i]['biztanleak'] + ", " +
-									      tmp[i]['gps'] + "', '" + tmp[i]['web'] + "', " + tmp[i]['festak'] + ", " + tmp[i]['argazkia'] + ", " +
-									      tmp[i]['gmaps_lat'] + "', '" + tmp[i]['gmaps_lng'] + "', " + tmp[i]['gmaps_zoom'] + ", " + tmp[i]['gmaps_bista'] + ", " +
-									      tmp[i]['gmaps_eskubia_lat'] + ", " + tmp[i]['gmaps_eskubia_lng'] + ", " + tmp[i]['gmaps_eskubia_zoom'] + ");");
+							console.log("INSERT INTO `herriak` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['alta_data'] + "', '" + tmp[i]['izena'] + "', '" + 
+								      tmp[i]['fk_lurraldea'] + "', '" + tmp[i]['testua'] + "', '" + tmp[i]['sorrera'] + "', '" + tmp[i]['biztanleak'] + "', '" +
+								      tmp[i]['gps'] + "', '" + tmp[i]['web'] + "', '" + tmp[i]['festak'] + "', '" + tmp[i]['argazkia'] + "', '" +
+								      tmp[i]['gmaps_lat'] + "', '" + tmp[i]['gmaps_lng'] + "', '" + tmp[i]['gmaps_zoom'] + "', '" + tmp[i]['gmaps_bista'] + "', '" +
+								      tmp[i]['gmaps_eskubia_lat'] + "', '" + tmp[i]['gmaps_eskubia_lng'] + "', '" + tmp[i]['gmaps_eskubia_zoom'] + "');");
+							
+							/*tx.executeSql("INSERT INTO `herriak` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['alta_data'] + "', '" + tmp[i]['izena'] + "', '" + 
+								      tmp[i]['fk_lurraldea'] + "', '" + tmp[i]['testua'] + "', '" + tmp[i]['sorrera'] + "', '" + tmp[i]['biztanleak'] + "', '" +
+								      tmp[i]['gps'] + "', '" + tmp[i]['web'] + "', '" + tmp[i]['festak'] + "', '" + tmp[i]['argazkia'] + "', '" +
+								      tmp[i]['gmaps_lat'] + "', '" + tmp[i]['gmaps_lng'] + "', '" + tmp[i]['gmaps_zoom'] + "', '" + tmp[i]['gmaps_bista'] + "', '" +
+								      tmp[i]['gmaps_eskubia_lat'] + "', '" + tmp[i]['gmaps_eskubia_lng'] + "', '" + tmp[i]['gmaps_eskubia_zoom'] + "');");*/
 						}
 					}
 					
