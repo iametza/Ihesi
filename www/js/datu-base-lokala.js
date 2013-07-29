@@ -979,7 +979,7 @@ function eguneratuZerbitzaritikArrakasta(tx, results) {
 				// Aldatutako taulak eguneratu behar dira datu-base lokalean
 				console.log(res.taulak);
 				
-				tolosadb.transaction(function(tx) {
+				ihesidb.transaction(function(tx) {
 					// herriak taula aldatu bada datu-base lokalean eguneratu behar da
 					if (res.taulak['herriak']) {
 						tmp = res.taulak['herriak'];
