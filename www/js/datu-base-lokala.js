@@ -961,17 +961,20 @@ function eguneratuZerbitzaritikArrakasta(tx, results) {
 	var herriak_elementuak_azken_alta_data = '2013-05-09 19:12:07';
 	//var herriak_interesa_azken_id = results.rows.item(0).herriak_interesa_azken_id;
 	var herriak_interesa_azken_id = '105';
+	//var herriak_elementuak_botoak_azken_id = results.rows.item(0).herriak_elementuak_botoak_azken_id;
+	var herriak_elementuak_botoak_azken_id = '368';
 	
 	console.log("Azken herria gehitutako data: " + herriak_azken_alta_data);	
 	console.log("Azken proposamena gehitutako data: " + herriak_elementuak_azken_alta_data);
 	console.log("Azken herriak_interesa taulako azken id-a: " + herriak_interesa_azken_id);
+	console.log("Botatutako azken id-a: " + herriak_elementuak_botoak_azken_id);
 	
 	$.ajax({
 		type: 'GET',
 		url: 'http://argia2012.ametza.com/ihesi/mugikorrak/eguneraketak.php',
 		contentType: "application/json",
 		dataType: 'jsonp',
-		data: {'herriak_azken_alta_data': herriak_azken_alta_data, 'herriak_elementuak_azken_alta_data': herriak_elementuak_azken_alta_data, 'herriak_interesa_azken_id': herriak_interesa_azken_id},
+		data: {'herriak_azken_alta_data': herriak_azken_alta_data, 'herriak_elementuak_azken_alta_data': herriak_elementuak_azken_alta_data, 'herriak_interesa_azken_id': herriak_interesa_azken_id, 'herriak_elementuak_botoak_azken_id': herriak_elementuak_botoak_azken_id},
 		crossDomain: true,
 		success: function(res) {
 			console.log("badaude: " + res.badaude);
@@ -1029,6 +1032,22 @@ function eguneratuZerbitzaritikArrakasta(tx, results) {
 								      tmp[i]['ordena'] + ", " + tmp[i]['fk_herria'] + ");");
 /*							tx.executeSql("INSERT INTO `herriak_interesa` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['izenburua'] + "', '" + tmp[i]['url'] + "', '" + 
 									      tmp[i]['ordena'] + ", " + tmp[i]['fk_herria'] + ");");*/
+						}
+					}
+					
+					// herriak_elementuak_botoak taula aldatu bada datu-base lokalean eguneratu behar da
+					if (res.taulak['herriak_elementuak_botoak']) {
+						tmp = res.taulak['herriak_elementuak_botoak'];
+						
+						for (var i = 0; i < tmp.length; i++) {
+							// Boto positiboa
+							if (tmp[i]['botoa'] == '1') {
+								console.log("UPDATE `herriak_elementuak_botoak` SET boto_pos = boto_pos + 1 WHERE id_elementua = " + tmp[i]['id_elementua'] + ";");
+/*								tx.executeSql("UPDATE `herriak_elementuak_botoak` SET boto_pos = boto_pos + 1 WHERE id_elementua = " + tmp['id_elementua'] + ";");*/
+							} else if (tmp[i]['botoa'] == '-1') {
+								console.log("UPDATE `herriak_elementuak_botoak` SET boto_neg = boto_neg + 1 WHERE id_elementua = " + tmp[i]['id_elementua'] + ";");
+/*								tx.executeSql("UPDATE `herriak_elementuak_botoak` SET boto_neg = boto_neg + 1 WHERE id_elementua = " + tmp['id_elementua'] + ";");*/
+							}
 						}
 					}
 				},
