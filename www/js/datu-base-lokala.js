@@ -986,6 +986,7 @@ function eguneratuZerbitzaritikArrakasta(tx, results) {
 						tmp = res.taulak['herriak'];
 						
 						for (var i = 0; i < tmp.length; i++) {
+							// gps eremua 'null' bezala agertzen da, ez dakit zergatik.
 							console.log("INSERT INTO `herriak` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['alta_data'] + "', '" + tmp[i]['izena'] + "', '" + 
 								      tmp[i]['fk_lurraldea'] + "', '" + tmp[i]['testua'] + "', '" + tmp[i]['sorrera'] + "', '" + tmp[i]['biztanleak'] + "', '" +
 								      tmp[i]['gps'] + "', '" + tmp[i]['web'] + "', '" + tmp[i]['festak'] + "', '" + tmp[i]['argazkia'] + "', '" +
