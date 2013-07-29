@@ -959,7 +959,8 @@ function eguneratuZerbitzaritikArrakasta(tx, results) {
 	var herriak_azken_alta_data = '2012-10-22 18:44:03';
 	//var herriak_elementuak_azken_alta_data = results.rows.item(0).herriak_elementuak_azken_alta_data;
 	var herriak_elementuak_azken_alta_data = '2013-05-09 19:12:07';
-	var herriak_interesa_azken_id = results.rows.item(0).herriak_interesa_azken_id;
+	//var herriak_interesa_azken_id = results.rows.item(0).herriak_interesa_azken_id;
+	var herriak_interesa_azken_id = '105';
 	
 	console.log("Azken herria gehitutako data: " + herriak_azken_alta_data);	
 	console.log("Azken proposamena gehitutako data: " + herriak_elementuak_azken_alta_data);
@@ -1024,8 +1025,10 @@ function eguneratuZerbitzaritikArrakasta(tx, results) {
 						tmp = res.taulak['herriak_interesa'];
 						
 						for (var i = 0; i < tmp.length; i++) {
-							tx.executeSql("INSERT INTO `herriak_interesa` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['izenburua'] + "', '" + tmp[i]['url'] + "', '" + 
-									      tmp[i]['ordena'] + ", " + tmp[i]['fk_herria'] + ");");
+							console.log("INSERT INTO `herriak_interesa` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['izenburua'] + "', '" + tmp[i]['url'] + "', '" + 
+								      tmp[i]['ordena'] + ", " + tmp[i]['fk_herria'] + ");");
+/*							tx.executeSql("INSERT INTO `herriak_interesa` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['izenburua'] + "', '" + tmp[i]['url'] + "', '" + 
+									      tmp[i]['ordena'] + ", " + tmp[i]['fk_herria'] + ");");*/
 						}
 					}
 				},
