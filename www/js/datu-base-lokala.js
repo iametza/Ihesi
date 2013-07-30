@@ -714,7 +714,7 @@ function bistaratuHerriakArrakasta(tx, results) {
     console.log("Herriak: " + len + " errenkada.");
     
     for (var i = 0; i < len; i++){
-        console.log("ID = " + results.rows.item(i).id + " Izena = " + results.rows.item(i).izena + "");
+        //console.log("ID = " + results.rows.item(i).id + " Izena = " + results.rows.item(i).izena + "");
                 
         $("#ui-ul-herriak").append('<li data-corners="false" data-id-herria="' + results.rows.item(i).id + '" data-gmaps_lat="' + results.rows.item(i).gmaps_lat + '" data-gmaps_lng="' + results.rows.item(i).gmaps_lng + '" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="d" class="ui-btn ui-btn-icon-right ui-li-has-arrow ui-li ui-btn-up-d ui-li-herria"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a href="../index.html" class="ui-link-inherit">' + results.rows.item(i).izena + '</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>');
     }
