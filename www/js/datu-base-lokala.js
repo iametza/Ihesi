@@ -963,7 +963,8 @@ function eguneratuZerbitzaritik(tx, results) {
 	
 	$.ajax({
 		type: 'GET',
-		url: 'http://argia2012.ametza.com/ihesi/mugikorrak/eguneraketak.php',
+		//url: 'http://argia2012.ametza.com/ihesi/mugikorrak/eguneraketak.php',
+		url: 'http://argia.com/ihesi/mugikorrak/eguneraketak.php',
 		contentType: "application/json",
 		dataType: 'jsonp',
 		data: {'herriak_azken_alta_data': herriak_azken_alta_data, 'herriak_elementuak_azken_alta_data': herriak_elementuak_azken_alta_data, 'herriak_interesa_azken_id': herriak_interesa_azken_id, 'herriak_elementuak_botoak_azken_id': herriak_elementuak_botoak_azken_id},
