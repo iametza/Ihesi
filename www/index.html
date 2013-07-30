@@ -1107,8 +1107,11 @@
 										sPath + fitxategiaren_izena,
 										function(theFile) {
 											console.log("download complete: " + theFile.toURI());
-											gorde_datubasean(sPath); // Funtzioari pasatako atzera-dei funtzioa exekutatu gomendio berria datu-basean gordetzeko.
 											
+											// Atzera-dei funtzioa pasa bazaio funtzioari exekutatu
+											if (gorde_datubasean) {
+												gorde_datubasean(sPath); // Funtzioari pasatako atzera-dei funtzioa exekutatu gomendio berria datu-basean gordetzeko.
+											}
 										},
 										function(error) {
 											console.log("download error source " + error.source);
@@ -1296,7 +1299,7 @@
 							//options.fileName=fileURI.substr(fileURI.lastIndexOf('?')+1) + ".jpg";
 							options.fileName=fileName.substr(fileName.lastIndexOf('/')+1);
 							
-							// Irudia ez bada jpg formatukoak arazoak izango ditugu???
+							// Irudia ez bada jpg formatukoa arazoak izango ditugu???
 							options.mimeType="image/jpeg";
 							
 							var params = {};

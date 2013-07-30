@@ -995,6 +995,9 @@ function eguneratuZerbitzaritik(tx, results) {
 								      tmp[i]['gps'] + "', '" + tmp[i]['web'] + "', '" + tmp[i]['festak'] + "', '" + tmp[i]['argazkia'] + "', '" +
 								      tmp[i]['gmaps_lat'] + "', '" + tmp[i]['gmaps_lng'] + "', '" + tmp[i]['gmaps_zoom'] + "', '" + tmp[i]['gmaps_bista'] + "', '" +
 								      tmp[i]['gmaps_eskubia_lat'] + "', '" + tmp[i]['gmaps_eskubia_lng'] + "', '" + tmp[i]['gmaps_eskubia_zoom'] + "');");*/
+							
+							// Dagokion irudia deskargatu behar da zerbitzaritik
+							deskargatuIrudia(tmp[i]['argazkia']);
 						}
 						
 						console.log("UPDATE ezarpenak SET herriak_azken_alta_data = " + res.taulak['herriak_azken_alta_data'] + ";");
@@ -1019,6 +1022,9 @@ function eguneratuZerbitzaritik(tx, results) {
 						
 						console.log("UPDATE ezarpenak SET herriak_elementuak_azken_alta_data = " + res.taulak['herriak_elementuak_azken_alta_data'] + ";");
 						//tx.executeSql("UPDATE ezarpenak SET herriak_elementuak_azken_alta_data = " + res.taulak['herriak_elementuak_azken_alta_data'] + ";");
+						
+						// Dagokion irudia deskargatu behar da zerbitzaritik
+						deskargatuIrudia(tmp[i]['irudia']);
 					}
 					
 					// herriak_interesa taula aldatu bada datu-base lokalean eguneratu behar da
