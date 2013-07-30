@@ -1,6 +1,6 @@
 function eskuratuBertsioaDB(tx) { 
 	tx.executeSql('SELECT db_bertsioa, herriak_azken_alta_data, herriak_elementuak_azken_alta_data, herriak_interesa_azken_id, herriak_elementuak_botoak_azken_id ' +
-			      'FROM ezarpenak', [], eskuratuBertsioaDBarrakasta, zaharraEdoBDrikEz);
+			      'FROM ezarpenak WHERE id = 1', [], eskuratuBertsioaDBarrakasta, zaharraEdoBDrikEz);
 } 
 
 function eskuratuBertsioaDBarrakasta(tx, results) {
@@ -925,29 +925,12 @@ function bistaratuHerriaHerrialdeaArrakasta(tx, results, izena, idTestua) {
     }
 }
 
-function txertatuHerrikoElementuBerria(tx, id_gomendioa, izena, deskribapena, webgunea, irudiaren_izena, irudiaren_bidea, lat, lng, zoom_maila, herria, atala, idUnekoErabiltzailea, atzera_deia) {
-
-	// Gomendio berria datu-base lokalean gorde
-	tx.executeSql( 
-		'INSERT INTO herriak_elementuak(id, izena, deskribapena, url, irudia, irudiaren_bidea, gmaps_lat, gmaps_lng, gmaps_zoom, fk_herria, fk_azpiatala, fk_erabiltzailea) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
-	    [id_gomendioa, izena, deskribapena, webgunea, irudiaren_izena, irudiaren_bidea, lat, lng, zoom_maila, herria, atala, idUnekoErabiltzailea], 
-	    function() {}, 
-	    function(tx, err){errorCB(tx, err, "txertatuHerrikoElementuBerria-exec")}
-	);
-	
-	// Gomendio berriari 0 boto positibo eta negatibo jarri
-	tx.executeSql(
-		'INSERT INTO herriak_elementuak_botoak(id_elementua, boto_pos, boto_neg) VALUES (?, ?, ?)',
-		[id_gomendioa, 0, 0],
-		function() {},
-		function(tx, err){errorCB(tx, err, "txertatuHerrikoElementuBerriarenBotoak-exec")}
-	);
-	
-	// Atzera-deia exekutatu
-	atzera_deia();
+function eguneratuProposamenBerriarenOndoren(tx, atzera_deia) {
+	tx.executeSql('SELECT herriak_azken_alta_data, herriak_elementuak_azken_alta_data, herriak_interesa_azken_id, herriak_elementuak_botoak_azken_id ' +
+		      'FROM ezarpenak', [], function(tx, results){eguneratuZerbitzaritik(tx,results, atzera_deia)}, function(tx, err){errorCB(tx, err, "eguneratuProposamenBerriarenOndoren-exec")});
 }
 
-function eguneratuZerbitzaritik(tx, results) {
+function eguneratuZerbitzaritik(tx, results, atzera_deia) {
 	var herriak_azken_alta_data = results.rows.item(0).herriak_azken_alta_data;
 	//var herriak_azken_alta_data = '2012-10-22 18:44:03';
 	var herriak_elementuak_azken_alta_data = results.rows.item(0).herriak_elementuak_azken_alta_data;
@@ -963,8 +946,8 @@ function eguneratuZerbitzaritik(tx, results) {
 	
 	$.ajax({
 		type: 'GET',
-		//url: 'http://argia2012.ametza.com/ihesi/mugikorrak/eguneraketak.php',
-		url: 'http://argia.com/ihesi/mugikorrak/eguneraketak.php',
+		url: 'http://argia2012.ametza.com/ihesi/mugikorrak/eguneraketak.php',
+		//url: 'http://argia.com/ihesi/mugikorrak/eguneraketak.php',
 		contentType: "application/json",
 		dataType: 'jsonp',
 		data: {'herriak_azken_alta_data': herriak_azken_alta_data, 'herriak_elementuak_azken_alta_data': herriak_elementuak_azken_alta_data, 'herriak_interesa_azken_id': herriak_interesa_azken_id, 'herriak_elementuak_botoak_azken_id': herriak_elementuak_botoak_azken_id},
@@ -990,11 +973,11 @@ function eguneratuZerbitzaritik(tx, results) {
 								      tmp[i]['gmaps_lat'] + "', '" + tmp[i]['gmaps_lng'] + "', '" + tmp[i]['gmaps_zoom'] + "', '" + tmp[i]['gmaps_bista'] + "', '" +
 								      tmp[i]['gmaps_eskubia_lat'] + "', '" + tmp[i]['gmaps_eskubia_lng'] + "', '" + tmp[i]['gmaps_eskubia_zoom'] + "');");
 							
-							/*tx.executeSql("INSERT INTO `herriak` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['alta_data'] + "', '" + tmp[i]['izena'] + "', '" + 
+							tx.executeSql("INSERT INTO `herriak` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['alta_data'] + "', '" + tmp[i]['izena'] + "', '" + 
 								      tmp[i]['fk_lurraldea'] + "', '" + tmp[i]['testua'] + "', '" + tmp[i]['sorrera'] + "', '" + tmp[i]['biztanleak'] + "', '" +
 								      tmp[i]['gps'] + "', '" + tmp[i]['web'] + "', '" + tmp[i]['festak'] + "', '" + tmp[i]['argazkia'] + "', '" +
 								      tmp[i]['gmaps_lat'] + "', '" + tmp[i]['gmaps_lng'] + "', '" + tmp[i]['gmaps_zoom'] + "', '" + tmp[i]['gmaps_bista'] + "', '" +
-								      tmp[i]['gmaps_eskubia_lat'] + "', '" + tmp[i]['gmaps_eskubia_lng'] + "', '" + tmp[i]['gmaps_eskubia_zoom'] + "');");*/
+								      tmp[i]['gmaps_eskubia_lat'] + "', '" + tmp[i]['gmaps_eskubia_lng'] + "', '" + tmp[i]['gmaps_eskubia_zoom'] + "');");
 							
 							// Dagokion irudia deskargatu behar da zerbitzaritik (baldin badago)
 							if (tmp[i]['argazkia']) {
@@ -1002,8 +985,8 @@ function eguneratuZerbitzaritik(tx, results) {
 							}
 						}
 						
-						console.log("UPDATE ezarpenak SET herriak_azken_alta_data = " + res.taulak['herriak_azken_alta_data'] + ";");
-						//tx.executeSql("UPDATE ezarpenak SET herriak_azken_alta_data = " + res.taulak['herriak_azken_alta_data'] + ";");
+						console.log("UPDATE ezarpenak SET herriak_azken_alta_data = " + res.taulak['herriak_azken_alta_data'] + " WHERE id = 1;");
+						tx.executeSql("UPDATE ezarpenak SET herriak_azken_alta_data = " + res.taulak['herriak_azken_alta_data'] + " WHERE id = 1;");
 					}
 					
 					// herriak_elementuak taula aldatu bada datu-base lokalean eguneratu behar da
@@ -1016,10 +999,10 @@ function eguneratuZerbitzaritik(tx, results) {
 								      tmp[i]['gmaps_lat'] + "', '" + tmp[i]['gmaps_lng'] + "', '" + tmp[i]['gmaps_zoom'] + "', '" + tmp[i]['fk_herria'] + "', '" +
 								      tmp[i]['fk_azpiatala'] + "', '" + tmp[i]['erabiltzailea'] + "');");
 							
-							/*tx.executeSql("INSERT INTO `herriak_elementuak` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['alta_data'] + "', '" + tmp[i]['izena'] + "', '" + 
+							tx.executeSql("INSERT INTO `herriak_elementuak` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['alta_data'] + "', '" + tmp[i]['izena'] + "', '" + 
 									      tmp[i]['deskribapena'] + "', '" + tmp[i]['url'] + "', " + tmp[i]['irudia'] + ", " + tmp[i]['irudiaren_bidea'] + ", " +
 									      tmp[i]['gmaps_lat'] + "', '" + tmp[i]['gmaps_lng'] + "', " + tmp[i]['gmaps_zoom'] + ", " + tmp[i]['fk_herria'] + ", " +
-									      tmp[i]['fk_azpiatala'] + ", " + tmp[i]['erabiltzailea'] + ");");*/
+									      tmp[i]['fk_azpiatala'] + ", " + tmp[i]['erabiltzailea'] + ");");
 							
 							// Dagokion irudia deskargatu behar da zerbitzaritik (baldin badago)
 							if (tmp[i]['irudia']) {
@@ -1027,8 +1010,8 @@ function eguneratuZerbitzaritik(tx, results) {
 							}
 						}
 						
-						console.log("UPDATE ezarpenak SET herriak_elementuak_azken_alta_data = " + res.taulak['herriak_elementuak_azken_alta_data'] + ";");
-						//tx.executeSql("UPDATE ezarpenak SET herriak_elementuak_azken_alta_data = " + res.taulak['herriak_elementuak_azken_alta_data'] + ";");
+						console.log("UPDATE ezarpenak SET herriak_elementuak_azken_alta_data = " + res.taulak['herriak_elementuak_azken_alta_data'] + " WHERE id = 1;");
+						tx.executeSql("UPDATE ezarpenak SET herriak_elementuak_azken_alta_data = " + res.taulak['herriak_elementuak_azken_alta_data'] + " WHERE id = 1;");
 					}
 					
 					// herriak_interesa taula aldatu bada datu-base lokalean eguneratu behar da
@@ -1038,12 +1021,12 @@ function eguneratuZerbitzaritik(tx, results) {
 						for (var i = 0; i < tmp.length; i++) {
 							console.log("INSERT INTO `herriak_interesa` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['izenburua'] + "', '" + tmp[i]['url'] + "', '" + 
 								      tmp[i]['ordena'] + ", " + tmp[i]['fk_herria'] + ");");
-/*							tx.executeSql("INSERT INTO `herriak_interesa` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['izenburua'] + "', '" + tmp[i]['url'] + "', '" + 
-									      tmp[i]['ordena'] + ", " + tmp[i]['fk_herria'] + ");");*/
+							tx.executeSql("INSERT INTO `herriak_interesa` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['izenburua'] + "', '" + tmp[i]['url'] + "', '" + 
+									      tmp[i]['ordena'] + ", " + tmp[i]['fk_herria'] + ");");
 						}
 						
-						console.log("UPDATE ezarpenak SET herriak_interesa_azken_id = " + res.taulak['herriak_interesa_azken_id'] + ";");
-						//tx.executeSql("UPDATE ezarpenak SET herriak_interesa_azken_id = " + res.taulak['herriak_interesa_azken_id'] + ";");
+						console.log("UPDATE ezarpenak SET herriak_interesa_azken_id = " + res.taulak['herriak_interesa_azken_id'] + " WHERE id = 1;");
+						tx.executeSql("UPDATE ezarpenak SET herriak_interesa_azken_id = " + res.taulak['herriak_interesa_azken_id'] + " WHERE id = 1;");
 					}
 					
 					// herriak_elementuak_botoak taula aldatu bada datu-base lokalean eguneratu behar da
@@ -1054,15 +1037,21 @@ function eguneratuZerbitzaritik(tx, results) {
 							// Boto positiboa
 							if (tmp[i]['botoa'] == '1') {
 								console.log("UPDATE `herriak_elementuak_botoak` SET boto_pos = boto_pos + 1 WHERE id_elementua = " + tmp[i]['id_elementua'] + ";");
-/*								tx.executeSql("UPDATE `herriak_elementuak_botoak` SET boto_pos = boto_pos + 1 WHERE id_elementua = " + tmp['id_elementua'] + ";");*/
+								tx.executeSql("UPDATE `herriak_elementuak_botoak` SET boto_pos = boto_pos + 1 WHERE id_elementua = " + tmp['id_elementua'] + ";");
 							} else if (tmp[i]['botoa'] == '-1') {
 								console.log("UPDATE `herriak_elementuak_botoak` SET boto_neg = boto_neg + 1 WHERE id_elementua = " + tmp[i]['id_elementua'] + ";");
-/*								tx.executeSql("UPDATE `herriak_elementuak_botoak` SET boto_neg = boto_neg + 1 WHERE id_elementua = " + tmp['id_elementua'] + ";");*/
+								tx.executeSql("UPDATE `herriak_elementuak_botoak` SET boto_neg = boto_neg + 1 WHERE id_elementua = " + tmp['id_elementua'] + ";");
 							}
 						}
 						
-						console.log("UPDATE ezarpenak SET herriak_elementuak_botoak_azken_id = " + res.taulak['herriak_elementuak_botoak_azken_id'] + ";");
-						tx.executeSql("UPDATE ezarpenak SET herriak_elementuak_botoak_azken_id = " + res.taulak['herriak_elementuak_botoak_azken_id'] + ";");
+						console.log("UPDATE ezarpenak SET herriak_elementuak_botoak_azken_id = " + res.taulak['herriak_elementuak_botoak_azken_id'] + " WHERE id = 1;");
+						tx.executeSql("UPDATE ezarpenak SET herriak_elementuak_botoak_azken_id = " + res.taulak['herriak_elementuak_botoak_azken_id'] + " WHERE id = 1;");
+					}
+					
+					// Atzera deirik balego exekutatu.
+					// Adibidez, proposamen berri bat egin ondoren egindako proposamena erakusteko.
+					if (atzera_deia) {
+						atzera_deia();
 					}
 				},
 				function(tx, err){

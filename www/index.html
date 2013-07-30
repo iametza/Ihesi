@@ -1136,28 +1136,6 @@
 				console.log(evt.target.error.code);
 			}
 			
-			function gordeProposamenBerria(id_gomendioa,
-											izena,
-											deskribapena,
-											webgunea,
-											irudiaren_izena,
-											herria,
-											atala,
-											idUnekoErabiltzailea,
-											lat,
-											lng,
-											zoom_maila,
-											atzera_deia) {
-				deskargatuIrudia(irudiaren_izena,
-					function(irudiaren_bidea) {
-						ihesidb.transaction(
-								function(tx){txertatuHerrikoElementuBerria(tx, id_gomendioa, izena, deskribapena, webgunea, irudiaren_izena, irudiaren_bidea, lat, lng, zoom_maila, herria, atala, idUnekoErabiltzailea, atzera_deia)},
-								function(tx, err){errorCB(tx, err, "txertatuHerrikoElementuBerria-exec")}
-						);
-					}
-				)
-			}
-			
 			// formularioari data-ajax="false" gehitu ezean ez da sartzen hemen
 			$(document).on("submit", "#proposatu-form", function(event, ui) {
 				// prevent default posting of form
@@ -1227,8 +1205,8 @@
 					return false;
 				}
 				
-				//var url = 'http://argia2012.ametza.com/ihesi/mugikorrak/proposamen_berria.php';
-				var url = 'http://www.argia.com/ihesi/mugikorrak/proposamen_berria.php';
+				var url = 'http://argia2012.ametza.com/ihesi/mugikorrak/proposamen_berria.php';
+				//var url = 'http://www.argia.com/ihesi/mugikorrak/proposamen_berria.php';
 				
 				var imageURI = $("#proposamen-berria-argazkia-aurrebista").attr("src");
 				
@@ -1264,20 +1242,11 @@
 									zoom_maila = proposamen_berria.zoom;
 								}
 							 	
-								// Proposamenaren datuak gorde datu-base lokalean
-								gordeProposamenBerria( erantzuna.id_gomendioa,
-										izena,
-										deskribapena,
-										webgunea,
-										erantzuna.irudiaren_izena,
-										herria,
-			    						atala,
-										idUnekoErabiltzailea,
-										lat,
-										lng,
-										zoom_maila,
-										function() {bistaratuGomendioa(erantzuna.id_gomendioa, lat, lng)} // Proposamen berriaren xehetasunak erakutsi
-								);
+								// Datu-basea eguneratu behar da bidalitako proposamena eta gainerako proposamen berriak txertatzeko.
+								// Bukatzean proposamen berriaren xehetasunak erakutsi
+						        ihesidb.transaction(function(tx){eguneratuProposamenBerriarenOndoren(tx, function() {bistaratuGomendioa(erantzuna.id_gomendioa, lat, lng)})},
+						        					function(tx, err){errorCB(tx, err, "eguneratuProposamenBerriarenOndoren-exec")}
+						        );
 							}
 							
 							var fail = function(error) {
@@ -1330,8 +1299,8 @@
 				} else { // Erabiltzaileak irudirik ez badu gehitu jquery.ajax erabili
 					//alert("Ez duzu irudirik gehitu");
 					
-					//url = 'http://argia2012.ametza.com/ihesi/mugikorrak/proposamen_berria_irudirik_gabe.php';
-					url = 'http://www.argia.com/ihesi/mugikorrak/proposamen_berria_irudirik_gabe.php';
+					url = 'http://argia2012.ametza.com/ihesi/mugikorrak/proposamen_berria_irudirik_gabe.php';
+					//url = 'http://www.argia.com/ihesi/mugikorrak/proposamen_berria_irudirik_gabe.php';
 					
 					var datuak = {'erab': unekoErabiltzailea, 'pasa': unekoPasahitza, 'izena': izena, 'deskribapena': deskribapena, 'herria': herria, 'atala': atala, 'webgunea': webgunea, 'legeoharra': lege_oharra};
 					
@@ -1379,20 +1348,11 @@
 									zoom_maila = proposamen_berria.zoom;
 								}
 							    
-								// Proposamenaren datuak gorde datu-base lokalean
-								gordeProposamenBerria( res.id_gomendioa,
-										izena,
-										deskribapena,
-										webgunea,
-										'',	// kasu honetan ez dago irudirik
-										herria,
-			    						atala,
-										idUnekoErabiltzailea,
-										lat,
-										lng,
-										zoom_maila,
-										function() {bistaratuGomendioa(res.id_gomendioa, lat, lng)} // Proposamen berriaren xehetasunak erakutsi
-								);
+								// Datu-basea eguneratu behar da bidalitako proposamena eta gainerako proposamen berriak txertatzeko.
+								// Bukatzean proposamen berriaren xehetasunak erakutsi
+						        ihesidb.transaction(function(tx){eguneratuProposamenBerriarenOndoren(tx, function() {bistaratuGomendioa(res.id_gomendioa, lat, lng)})},
+						        					function(tx, err){errorCB(tx, err, "eguneratuProposamenBerriarenOndoren-exec")}
+						        );
 			                }
 			            },
 			            error: function(e) {
