@@ -1018,13 +1018,13 @@ function eguneratuZerbitzaritik(tx, results) {
 									      tmp[i]['deskribapena'] + "', '" + tmp[i]['url'] + "', " + tmp[i]['irudia'] + ", " + tmp[i]['irudiaren_bidea'] + ", " +
 									      tmp[i]['gmaps_lat'] + "', '" + tmp[i]['gmaps_lng'] + "', " + tmp[i]['gmaps_zoom'] + ", " + tmp[i]['fk_herria'] + ", " +
 									      tmp[i]['fk_azpiatala'] + ", " + tmp[i]['erabiltzailea'] + ");");*/
+							
+							// Dagokion irudia deskargatu behar da zerbitzaritik
+							deskargatuIrudia(tmp[i]['irudia']);
 						}
 						
 						console.log("UPDATE ezarpenak SET herriak_elementuak_azken_alta_data = " + res.taulak['herriak_elementuak_azken_alta_data'] + ";");
 						//tx.executeSql("UPDATE ezarpenak SET herriak_elementuak_azken_alta_data = " + res.taulak['herriak_elementuak_azken_alta_data'] + ";");
-						
-						// Dagokion irudia deskargatu behar da zerbitzaritik
-						deskargatuIrudia(tmp[i]['irudia']);
 					}
 					
 					// herriak_interesa taula aldatu bada datu-base lokalean eguneratu behar da
