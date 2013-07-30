@@ -985,8 +985,8 @@ function eguneratuZerbitzaritik(tx, results, atzera_deia) {
 							}
 						}
 						
-						console.log("UPDATE ezarpenak SET herriak_azken_alta_data = " + res.taulak['herriak_azken_alta_data'] + " WHERE id = 1;");
-						tx.executeSql("UPDATE ezarpenak SET herriak_azken_alta_data = " + res.taulak['herriak_azken_alta_data'] + " WHERE id = 1;");
+						console.log("UPDATE ezarpenak SET herriak_azken_alta_data = '" + res.taulak['herriak_azken_alta_data'] + "' WHERE id = 1;");
+						tx.executeSql("UPDATE ezarpenak SET herriak_azken_alta_data = '" + res.taulak['herriak_azken_alta_data'] + "' WHERE id = 1;");
 					}
 					
 					// herriak_elementuak taula aldatu bada datu-base lokalean eguneratu behar da
@@ -1010,8 +1010,8 @@ function eguneratuZerbitzaritik(tx, results, atzera_deia) {
 							}
 						}
 						
-						console.log("UPDATE ezarpenak SET herriak_elementuak_azken_alta_data = " + res.taulak['herriak_elementuak_azken_alta_data'] + " WHERE id = 1;");
-						tx.executeSql("UPDATE ezarpenak SET herriak_elementuak_azken_alta_data = " + res.taulak['herriak_elementuak_azken_alta_data'] + " WHERE id = 1;");
+						console.log("UPDATE ezarpenak SET herriak_elementuak_azken_alta_data = '" + res.taulak['herriak_elementuak_azken_alta_data'] + "' WHERE id = 1;");
+						tx.executeSql("UPDATE ezarpenak SET herriak_elementuak_azken_alta_data = '" + res.taulak['herriak_elementuak_azken_alta_data'] + "' WHERE id = 1;");
 					}
 					
 					// herriak_interesa taula aldatu bada datu-base lokalean eguneratu behar da
@@ -1025,8 +1025,8 @@ function eguneratuZerbitzaritik(tx, results, atzera_deia) {
 									      tmp[i]['ordena'] + ", " + tmp[i]['fk_herria'] + ");");
 						}
 						
-						console.log("UPDATE ezarpenak SET herriak_interesa_azken_id = " + res.taulak['herriak_interesa_azken_id'] + " WHERE id = 1;");
-						tx.executeSql("UPDATE ezarpenak SET herriak_interesa_azken_id = " + res.taulak['herriak_interesa_azken_id'] + " WHERE id = 1;");
+						console.log("UPDATE ezarpenak SET herriak_interesa_azken_id = '" + res.taulak['herriak_interesa_azken_id'] + "' WHERE id = 1;");
+						tx.executeSql("UPDATE ezarpenak SET herriak_interesa_azken_id = '" + res.taulak['herriak_interesa_azken_id'] + "' WHERE id = 1;");
 					}
 					
 					// herriak_elementuak_botoak taula aldatu bada datu-base lokalean eguneratu behar da
@@ -1044,8 +1044,8 @@ function eguneratuZerbitzaritik(tx, results, atzera_deia) {
 							}
 						}
 						
-						console.log("UPDATE ezarpenak SET herriak_elementuak_botoak_azken_id = " + res.taulak['herriak_elementuak_botoak_azken_id'] + " WHERE id = 1;");
-						tx.executeSql("UPDATE ezarpenak SET herriak_elementuak_botoak_azken_id = " + res.taulak['herriak_elementuak_botoak_azken_id'] + " WHERE id = 1;");
+						console.log("UPDATE ezarpenak SET herriak_elementuak_botoak_azken_id = '" + res.taulak['herriak_elementuak_botoak_azken_id'] + "' WHERE id = 1;");
+						tx.executeSql("UPDATE ezarpenak SET herriak_elementuak_botoak_azken_id = '" + res.taulak['herriak_elementuak_botoak_azken_id'] + "' WHERE id = 1;");
 					}
 					
 					// Atzera deirik balego exekutatu.
@@ -1055,6 +1055,7 @@ function eguneratuZerbitzaritik(tx, results, atzera_deia) {
 					}
 				},
 				function(tx, err){
+					console.log("errorea eguneratzean.");
 					errorCB(tx, err, "Errorea tauletan errenkada berriak txertatzean.")
 				});
 			}
