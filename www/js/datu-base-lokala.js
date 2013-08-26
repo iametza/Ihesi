@@ -1026,9 +1026,9 @@ function eguneratuZerbitzaritik(tx, results, atzera_deia) {
 						tmp = res.taulak['herriak_interesa'];
 						
 						for (var i = 0; i < tmp.length; i++) {
-							console.log("INSERT INTO `herriak_interesa` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['izenburua'] + "', '" + tmp[i]['url'] + "', '" + 
+							console.log("INSERT INTO `herriak_interesa` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['izenburua'] + "', '" + tmp[i]['url'] + "', " + 
 								      tmp[i]['ordena'] + ", " + tmp[i]['fk_herria'] + ");");
-							tx.executeSql("INSERT INTO `herriak_interesa` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['izenburua'] + "', '" + tmp[i]['url'] + "', '" + 
+							tx.executeSql("INSERT INTO `herriak_interesa` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['izenburua'] + "', '" + tmp[i]['url'] + "', " + 
 									      tmp[i]['ordena'] + ", " + tmp[i]['fk_herria'] + ");");
 						}
 						
