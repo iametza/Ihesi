@@ -982,7 +982,7 @@ function eguneratuZerbitzaritik(tx, results, atzera_deia) {
 							
 							// Dagokion irudia deskargatu behar da zerbitzaritik (baldin badago)
 							if (tmp[i]['argazkia']) {
-								deskargatuIrudia(tmp[i]['argazkia']);
+								deskargatuIrudia(tmp[i]['argazkia']); // Argazkiaren bidea gordetzeko eremu bat gehitu beharko zaio herriak taulari!!!!!!!!
 							}
 						}
 						
