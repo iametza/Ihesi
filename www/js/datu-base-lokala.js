@@ -576,7 +576,7 @@ function eskuratuXehetasunakArrakasta(tx, results) {
         if (irudia_src) {
         	// Irudia ez bada aplikazioak jatorriz dakartzanetakoa
         	if (results.rows.item(i).irudiaren_bidea) {
-        		$("#xehetasunak-irudia-div").append('<img id="xehetasunak-irudia" src="' + results.rows.item(i).irudiaren_bidea + "/" + irudia_src + '">');
+        		$("#xehetasunak-irudia-div").append('<img id="xehetasunak-irudia" src="' + window.appRootDir.fullPath + "/" + irudia_src + '">');
         	} else { // Jatorrizko irudi bat bada berriz
         		$("#xehetasunak-irudia-div").append('<img id="xehetasunak-irudia" src="' + irudien_bide_erlatiboa + irudia_src + '">');
         	}
