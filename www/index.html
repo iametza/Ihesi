@@ -24,7 +24,7 @@
 			var ezarpenak = {
 				db_bertsioa: "2.0",
 				herriak_azken_alta_data: '2012-10-23 18:44:03',
-				herriak_elementuak_azken_alta_data: "2013-05-15 16:05:07",
+				herriak_elementuak_azken_alta_data: "2013-08-26 11:15:00",
 				herriak_interesa_azken_id: "107",
 				herriak_elementuak_botoak_azken_id: "374"
 			}
@@ -900,8 +900,8 @@
 					return false;
 				}
 				
-				//var url = 'http://argia2012.ametza.com/ihesi/mugikorrak/login.php';
-				var url = 'http://www.argia.com/ihesi/mugikorrak/login.php';
+				var url = 'http://argia2012.ametza.com/ihesi/mugikorrak/login.php';
+				//var url = 'http://www.argia.com/ihesi/mugikorrak/login.php';
 				
 				$.ajax({
 		            type: 'GET',
@@ -1102,8 +1102,8 @@
 									fileEntry.remove();
 									
 									fileTransfer.download(
-										//"http://argia2012.ametza.com/ihesi/f/i/kanpokoak/" + fitxategiaren_izena,
-										"http://argia.com/ihesi/f/i/kanpokoak/" + fitxategiaren_izena,
+										"http://argia2012.ametza.com/ihesi/f/i/kanpokoak/" + fitxategiaren_izena,
+										//"http://argia.com/ihesi/f/i/kanpokoak/" + fitxategiaren_izena,
 										sPath + fitxategiaren_izena,
 										function(theFile) {
 											console.log("download complete: " + theFile.toURI());
