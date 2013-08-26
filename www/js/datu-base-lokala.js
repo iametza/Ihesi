@@ -995,14 +995,14 @@ function eguneratuZerbitzaritik(tx, results, atzera_deia) {
 						
 						for (var i = 0; i < tmp.length; i++) {
 							console.log("INSERT INTO `herriak_elementuak` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['alta_data'] + "', '" + tmp[i]['izena'] + "', '" + 
-								      tmp[i]['deskribapena'] + "', '" + tmp[i]['url'] + "', '" + tmp[i]['irudia'] + "', '" + tmp[i]['irudiaren_bidea'] + "', '" +
-								      tmp[i]['gmaps_lat'] + "', '" + tmp[i]['gmaps_lng'] + "', '" + tmp[i]['gmaps_zoom'] + "', '" + tmp[i]['fk_herria'] + "', '" +
-								      tmp[i]['fk_azpiatala'] + "', '" + tmp[i]['erabiltzailea'] + "');");
+								      tmp[i]['deskribapena'] + "', '" + tmp[i]['url'] + "', '" + tmp[i]['irudia'] + "', '" + tmp[i]['irudiaren_bidea'] + "', " +
+								      tmp[i]['gmaps_lat'] + ", " + tmp[i]['gmaps_lng'] + ", " + tmp[i]['gmaps_zoom'] + ", " + tmp[i]['fk_herria'] + ", " +
+								      tmp[i]['fk_azpiatala'] + ", '" + tmp[i]['erabiltzailea'] + "');");
 							
 							tx.executeSql("INSERT INTO `herriak_elementuak` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['alta_data'] + "', '" + tmp[i]['izena'] + "', '" + 
-									      tmp[i]['deskribapena'] + "', '" + tmp[i]['url'] + "', " + tmp[i]['irudia'] + ", " + tmp[i]['irudiaren_bidea'] + ", " +
-									      tmp[i]['gmaps_lat'] + "', '" + tmp[i]['gmaps_lng'] + "', " + tmp[i]['gmaps_zoom'] + ", " + tmp[i]['fk_herria'] + ", " +
-									      tmp[i]['fk_azpiatala'] + ", " + tmp[i]['erabiltzailea'] + ");");
+								      tmp[i]['deskribapena'] + "', '" + tmp[i]['url'] + "', '" + tmp[i]['irudia'] + "', '" + tmp[i]['irudiaren_bidea'] + "', " +
+								      tmp[i]['gmaps_lat'] + ", " + tmp[i]['gmaps_lng'] + ", " + tmp[i]['gmaps_zoom'] + ", " + tmp[i]['fk_herria'] + ", " +
+								      tmp[i]['fk_azpiatala'] + ", '" + tmp[i]['erabiltzailea'] + "');");
 							
 							// Dagokion irudia deskargatu behar da zerbitzaritik (baldin badago)
 							if (tmp[i]['irudia']) {
