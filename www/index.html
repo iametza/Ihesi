@@ -26,7 +26,8 @@
 				herriak_azken_alta_data: '2012-10-23 18:44:03',
 				herriak_elementuak_azken_alta_data: "2013-08-26 11:15:00",
 				herriak_interesa_azken_id: "107",
-				herriak_elementuak_botoak_azken_id: "374"
+				herriak_elementuak_botoak_azken_id: "374",
+				rootDirektorioa: 'com.iametza.ihesi'
 			}
 			
 			// Une honetan aukeratutako herriaren id-a, longitudea, latitudea, izena eta zein lurraldetakoa den
@@ -180,6 +181,25 @@
 					itzuliUnekoHelbidea(latLng, herriarenDatuakGorde);
 			    }
 
+				window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+				window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, failFS);
+				
+				function failFS() {
+					console.log("failed to get filesystem");
+				}
+				 
+				function gotFS(fileSystem) {
+					console.log("filesystem got");
+					fileSystem.root.getDirectory(ezarpenak.rootDirektorioa, {
+					create : true,
+					exclusive : false
+					}, dirReady, fail);
+				}
+					 
+				function dirReady(entry) {
+					window.appRootDir = entry;
+					console.log(JSON.stringify(window.appRootDir));
+				}
 		    }
 			
 			function herriarenDatuakGorde(uneko_helbidea) {
