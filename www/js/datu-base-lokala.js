@@ -541,6 +541,7 @@ function bistaratuHerrikoGomendioakMapanArrakasta(tx, results, id, lat, lng, zoo
 }
 
 function eskuratuXehetasunak(tx, id) {
+	console.log("Eskuratu id honen xehetasunak: " + id);
 	tx.executeSql('SELECT herriak_elementuak.id as id, herriak_elementuak.izena as izena, herriak_elementuak.url as url, herriak_elementuak.irudia as irudia, herriak_elementuak.irudiaren_bidea as irudiaren_bidea, herriak_elementuak.deskribapena as deskribapena, herriak_elementuak_botoak.boto_pos as boto_pos, herriak_elementuak_botoak.boto_neg, herriak.izena as herria_izena, lurraldeak.izena as lurraldea_izena FROM herriak_elementuak, herriak_elementuak_botoak, herriak, lurraldeak WHERE herriak_elementuak.id=' + id + ' AND herriak_elementuak.id = herriak_elementuak_botoak.id_elementua AND herriak.fk_lurraldea = lurraldeak.id AND herriak_elementuak.fk_herria = herriak.id', [], eskuratuXehetasunakArrakasta, function(tx, err){errorCB(tx, err, "eskuratuXehetasunak-exec")});
 }
 
@@ -1003,6 +1004,12 @@ function eguneratuZerbitzaritik(tx, results, atzera_deia) {
 								      tmp[i]['deskribapena'] + "', '" + tmp[i]['url'] + "', '" + tmp[i]['irudia'] + "', '" + tmp[i]['irudiaren_bidea'] + "', " +
 								      tmp[i]['gmaps_lat'] + ", " + tmp[i]['gmaps_lng'] + ", " + tmp[i]['gmaps_zoom'] + ", " + tmp[i]['fk_herria'] + ", " +
 								      tmp[i]['fk_azpiatala'] + ", '" + tmp[i]['erabiltzailea'] + "');");
+							
+							// Proposamen berriei dagozkien botoak 0 dira hasiera batean.
+							// 0 jartzen ez badiegu ez eskuratuXehetasunak funtzioak ez du aurkituko eta ezingo da bistaratu.
+							// Proposamena eginez geroztik botoak jaso baditu herriak_elementuak_botoak taularen eguneraketan izango dugu kontuan.
+							console.log("INSERT INTO `herriak_elementuak_botoak` (id_elementua, boto_pos, boto_neg) VALUES (" + tmp[i]['id'] + ", 0, 0);");
+							tx.executeSql("INSERT INTO `herriak_elementuak_botoak` (id_elementua, boto_pos, boto_neg) VALUES (" + tmp[i]['id'] + ", 0, 0);");
 							
 							// Dagokion irudia deskargatu behar da zerbitzaritik (baldin badago)
 							if (tmp[i]['irudia']) {
