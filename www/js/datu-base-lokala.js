@@ -179,7 +179,7 @@ function zerrendatuLurraldeakArrakasta(tx, results, idLurraldea) {
 }
 
 function bistaratuHerriarenDatuak(tx, idHerria) {
-	tx.executeSql('SELECT herriak.id as id, herriak.izena as izena, herriak.argazkia as argazkia, herriak.sorrera as sorrera, herriak.biztanleak as biztanleak, herriak.gps as gps, herriak.web as web, herriak.festak as festak, herriak.testua as testua, lurraldeak.izena as lurraldea_izena FROM herriak, lurraldeak WHERE herriak.id=' + idHerria + ' AND herriak.fk_lurraldea = lurraldeak.id', [], bistaratuHerriarenDatuakArrakasta, function(tx, err){errorCB(tx, err, "bistaratuHerriarenDatuak-exec")});
+	tx.executeSql('SELECT herriak.id as id, herriak.izena as izena, herriak.argazkia as argazkia, herriak.path_argazkia as path_argazkia, herriak.sorrera as sorrera, herriak.biztanleak as biztanleak, herriak.gps as gps, herriak.web as web, herriak.festak as festak, herriak.testua as testua, lurraldeak.izena as lurraldea_izena FROM herriak, lurraldeak WHERE herriak.id=' + idHerria + ' AND herriak.fk_lurraldea = lurraldeak.id', [], bistaratuHerriarenDatuakArrakasta, function(tx, err){errorCB(tx, err, "bistaratuHerriarenDatuak-exec")});
 }
 
 //Herriaren datuak datu-base lokaletik behar bezala irakurtzen direnean exekutatzen da
@@ -193,7 +193,12 @@ function bistaratuHerriarenDatuakArrakasta(tx, results) {
         // Zein lurraldetakoa den herria
         $("#info-lurraldea").text(results.rows.item(i).lurraldea_izena);
         
-        $("#info-argazkia").attr("src", "../irudiak/herriak/" + results.rows.item(i).argazkia);
+        // Irudia ez bada aplikazioak dakartzanetakoa
+        if (results.rows.item(i).path_argazkia) {
+        	$("#info-argazkia").attr("src", window.appRootDir.fullPath + "/" + results.rows.item(i).argazkia);
+        } else {
+        	$("#info-argazkia").attr("src", "../irudiak/herriak/" + results.rows.item(i).argazkia);
+        }
         
         // Sorreraren informazioa garbitu
         $("#info-sorrera").empty();
@@ -602,7 +607,7 @@ function eskuratuXehetasunakArrakasta(tx, results) {
 }
 
 function itzuliHerriaId(tx, izena) {
-	tx.executeSql('SELECT id, argazkia, gmaps_zoom FROM herriak WHERE izena="' + izena + '"', [], function(tx, results) {itzuliHerriaIdArrakasta(tx, results, izena)}, function(tx, err){errorCB(tx, err, "itzuliHerriaId-exec")});
+	tx.executeSql('SELECT id, argazkia, path_argazkia, gmaps_zoom FROM herriak WHERE izena="' + izena + '"', [], function(tx, results) {itzuliHerriaIdArrakasta(tx, results, izena)}, function(tx, err){errorCB(tx, err, "itzuliHerriaId-exec")});
 }
 
 function itzuliHerriaIdArrakasta(tx, results, izena) {
@@ -629,15 +634,21 @@ function itzuliHerriaIdArrakasta(tx, results, izena) {
 	        unekoHerriaZoom = results.rows.item(i).gmaps_zoom;
 	        
 	        // Herriari dagokion irudia erakutsi.
-	        // Arazoak izan ditut argazkien bidearekin. Aplikazioa lehen aldiz irekitzean geokokapen bidez lortutako
-	        // herriaren argazkia ondo erakusten zuen baina 'Hautatu kokapena' orritik itzultzean ez.
-	        // Zergatia erabat ulertu ez badut ere horrela funtzionatzen du.
-	        if (geokokatzetik) { // hautatu-kokapena.html orrian momentuko kokapena ezartzeko eskatu du erabiltzaileak
-	        	$("#sarrera-irudia").attr("src", "../irudiak/herriak/" + results.rows.item(i).argazkia);
-	        	geokokatzetik = false;
-	        } else { // Aplikazioa ireki berri dugu eta index.html agertzen den lehen aldia da
-	        	$("#sarrera-irudia").attr("src", "irudiak/herriak/" + results.rows.item(i).argazkia);
-	        }
+	        // Zerbitzaritik deskargatutako irudi bat bada ez dago irudiak/herriak/ karpetan,
+	        // sistema eragilearen arabera karpeta desberdin batean baizik. Karpeta hori zein den deviceReady gertaeran window.appRootDir.fullPath aldagaian gordetzen dugu.
+	        if (results.rows.item(i).path_argazkia) {
+        		$("#sarrera-irudia").attr("src", window.appRootDir.fullPath + "/" + results.rows.item(i).argazkia);
+        	} else {
+		        // Arazoak izan ditut argazkien bidearekin. Aplikazioa lehen aldiz irekitzean geokokapen bidez lortutako
+		        // herriaren argazkia ondo erakusten zuen baina 'Hautatu kokapena' orritik itzultzean ez.
+		        // Zergatia erabat ulertu ez badut ere horrela funtzionatzen du.
+		        if (geokokatzetik) { // hautatu-kokapena.html orrian momentuko kokapena ezartzeko eskatu du erabiltzaileak
+		        	$("#sarrera-irudia").attr("src", "../irudiak/herriak/" + results.rows.item(i).argazkia);
+		        	geokokatzetik = false;
+		        } else { // Aplikazioa ireki berri dugu eta index.html agertzen den lehen aldia da
+		        	$("#sarrera-irudia").attr("src", "irudiak/herriak/" + results.rows.item(i).argazkia);
+		        }
+        	}
 	        
 	        // Sarrerako botoiak gaitu
 	        gaituSarrerakoBotoiak();
@@ -648,7 +659,7 @@ function itzuliHerriaIdArrakasta(tx, results, izena) {
 function itzuliHerriaIdPorrota(tx, izena) {
 	// Google maps-ek itzulitako herriaren izena ez dator bat gure datu-basean dauden herrien izenekin. Gerta liteke beste izen batekin egotea, adibidez, Donostia -> Donostia-San Sebastián,
 	// egiaztatzeko itzulpen taulan begiratuko dugu.
-	tx.executeSql('SELECT herriak_itzulpena.fk_idherria as fk_idherria, herriak.izena as gure_izena, herriak.argazkia as argazkia, herriak.gmaps_zoom as gmaps_zoom FROM herriak_itzulpena, herriak WHERE herriak_itzulpena.gmaps_izena="' + izena + '" AND herriak_itzulpena.fk_idherria = herriak.id', [], function(tx, results) {itzuliHerriaIdPorrotaArrakasta(tx, results, izena)}, function(tx, err){errorCB(tx, err, "itzuliHerriaIdPorrota-exec")});
+	tx.executeSql('SELECT herriak_itzulpena.fk_idherria as fk_idherria, herriak.izena as gure_izena, herriak.argazkia as argazkia, herriak.path_argazkia as path_argazkia, herriak.gmaps_zoom as gmaps_zoom FROM herriak_itzulpena, herriak WHERE herriak_itzulpena.gmaps_izena="' + izena + '" AND herriak_itzulpena.fk_idherria = herriak.id', [], function(tx, results) {itzuliHerriaIdPorrotaArrakasta(tx, results, izena)}, function(tx, err){errorCB(tx, err, "itzuliHerriaIdPorrota-exec")});
 }
 
 function itzuliHerriaIdPorrotaArrakasta(tx, results, izena) {
@@ -685,15 +696,21 @@ function itzuliHerriaIdPorrotaArrakasta(tx, results, izena) {
 	        $("#sarrera-irudia-testua-lerroa-span").text(unekoHerria + ' (' + unekoLurraldea + ')');
 	        
 	        // Herriari dagokion irudia erakutsi.
-	        // Arazoak izan ditut argazkien bidearekin. Aplikazioa lehen aldiz irekitzean geokokapen bidez lortutako
-	        // herriaren argazkia ondo erakusten zuen baina 'Hautatu kokapena' orritik itzultzean ez.
-	        // Zergatia erabat ulertu ez badut ere horrela funtzionatzen du.
-	        if (geokokatzetik) { // hautatu-kokapena.html orrian momentuko kokapena ezartzeko eskatu du erabiltzaileak
-	        	$("#sarrera-irudia").attr("src", "../irudiak/herriak/" + results.rows.item(i).argazkia);
-	        	geokokatzetik = false;
-	        } else { // Aplikazioa ireki berri dugu eta index.html agertzen den lehen aldia da
-	        	$("#sarrera-irudia").attr("src", "irudiak/herriak/" + results.rows.item(i).argazkia);
-	        }
+	        // Zerbitzaritik deskargatutako irudi bat bada ez dago irudiak/herriak/ karpetan,
+	        // sistema eragilearen arabera karpeta desberdin batean baizik. Karpeta hori zein den deviceReady gertaeran window.appRootDir.fullPath aldagaian gordetzen dugu.
+	        if (results.rows.item(i).path_argazkia) {
+        		$("#sarrera-irudia").attr("src", window.appRootDir.fullPath + "/" + results.rows.item(i).argazkia);
+        	} else {
+		        // Arazoak izan ditut argazkien bidearekin. Aplikazioa lehen aldiz irekitzean geokokapen bidez lortutako
+		        // herriaren argazkia ondo erakusten zuen baina 'Hautatu kokapena' orritik itzultzean ez.
+		        // Zergatia erabat ulertu ez badut ere horrela funtzionatzen du.
+		        if (geokokatzetik) { // hautatu-kokapena.html orrian momentuko kokapena ezartzeko eskatu du erabiltzaileak
+		        	$("#sarrera-irudia").attr("src", "../irudiak/herriak/" + results.rows.item(i).argazkia);
+		        	geokokatzetik = false;
+		        } else { // Aplikazioa ireki berri dugu eta index.html agertzen den lehen aldia da
+		        	$("#sarrera-irudia").attr("src", "irudiak/herriak/" + results.rows.item(i).argazkia);
+		        }
+        	}
 	        
 	        // Sarrerako orriko botoiak gaitu
 	        gaituSarrerakoBotoiak();
@@ -901,7 +918,7 @@ function bistaratuElementuakArrakasta(tx, results, zein, idKategoria) {
 }
 
 function bistaratuHerriaHerrialdea(tx, idHerria, izena, idTestua) {
-	tx.executeSql('SELECT lurraldeak.izena as izena, herriak.argazkia as argazkia, herriak.gmaps_zoom as gmaps_zoom FROM herriak, lurraldeak WHERE herriak.fk_lurraldea = lurraldeak.id AND herriak.id = ' + idHerria + '', [], function(tx, results) {bistaratuHerriaHerrialdeaArrakasta(tx, results, izena, idTestua)}, function(tx, err){errorCB(tx, err, "bistaratuHerriaHerrialdea-exec")});
+	tx.executeSql('SELECT lurraldeak.izena as izena, herriak.argazkia as argazkia, herriak.path_argazkia as path_argazkia, herriak.gmaps_zoom as gmaps_zoom FROM herriak, lurraldeak WHERE herriak.fk_lurraldea = lurraldeak.id AND herriak.id = ' + idHerria + '', [], function(tx, results) {bistaratuHerriaHerrialdeaArrakasta(tx, results, izena, idTestua)}, function(tx, err){errorCB(tx, err, "bistaratuHerriaHerrialdea-exec")});
 }
 
 function bistaratuHerriaHerrialdeaArrakasta(tx, results, izena, idTestua) {
@@ -916,7 +933,13 @@ function bistaratuHerriaHerrialdeaArrakasta(tx, results, izena, idTestua) {
         $("#" + idTestua).text(unekoHerria + "(" + unekoLurraldea + ")");
         
         // Herriari dagokion argazkia ere bistaratu
-        $("#sarrera-irudia").attr("src", "../irudiak/herriak/" + results.rows.item(i).argazkia);
+        // Zerbitzaritik deskargatutako irudi bat bada ez dago irudiak/herriak/ karpetan,
+        // sistema eragilearen arabera karpeta desberdin batean baizik. Karpeta hori zein den deviceReady gertaeran window.appRootDir.fullPath aldagaian gordetzen dugu.
+        if (results.rows.item(i).path_argazkia) {
+    		$("#sarrera-irudia").attr("src", window.appRootDir.fullPath + "/" + results.rows.item(i).argazkia);
+    	} else {
+    		$("#sarrera-irudia").attr("src", "../irudiak/herriak/" + results.rows.item(i).argazkia);
+    	}
         
         // Herriari dagokion gmaps-eko zoom-a gorde
         unekoHerriaZoom = results.rows.item(i).gmaps_zoom;
