@@ -339,7 +339,7 @@ function prestatuHerriakInteresaTaula(tx) {
 	tx.executeSql("INSERT INTO `herriak_interesa` (`id`, `izenburua`, `url`, `ordena`, `fk_herria`) VALUES(37, 'Hondarribia-Getaria: Kresalean hegaldiak', 'http://www.argia.com/argia-astekaria/2161/euskal-herria-ezagutuz-hondarribia-getaria-gipuzkoa', 3, 35);");
 	tx.executeSql("INSERT INTO `herriak_interesa` (`id`, `izenburua`, `url`, `ordena`, `fk_herria`) VALUES(38, 'Orio: Txalupa eliz atarian', 'http://www.argia.com/argia-astekaria/2159/euskal-herria-ezagutuz-orio-gipuzkoa', 3, 48);");
 	tx.executeSql("INSERT INTO `herriak_interesa` (`id`, `izenburua`, `url`, `ordena`, `fk_herria`) VALUES(39, 'Urnieta: Antzinako aztarnak Adarratik zintzilik', 'http://www.argia.com/argia-astekaria/2158/euskal-herria-ezagutuz-urnieta-gipuzkoa', 1, 153);");
-	tx.executeSql("INSERT INTO `herriak_interesa` (`id`, `izenburua`, `url`, `ordena`, `fk_herria`) VALUES(40, 'Lauhire: Mugarri zaharren oroitzapen galduetara, Nafarroa Behereak, Zuberoak eta Bearnok bat egiten duten lekua', 'http://www.argia.com/argia-astekaria/2157/euskal-herria-ezagutuz-lauhire-nafarroa-beherea-zuberoa-bearno', 1, 73);");
+	tx.executeSql("INSERT INTO `herriak_interesa` (`id`, `izenburua`, `url`, `ordena`, `fk_herria`) VALUES(40, 'Lauhire: Mugarri zaharren oroitzapen galduetara, Nafarroa Behereak, Zuberoak eta Bearnok bat egiten duten lekua', 'http://www.argia.com/argia-astekaria/2157/euskal-herria-ezagutuz-lauhire-nafarroa-beherea-zuberoa-bearno', 2, 73);");
 	tx.executeSql("INSERT INTO `herriak_interesa` (`id`, `izenburua`, `url`, `ordena`, `fk_herria`) VALUES(41, 'Erandio: Mundu asko herri bakarrean', 'http://www.argia.com/argia-astekaria/2156/euskal-herria-ezagutuz-erandio-bizkaia', 1, 152);");
 	tx.executeSql("INSERT INTO `herriak_interesa` (`id`, `izenburua`, `url`, `ordena`, `fk_herria`) VALUES(42, 'Iruñea-Altzuza: Hutserainoko bidea', 'http://www.argia.com/argia-astekaria/2151/irunea-altzuza-nafarroa', 2, 97);");
 	tx.executeSql("INSERT INTO `herriak_interesa` (`id`, `izenburua`, `url`, `ordena`, `fk_herria`) VALUES(43, 'Ultzama: Orgi, zentzumenen basoa ', 'http://www.argia.com/argia-astekaria/2149/ultzama-nafarroa', 1, 95);");
@@ -407,6 +407,7 @@ function prestatuHerriakInteresaTaula(tx) {
 	tx.executeSql("INSERT INTO `herriak_interesa` (`id`, `izenburua`, `url`, `ordena`, `fk_herria`) VALUES(105, 'Astondoko badiatik Ermua mendira', 'http://www.argia.com/argia-astekaria/2016/ihesi-astondoko-badiatik-ermua-mendira', 1, 129);");
 	tx.executeSql("INSERT INTO `herriak_interesa` (`id`, `izenburua`, `url`, `ordena`, `fk_herria`) VALUES(106, '\"Zerain: Paisaia kulturala auzolanean bizi\" erreportajea', 'http://www.argia.com/argia-astekaria/2248/zerain', 1, 184);");
 	tx.executeSql("INSERT INTO `herriak_interesa` (`id`, `izenburua`, `url`, `ordena`, `fk_herria`) VALUES(107, 'Arantzatik arantzara. Beñat Gaztelumendiren erreportajea.', 'http://www.argia.com/argia-astekaria/2050/ihesi-arantzatik-arantzara', 1, 207);");
+	tx.executeSql("INSERT INTO `herriak_interesa` (`id`, `izenburua`, `url`, `ordena`, `fk_herria`) VALUES(108, 'Donapaleu: Azken harresia (Erreportajea)', 'http://www.argia.com/argia-astekaria/2354/donapaleu-nafarroa-beherea', 1, 73);");
 }
 
 function prestatuHerriakElementuakTaula(tx) {
