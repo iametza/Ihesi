@@ -1103,12 +1103,13 @@
 		        });
 			});
 			
-			function deskargatuIrudia(fitxategiaren_izena, gorde_datubasean){
+			// window.appRootDir.fullPath desberdina da Android eta IOSen eta deviceReady gertaeran eskuratzen dugu.
+			function deskargatuIrudia(fitxategiaren_izena, zerbitzariko_bidea, gorde_datubasean){
 				var fileTransfer = new FileTransfer();
 				
 				fileTransfer.download(
-					"http://argia2012.ametza.com/ihesi/f/i/kanpokoak/" + fitxategiaren_izena,
-					//"http://argia.com/ihesi/f/i/kanpokoak/" + fitxategiaren_izena,
+					"http://argia2012.ametza.com/ihesi/" + zerbitzariko_bidea + fitxategiaren_izena,
+					//"http://argia.com/ihesi/" + zerbitzariko_bidea +  fitxategiaren_izena,
 					window.appRootDir.fullPath + "/" + fitxategiaren_izena,
 					function(theFile) {
 						console.log("download complete: " + theFile.toURI());

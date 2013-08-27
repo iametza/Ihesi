@@ -968,21 +968,25 @@ function eguneratuZerbitzaritik(tx, results, atzera_deia) {
 						tmp = res.taulak['herriak'];
 						
 						for (var i = 0; i < tmp.length; i++) {
+							// sortu-datu-base-lokala.js fitxategiko prestatuHerriakTaula funtzioa erabiliz datu-basera gehitutako herrien irudiaren_bidea eremua
+							// hutsik dago. Zerbitzaritik deskargatutakoak berriz ez dira hutsik egongo. Hala ere, irudia bistaratzerakoan ez dugu tmp[i]['irudiaren_bidea'] aldagaiaren balioa 
+							// erabiliko (adibidez f/i/kanpokoak/), deskargatutako irudiak sistema eragile bakoitzean dagokion lekuan gordeko baititugu: window.appRootDir.fullPath + "/" + fitxategiaren_izena
+							// window.appRootDir.fullPath desberdina da Android eta IOSen eta deviceReady gertaeran eskuratzen dugu.
 							console.log("INSERT INTO `herriak` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['alta_data'] + "', '" + tmp[i]['izena'] + "', '" + 
 								      tmp[i]['fk_lurraldea'] + "', '" + tmp[i]['testua'] + "', '" + tmp[i]['sorrera'] + "', '" + tmp[i]['biztanleak'] + "', '" +
 								      tmp[i]['gps'] + "', '" + tmp[i]['web'] + "', '" + tmp[i]['festak'] + "', '" + tmp[i]['argazkia'] + "', '" +
 								      tmp[i]['gmaps_lat'] + "', '" + tmp[i]['gmaps_lng'] + "', '" + tmp[i]['gmaps_zoom'] + "', '" + tmp[i]['gmaps_bista'] + "', '" +
-								      tmp[i]['gmaps_eskubia_lat'] + "', '" + tmp[i]['gmaps_eskubia_lng'] + "', '" + tmp[i]['gmaps_eskubia_zoom'] + "');");
+								      tmp[i]['gmaps_eskubia_lat'] + "', '" + tmp[i]['gmaps_eskubia_lng'] + "', '" + tmp[i]['gmaps_eskubia_zoom'] + "', '" + tmp[i]['path_argazkia'] + "');");
 							
 							tx.executeSql("INSERT INTO `herriak` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['alta_data'] + "', '" + tmp[i]['izena'] + "', '" + 
 								      tmp[i]['fk_lurraldea'] + "', '" + tmp[i]['testua'] + "', '" + tmp[i]['sorrera'] + "', '" + tmp[i]['biztanleak'] + "', '" +
 								      tmp[i]['gps'] + "', '" + tmp[i]['web'] + "', '" + tmp[i]['festak'] + "', '" + tmp[i]['argazkia'] + "', '" +
 								      tmp[i]['gmaps_lat'] + "', '" + tmp[i]['gmaps_lng'] + "', '" + tmp[i]['gmaps_zoom'] + "', '" + tmp[i]['gmaps_bista'] + "', '" +
-								      tmp[i]['gmaps_eskubia_lat'] + "', '" + tmp[i]['gmaps_eskubia_lng'] + "', '" + tmp[i]['gmaps_eskubia_zoom'] + "');");
+								      tmp[i]['gmaps_eskubia_lat'] + "', '" + tmp[i]['gmaps_eskubia_lng'] + "', '" + tmp[i]['gmaps_eskubia_zoom'] + "', '" + tmp[i]['path_argazkia'] + "');");
 							
 							// Dagokion irudia deskargatu behar da zerbitzaritik (baldin badago)
 							if (tmp[i]['argazkia']) {
-								deskargatuIrudia(tmp[i]['argazkia']); // Argazkiaren bidea gordetzeko eremu bat gehitu beharko zaio herriak taulari!!!!!!!!
+								deskargatuIrudia(tmp[i]['argazkia'], tmp[i]['path_argazkia']);
 							}
 						}
 						
@@ -995,6 +999,10 @@ function eguneratuZerbitzaritik(tx, results, atzera_deia) {
 						tmp = res.taulak['herriak_elementuak'];
 						
 						for (var i = 0; i < tmp.length; i++) {
+							// sortu-datu-base-lokala.js fitxategiko prestatuHerriakElementuakTaula funtzioa erabiliz datu-basera gehitutako elementuen irudiaren_bidea eremua
+							// hutsik dago. Zerbitzaritik deskargatutakoak berriz ez dira hutsik egongo. Hala ere, irudia bistaratzerakoan ez dugu tmp[i]['irudiaren_bidea'] aldagaiaren balioa 
+							// erabiliko (adibidez f/i/kanpokoak/), deskargatutako irudiak sistema eragile bakoitzean dagokion lekuan gordeko baititugu: window.appRootDir.fullPath + "/" + fitxategiaren_izena
+							// window.appRootDir.fullPath desberdina da Android eta IOSen eta deviceReady gertaeran eskuratzen dugu.
 							console.log("INSERT INTO `herriak_elementuak` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['alta_data'] + "', '" + tmp[i]['izena'] + "', '" + 
 								      tmp[i]['deskribapena'] + "', '" + tmp[i]['url'] + "', '" + tmp[i]['irudia'] + "', '" + tmp[i]['irudiaren_bidea'] + "', " +
 								      tmp[i]['gmaps_lat'] + ", " + tmp[i]['gmaps_lng'] + ", " + tmp[i]['gmaps_zoom'] + ", " + tmp[i]['fk_herria'] + ", " +
@@ -1013,7 +1021,7 @@ function eguneratuZerbitzaritik(tx, results, atzera_deia) {
 							
 							// Dagokion irudia deskargatu behar da zerbitzaritik (baldin badago)
 							if (tmp[i]['irudia']) {
-								deskargatuIrudia(tmp[i]['irudia']);
+								deskargatuIrudia(tmp[i]['irudia'], tmp[i]['irudiaren_bidea']);
 							}
 						}
 						
