@@ -350,7 +350,7 @@
 			
 			$(document).on("pageshow", "#hautatu-kokapena", function() {
 				// Zerrenda kargatu bitartean mezua erakutsi
-				bistaratuKargatzenMezua();
+				bistaratuKargatzenMezua("Kargatzen...");
 				
 				if (ihesidb) {
 					//$("#hautatu-kokapena-edukia-helbidea").text(unekoHelbidea);
@@ -385,7 +385,7 @@
 			
 			$(document).on("pageshow", "#informazioa-mapa", function() {
 				// Zerrenda kargatu bitartean mezua erakutsi
-				bistaratuKargatzenMezua();
+				bistaratuKargatzenMezua("Kargatzen...");
 				
 				// Pantaila, goiburua eta oinaren altuerak eskuratu
 				var pantailaAlt = $(window).height();
@@ -600,7 +600,7 @@
 			// Lekuaren xehetasunetatik bere kokapena erakusten duen mapa prestatu eta bistaratu
 			$(document).on("pageshow", "#xehetasunak-mapa", function(event, ui) {
 				// Mapa kargatu bitartean mezua erakutsi
-				bistaratuKargatzenMezua();
+				bistaratuKargatzenMezua("Kargatzen...");
 				
 				// Aukera lehenetsia hautatu: oinez
 				$('#xehetasunak-mapa-oinez').prop("checked",true).checkboxradio("refresh");
@@ -631,7 +631,7 @@
 			
 			$(document).on("change", "#xehetasunak-mapa-nolabidea input[type='radio']", function(event, ui) {
 				// Mapa kargatu bitartean mezua erakutsi
-				bistaratuKargatzenMezua();
+				bistaratuKargatzenMezua("Kargatzen...");
 				
 				if ($(this).val() == "xehetasunak-mapa-oinez") {
 					prestatuLekuaMapa("xehetasunak-bidea", idUnekoLekuaLongitudea, idUnekoLekuaLatitudea, "WALKING");
@@ -706,9 +706,9 @@
 				$("ui-ul-herriak").empty();
 			});
 			
-			function bistaratuKargatzenMezua() {
+			function bistaratuKargatzenMezua(testua) {
 				$.mobile.loadingMessageTextVisible = true;
-			    $.mobile.loadingMessage = "Kargatzen...";
+			    $.mobile.loadingMessage = testua;
 			    $.mobile.showPageLoadingMsg();
 			    // Ez ahaztu bukatutakoan ezkutatzea.
 			}
@@ -716,7 +716,7 @@
 			$(document).on("pageshow", "#lekuak-kategoriaka", function() {
 				// Zerrenda kargatu bitartean mezua erakutsi
 				// KONTUZ! pageinit gertaeran ez du funtzionatzen. Buruhauste ederrak eman dizkit honek.
-				bistaratuKargatzenMezua();
+				bistaratuKargatzenMezua("Kargatzen...");
 			    
 				// Uneko kategoria zein den bistaratu
 				$("#lekuak-kategoriaka-kategoriak .ui-btn-text").text(unekoKategoria);
@@ -760,7 +760,7 @@
 			
 			$(document).on("change", "#lekuak-kategoriaka-ordena input[type='radio']", function(event, ui) {
 				// Zerrenda kargatu bitartean mezua erakutsi
-				bistaratuKargatzenMezua();
+				bistaratuKargatzenMezua("Kargatzen...");
 				
 				if($(this).val() == "lekuak-kategoriaka-gertukoenak") {
 					lekuak_nola_erakutsi = "gertukoenak";
@@ -1200,6 +1200,9 @@
 				//var url = 'http://www.argia.com/ihesi/mugikorrak/proposamen_berria.php';
 				
 				var imageURI = $("#proposamen-berria-argazkia-aurrebista").attr("src");
+				
+				// Zerbitzarira informazioa bidali eta erantzunaren zain gaudela jakinarazi erabiltzaileari.
+				bistaratuKargatzenMezua("Itxaron mesedez...");
 				
 				// Erabiltzaileak irudi bat gehitu badu, phonegap-en ft.upload erabili
 				if (imageURI) {
