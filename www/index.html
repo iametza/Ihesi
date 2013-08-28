@@ -246,7 +246,7 @@
 				
 				// Proposatu botoia sakatutakoan egin beharrekoa:
 				// Saioa hasi gabe -> Saioa hasi edo erregistratzeko orria erakutsi.
-				if (unekoErabiltzailea != "" && unekoPasahitza != "") {
+				if (unekoErabiltzailea == undefined && unekoPasahitza == undefined) {
 					$("#sarrera-menua-proposatu").attr("href", "html/hasi-saioa.html");
 				} else {
 					// Saioa hasita dago -> Proposamena egiteko orria erakutsi.
