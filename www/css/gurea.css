@@ -294,11 +294,11 @@ input.password-field {
 
 /* --------------------------- honi-buruz orriaren hasiera --------------------------- */
 
-#honi-buruz-argia-div, #honi-buruz-iametza-div, #honi-buruz-ej-div, #honi-buruz-app-lizentzia-div, #honi-buruz-edukiak-lizentzia-div, #honi-buruz-webgunea-div, #honi-buruz-helbidea-div {
+#honi-buruz-argia-div, #honi-buruz-iametza-div, #honi-buruz-ej-div, #honi-buruz-app-lizentzia-div, #honi-buruz-edukiak-lizentzia-div, #honi-buruz-webgunea-div, #honi-buruz-helbidea-div, #honi-buruz-bertsioa-div {
 	text-align: center;
 }
 
-#honi-buruz-iametza-etiketa, #honi-buruz-ej-etiketa {
+#honi-buruz-iametza-etiketa, #honi-buruz-ej-etiketa, #honi-buruz-bertsioa-etiketa {
 	font-size: 1em;
 }
 
@@ -309,6 +309,13 @@ input.password-field {
 
 #honi-buruz-cc-botoia .ui-btn-text, #honi-buruz-gpl-botoia .ui-btn-text {
 	white-space: normal;
+}
+
+#honi-buruz-edukia ul #honi-buruz-bertsioa-li {
+	text-align: center;
+	padding-bottom: 5px;
+	margin-top: -15px;
+	padding-top: 5px;
 }
 
 /* --------------------------- honi-buruz orriaren amaiera --------------------------- */

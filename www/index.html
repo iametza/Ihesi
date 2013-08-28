@@ -22,6 +22,7 @@
 			var ihesidb;
 			
 			var ezarpenak = {
+				bertsioa: "1.2.1",
 				db_bertsioa: "2.0",
 				herriak_azken_alta_data: '2013-08-20 21:48:02',
 				herriak_elementuak_azken_alta_data: "2013-06-27 09:38:54",
@@ -785,6 +786,10 @@
 				// Argazkia ere egokitu
 				// Eta botoiak gaitu amaitzean
 				ihesidb.transaction(function(tx) {bistaratuHerriaHerrialdea(tx, idUnekoHerria, unekoHerria, "sarrera-irudia-testua-lerroa-span");}, function(tx, err){errorCB(tx, err, "bistaratuHerriaHerrialdea")});
+			});
+			
+			$(document).on("pageshow", "#honi-buruz", function() {
+				$('#honi-buruz-bertsioa-div').text(ezarpenak.bertsioa);
 			});
 			
 			$(document).on("pageinit", "#hasi-saioa", function(event, ui) {
