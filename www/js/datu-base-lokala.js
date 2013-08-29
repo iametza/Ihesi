@@ -1075,10 +1075,10 @@ function eguneratuZerbitzaritik(tx, results, atzera_deia) {
 							// Boto positiboa
 							if (tmp[i]['botoa'] == '1') {
 								console.log("UPDATE `herriak_elementuak_botoak` SET boto_pos = boto_pos + 1 WHERE id_elementua = " + tmp[i]['id_elementua'] + ";");
-								tx.executeSql("UPDATE `herriak_elementuak_botoak` SET boto_pos = boto_pos + 1 WHERE id_elementua = " + tmp['id_elementua'] + ";");
+								tx.executeSql("UPDATE `herriak_elementuak_botoak` SET boto_pos = boto_pos + 1 WHERE id_elementua = " + tmp[i]['id_elementua'] + ";");
 							} else if (tmp[i]['botoa'] == '-1') {
 								console.log("UPDATE `herriak_elementuak_botoak` SET boto_neg = boto_neg + 1 WHERE id_elementua = " + tmp[i]['id_elementua'] + ";");
-								tx.executeSql("UPDATE `herriak_elementuak_botoak` SET boto_neg = boto_neg + 1 WHERE id_elementua = " + tmp['id_elementua'] + ";");
+								tx.executeSql("UPDATE `herriak_elementuak_botoak` SET boto_neg = boto_neg + 1 WHERE id_elementua = " + tmp[i]['id_elementua'] + ";");
 							}
 						}
 						
