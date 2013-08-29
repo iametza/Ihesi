@@ -1203,10 +1203,7 @@ function gordeBotoak(botoak, herriak_elementuak_botoak_azken_id) {
 			for (var i = 0; i < botoak.length; i++) {
 				// Boto positiboa
 				if (botoak[i]['botoa'] == '1') {
-					console.log("res.azken_botoak[i]['botoa']: " + botoak[i]['botoa']);
-					console.log("res.azken_botoak[i]['id_elementua']: " + botoak[i]['id_elementua']);
 					console.log("UPDATE `herriak_elementuak_botoak` SET boto_pos = boto_pos + 1 WHERE id_elementua = " + botoak[i]['id_elementua'] + ";");
-					console.log(tx);
 					tx.executeSql("UPDATE `herriak_elementuak_botoak` SET boto_pos = boto_pos + 1 WHERE id_elementua = " + botoak[i]['id_elementua'] + ";");
 				} else if (botoak[i]['botoa'] == '-1') {
 					console.log("UPDATE `herriak_elementuak_botoak` SET boto_neg = boto_neg + 1 WHERE id_elementua = " + botoak[i]['id_elementua'] + ";");
