@@ -18,3 +18,12 @@ function eskuratuIrudiarenAltueraZabalera(bidea) {
     //alert("altuera: " + t.height + " - zabalera: " + t.width);
     //return t.width;
 }
+
+// html entitateak deskodetzen ditu.
+// Adibidea:
+// htmlDecode("&lt;img src='myimage.jpg'&gt;"); -> "<img src='myimage.jpg'>"
+function htmlDecode(input){
+  var e = document.createElement('div');
+  e.innerHTML = input;
+  return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+}

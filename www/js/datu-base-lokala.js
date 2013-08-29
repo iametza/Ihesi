@@ -1026,13 +1026,13 @@ function eguneratuZerbitzaritik(tx, results, atzera_deia) {
 							// hutsik dago. Zerbitzaritik deskargatutakoak berriz ez dira hutsik egongo. Hala ere, irudia bistaratzerakoan ez dugu tmp[i]['irudiaren_bidea'] aldagaiaren balioa 
 							// erabiliko (adibidez f/i/kanpokoak/), deskargatutako irudiak sistema eragile bakoitzean dagokion lekuan gordeko baititugu: window.appRootDir.fullPath + "/" + fitxategiaren_izena
 							// window.appRootDir.fullPath desberdina da Android eta IOSen eta deviceReady gertaeran eskuratzen dugu.
-							console.log("INSERT INTO `herriak_elementuak` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['alta_data'] + "', '" + tmp[i]['izena'] + "', '" + 
-								      tmp[i]['deskribapena'] + "', '" + tmp[i]['url'] + "', '" + tmp[i]['irudia'] + "', '" + tmp[i]['irudiaren_bidea'] + "', " +
+							console.log("INSERT INTO `herriak_elementuak` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['alta_data'] + "', '" + htmlDecode(tmp[i]['izena']) + "', '" + 
+									  htmlDecode(tmp[i]['deskribapena']) + "', '" + tmp[i]['url'] + "', '" + tmp[i]['irudia'] + "', '" + tmp[i]['irudiaren_bidea'] + "', " +
 								      tmp[i]['gmaps_lat'] + ", " + tmp[i]['gmaps_lng'] + ", " + tmp[i]['gmaps_zoom'] + ", " + tmp[i]['fk_herria'] + ", " +
 								      tmp[i]['fk_azpiatala'] + ", '" + tmp[i]['erabiltzailea'] + "');");
 							
-							tx.executeSql("INSERT INTO `herriak_elementuak` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['alta_data'] + "', '" + tmp[i]['izena'] + "', '" + 
-								      tmp[i]['deskribapena'] + "', '" + tmp[i]['url'] + "', '" + tmp[i]['irudia'] + "', '" + tmp[i]['irudiaren_bidea'] + "', " +
+							tx.executeSql("INSERT INTO `herriak_elementuak` VALUES(" + tmp[i]['id'] + ", '" + tmp[i]['alta_data'] + "', '" + htmlDecode(tmp[i]['izena']) + "', '" + 
+									  htmlDecode(tmp[i]['deskribapena']) + "', '" + tmp[i]['url'] + "', '" + tmp[i]['irudia'] + "', '" + tmp[i]['irudiaren_bidea'] + "', " +
 								      tmp[i]['gmaps_lat'] + ", " + tmp[i]['gmaps_lng'] + ", " + tmp[i]['gmaps_zoom'] + ", " + tmp[i]['fk_herria'] + ", " +
 								      tmp[i]['fk_azpiatala'] + ", '" + tmp[i]['erabiltzailea'] + "');");
 							
