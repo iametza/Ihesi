@@ -858,7 +858,7 @@ function bistaratuElementuakArrakasta(tx, results, zein, idKategoria) {
 		        	lekuak[i].distKM = (Math.round(lekuak[i].distKM * 100)/100) + " km";
 		        }
 	    	}
-	        console.log("ID = " + lekuak[i].id + " Elementua = " + lekuak[i].izena + " Distantzia = " + lekuak[i].distantzia + " KM = " + lekuak[i].distKM);
+	        //console.log("ID = " + lekuak[i].id + " Elementua = " + lekuak[i].izena + " Distantzia = " + lekuak[i].distantzia + " KM = " + lekuak[i].distKM);
 	
 	        if (lekuak[i].puntuazioa >= 0) {
 	        	lekuak[i].puntuazioa = "+" + lekuak[i].puntuazioa; 
