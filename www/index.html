@@ -1366,85 +1366,10 @@
 			
 			// botoa: 'positiboa', 'negatiboa' (edo 'kendu' -> oraingoz ez)
 			function bozkatu(botoa) {
-				// Saioa hasita dago -> Zerbitzarira bidali botoa.
-				var url = 'http://argia2012.ametza.com/ihesi/mugikorrak/bozkatu.php';
-				//var url = 'http://www.argia.com/ihesi/mugikorrak/bozkatu.php';
-				
-				$.ajax({
-		            type: 'GET',
-		            url: url,
-		            contentType: "application/json",
-		            dataType: 'jsonp',
-		            data: {'erab': unekoErabiltzailea, 'pasa': unekoPasahitza, 'herria': unekoLekuaIdHerria, 'elementua': idUnekoLekua, 'botoa': botoa},
-		            crossDomain: true,
-		            success: function(res) {
-		                //alert("Arrakasta: " + res.arrakasta +
-		                //  	  "\nMezua: " + res.mezua);
-		                
-						navigator.notification.alert(
-							res.mezua, // mezua
-							undefined,         							// atzera-deia
-							'Oharra',            						// izenburua
-							'Ados'                 	 					// botoiaren testua
-						);
-						
-		                if (res.arrakasta == false) {
-		                	// Saioa hasi gabe edo erabiltzaile-izena edota pasahitza okerrak dira
-		                	if (res.mezua == "Sartutako erabiltzaile-izena edo pasahitza okerra da.") {
-		                		// Saioa hasteko orrira nondik goazen gorde eta orri hori bistaratu
-		                		nondik_nator = "xehetasunak";
-		                		$.mobile.changePage("hasi-saioa.html");
-		                	}
-		                } else if (res.arrakasta == true) {
-		                	// Botoa behar bezala gehitu denez -> erabiltzailearen_botoak objektuan dagokion arrayan gorde eta bistaratu
-		                	if (botoa == "positiboa") {
-		                		// Arrayan gorde
-		                		erabiltzailearen_botoak.positiboak.push(idUnekoLekua);
-		                		
-		                		// Geziaren atzeko planoaren kolorea aldatu
-		                		$("#xehetasunak-bozka-pos .ui-icon").css({'background-color': 'rgba(255, 0, 0, 0.55)'});
-		                		
-		                		// Botoian agertzen den boto-kopurua eguneratu
-		                		$("#xehetasunak-bozka-pos .ui-btn-text").text(parseInt($("#xehetasunak-bozka-pos .ui-btn-text").text()) + 1);
-		                		
-		                		// Aldaketa datu-basean gorde
-		                		ihesidb.transaction(function(tx) {gehituBotoa(tx, "positiboa", idUnekoLekua)});
-		                	} else if (botoa == "negatiboa") {
-		                		// Arrayan gorde
-		                		erabiltzailearen_botoak.negatiboak.push(idUnekoLekua);
-		                		
-		                		// Geziaren atzeko planoaren kolorea aldatu
-		                		$("#xehetasunak-bozka-neg .ui-icon").css({'background-color': 'rgba(255, 0, 0, 0.55)'});
-		                		
-		                		// Botoian agertzen den boto-kopurua eguneratu
-		                		$("#xehetasunak-bozka-neg .ui-btn-text").text(parseInt($("#xehetasunak-bozka-neg .ui-btn-text").text()) + 1);
-		                		
-		                		// Aldaketa datu-basean gorde
-		                		ihesidb.transaction(function(tx) {gehituBotoa(tx, "negatiboa", idUnekoLekua)});
-		                	} else {
-								navigator.notification.alert(
-									"Errorea: Baliogabeko botoa. Mesedez jakinarazi garatzaileei.", // mezua
-									undefined,         							// atzera-deia
-									'Errorea',            						// izenburua
-									'Ados'                 	 					// botoiaren testua
-								);
-		                	}
-		                } else {
-		                	navigator.notification.alert(
-								"Errorea: Zerbitzariak itzulitako erantzuna baliogabea da. Mesedez jakinarazi garatzaileei.", // mezua
-								undefined,         							// atzera-deia
-								'Errorea',            						// izenburua
-								'Ados'                 	 					// botoiaren testua
-							);
-		                }
-		            },
-		            error: function(e) {
-		                console.log("Errorea: " + e.message);
-		            },
-		            complete: function(data) {
-		                console.log("Osatuta: " + data.message);
-		            }
-		        });
+				// Aldaketa datu-basean gorde
+        		ihesidb.transaction(function(tx) {bozkatuEtaEguneratuBotuakZerbitzaritik(tx, botoa)},
+        			function(tx, err){errorCB(tx, err, "bozkatuEtaEguneratuBotuakZerbitzaritik-exec")}
+		        );	
 			}
 			
 			function bozkatuPos() {

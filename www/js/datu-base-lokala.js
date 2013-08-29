@@ -1111,6 +1111,116 @@ function eguneratuZerbitzaritik(tx, results, atzera_deia) {
 	});
 }
 
+function bozkatuEtaEguneratuBotuakZerbitzaritik(tx, botoa, atzera_deia) {
+	tx.executeSql('SELECT herriak_elementuak_botoak_azken_id FROM ezarpenak', [], function(tx, results){bozkatuEtaEguneratuBotuakZerbitzaritikArrakasta(tx, results, botoa, atzera_deia)}, function(tx, err){errorCB(tx, err, "bozkatuEtaEguneratuBotuakZerbitzaritik-exec")});
+}
+
+function bozkatuEtaEguneratuBotuakZerbitzaritikArrakasta(tx, results, botoa, atzera_deia) {
+	var herriak_elementuak_botoak_azken_id = results.rows.item(0).herriak_elementuak_botoak_azken_id;
+	
+	console.log("Botatutako azken id-a: " + herriak_elementuak_botoak_azken_id);
+	
+	$.ajax({
+		type: 'GET',
+		url: 'http://argia2012.ametza.com/ihesi/mugikorrak/bozkatu.php',
+		//url: 'http://www.argia.com/ihesi/mugikorrak/bozkatu.php',
+		contentType: "application/json",
+		dataType: 'jsonp',
+		data: {'erab': unekoErabiltzailea, 'pasa': unekoPasahitza, 'herria': unekoLekuaIdHerria, 'elementua': idUnekoLekua, 'botoa': botoa, 'herriak_elementuak_botoak_azken_id': herriak_elementuak_botoak_azken_id},
+		crossDomain: true,
+		success: function(res) {
+			navigator.notification.alert(
+				res.mezua, // mezua
+				undefined,         							// atzera-deia
+				'Oharra',            						// izenburua
+				'Ados'                 	 					// botoiaren testua
+			);
+			
+			if (res.arrakasta == false) {
+            	// Saioa hasi gabe edo erabiltzaile-izena edota pasahitza okerrak dira
+            	if (res.mezua == "Sartutako erabiltzaile-izena edo pasahitza okerra da.") {
+            		// Saioa hasteko orrira nondik goazen gorde eta orri hori bistaratu
+            		nondik_nator = "xehetasunak";
+            		$.mobile.changePage("hasi-saioa.html");
+            	}
+            } else if (res.arrakasta == true) {
+            	// Botoa behar bezala gehitu denez -> erabiltzailearen_botoak objektuan dagokion arrayan gorde eta bistaratu
+            	if (botoa == "positiboa") {
+            		// Arrayan gorde
+            		erabiltzailearen_botoak.positiboak.push(idUnekoLekua);
+            		
+            		// Geziaren atzeko planoaren kolorea aldatu
+            		$("#xehetasunak-bozka-pos .ui-icon").css({'background-color': 'rgba(255, 0, 0, 0.55)'});
+            		
+            		// Botoian agertzen den boto-kopurua eguneratu
+            		$("#xehetasunak-bozka-pos .ui-btn-text").text(parseInt($("#xehetasunak-bozka-pos .ui-btn-text").text()) + 1);
+            	} else if (botoa == "negatiboa") {
+            		// Arrayan gorde
+            		erabiltzailearen_botoak.negatiboak.push(idUnekoLekua);
+            		
+            		// Geziaren atzeko planoaren kolorea aldatu
+            		$("#xehetasunak-bozka-neg .ui-icon").css({'background-color': 'rgba(255, 0, 0, 0.55)'});
+            		
+            		// Botoian agertzen den boto-kopurua eguneratu
+            		$("#xehetasunak-bozka-neg .ui-btn-text").text(parseInt($("#xehetasunak-bozka-neg .ui-btn-text").text()) + 1);
+            	}
+            	
+            	console.log("res.azken_botoak.length: " + res.azken_botoak.length);
+            	
+            	gordeBotoak(res.azken_botoak, res.herriak_elementuak_botoak_azken_id);
+					
+				// Atzera deirik balego exekutatu.
+				// Adibidez, proposamen berri bat egin ondoren egindako proposamena erakusteko.
+				if (atzera_deia) {
+					atzera_deia();
+				}
+            } else {
+            	navigator.notification.alert(
+					"Errorea: Zerbitzariak itzulitako erantzuna baliogabea da. Mesedez jakinarazi garatzaileei.", // mezua
+					undefined,         							// atzera-deia
+					'Errorea',            						// izenburua
+					'Ados'                 	 					// botoiaren testua
+				);
+            }
+		},
+		error: function(e) {
+			// Erabiltzaileari jakinarazi errore bat gertatu dela.
+			/*navigator.notification.alert(
+				'Errore bat gertatu da zerbitzariarekin konektatzean.', // mezua
+				undefined,         							// atzera-deia
+				'Oharra',            						// izenburua
+				'Ados'                 	 					// botoiaren testua
+			);*/
+			console.log("Errorea: " + e.message);
+		}
+	});
+}
+
+function gordeBotoak(botoak, herriak_elementuak_botoak_azken_id) {
+	ihesidb.transaction(
+		function(tx) {
+			// herriak_elementuak_botoak taulan eman diren aldaketak datu-base lokalean txertatuko ditugu
+			for (var i = 0; i < botoak.length; i++) {
+				// Boto positiboa
+				if (botoak[i]['botoa'] == '1') {
+					console.log("res.azken_botoak[i]['botoa']: " + botoak[i]['botoa']);
+					console.log("res.azken_botoak[i]['id_elementua']: " + botoak[i]['id_elementua']);
+					console.log("UPDATE `herriak_elementuak_botoak` SET boto_pos = boto_pos + 1 WHERE id_elementua = " + botoak[i]['id_elementua'] + ";");
+					console.log(tx);
+					tx.executeSql("UPDATE `herriak_elementuak_botoak` SET boto_pos = boto_pos + 1 WHERE id_elementua = " + botoak[i]['id_elementua'] + ";");
+				} else if (res.azken_botoak[i]['botoa'] == '-1') {
+					console.log("UPDATE `herriak_elementuak_botoak` SET boto_neg = boto_neg + 1 WHERE id_elementua = " + botoak[i]['id_elementua'] + ";");
+					tx.executeSql("UPDATE `herriak_elementuak_botoak` SET boto_neg = boto_neg + 1 WHERE id_elementua = " + botoak[i]['id_elementua'] + ";");
+				}
+			}
+			
+			console.log("UPDATE ezarpenak SET herriak_elementuak_botoak_azken_id = '" + herriak_elementuak_botoak_azken_id + "' WHERE id = 1;");
+			tx.executeSql("UPDATE ezarpenak SET herriak_elementuak_botoak_azken_id = '" + herriak_elementuak_botoak_azken_id + "' WHERE id = 1;");
+		},
+		function(tx, err){errorCB(tx, err, "gordeBotoak-exec")}
+	)
+}
+
 // Transakzioan errore bat gertatzean exekutatzen da
 function errorCB(tx, err, deitzailea) {
     console.log("Errorea SQLa prozesatzean (" + deitzailea + "): " + err.code + ": " + err.message);
