@@ -168,6 +168,16 @@
 				// Posizioa eskuratu bitartean sarrerako orriko botoiak desgaitu behar dira
 				desgaituSarrerakoBotoiak();
 				
+				// Datu-base lokala eguneratu behar dugun egiaztatuko dugu.
+				// Denbora-muga bat igaro ondoren exekutatuko dugu, bestela arazoak ematen baitzituen (Sarrerako orriko irudia ez zen kargatzen Androidetan).
+				// Gainera honela denbora ematen diogu eguneratuDB funtzioari exekutatzeko datu-basearen bertsio zahar bat badago edo datu-baserik ez badago.
+				var eguneraketarenAtzerapena = window.setTimeout(function() {
+				        ihesidb.transaction(function(tx){eguneratuBeharOteDa(tx)},
+				        					function(tx, err){errorCB(tx, err, "eguneratuBeharOteDa-exec")}
+				        );
+					}, 10000
+				)
+				
 			    function onSuccess(position) {
 			    	// Erabiltzailearen uneko posizioaren longitudea eta latitudea
 			    	unekoLatitudea = position.coords.latitude;
@@ -1243,8 +1253,8 @@
 							 	
 								// Datu-basea eguneratu behar da bidalitako proposamena eta gainerako proposamen berriak txertatzeko.
 								// Bukatzean proposamen berriaren xehetasunak erakutsi
-						        ihesidb.transaction(function(tx){eguneratuProposamenBerriarenOndoren(tx, function() {bistaratuGomendioa(erantzuna.id_gomendioa, lat, lng)})},
-						        					function(tx, err){errorCB(tx, err, "eguneratuProposamenBerriarenOndoren-exec")}
+						        ihesidb.transaction(function(tx){eguneratuBeharOteDa(tx, function() {bistaratuGomendioa(erantzuna.id_gomendioa, lat, lng)})},
+						        					function(tx, err){errorCB(tx, err, "eguneratuBeharOteDa-exec")}
 						        );
 							}
 							
@@ -1349,8 +1359,8 @@
 							    
 								// Datu-basea eguneratu behar da bidalitako proposamena eta gainerako proposamen berriak txertatzeko.
 								// Bukatzean proposamen berriaren xehetasunak erakutsi
-						        ihesidb.transaction(function(tx){eguneratuProposamenBerriarenOndoren(tx, function() {bistaratuGomendioa(res.id_gomendioa, lat, lng)})},
-						        					function(tx, err){errorCB(tx, err, "eguneratuProposamenBerriarenOndoren-exec")}
+						        ihesidb.transaction(function(tx){eguneratuBeharOteDa(tx, function() {bistaratuGomendioa(res.id_gomendioa, lat, lng)})},
+						        					function(tx, err){errorCB(tx, err, "eguneratuBeharOteDa-exec")}
 						        );
 			                }
 			            },

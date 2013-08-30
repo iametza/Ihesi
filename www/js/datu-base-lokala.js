@@ -5,16 +5,12 @@ function eskuratuBertsioaDB(tx) {
 
 function eskuratuBertsioaDBarrakasta(tx, results) {
 	// Datu-basea dagoeneko existitzen da. Argitaratutako azken bertsioa den egiaztatuko dugu. 
-	// Aplikazioak dagoeneko azken bertsioa erabiltzen badu, zerbitzarira konektatuko gara eguneraketarik badagoen ikusteko.
-	if (results.rows.item(0).db_bertsioa == ezarpenak.db_bertsioa) {
-		console.log("Azken bertsioa");
-		
-		// Zerbitzarira konektatu eguneraketarik badagoen egiaztatzeko.
-		eguneratuZerbitzaritik(tx, results);
-		
-	} else { // Datu-basearen bertsio zahar bat erabiltzen ari bada berriz, datu-baseko taulak ezabatu eta berriz sortuko ditugu.
+	// Datu-basearen bertsio zahar bat erabiltzen ari bada, datu-baseko taulak ezabatu eta berriz sortuko ditugu.
+	if (results.rows.item(0).db_bertsioa != ezarpenak.db_bertsioa) {
 		console.log("Bertsio zaharra");
 		eguneratuDB(tx);
+	} else {
+		console.log("Azken bertsioa");
 	}
 }
 
@@ -949,7 +945,7 @@ function bistaratuHerriaHerrialdeaArrakasta(tx, results, izena, idTestua) {
     }
 }
 
-function eguneratuProposamenBerriarenOndoren(tx, atzera_deia) {
+function eguneratuBeharOteDa(tx, atzera_deia) {
 	tx.executeSql('SELECT herriak_azken_alta_data, herriak_elementuak_azken_alta_data, herriak_interesa_azken_id, herriak_elementuak_botoak_azken_id ' +
 		      'FROM ezarpenak', [], function(tx, results){eguneratuZerbitzaritik(tx,results, atzera_deia)}, function(tx, err){errorCB(tx, err, "eguneratuProposamenBerriarenOndoren-exec")});
 }
