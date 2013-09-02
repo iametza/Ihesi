@@ -100,7 +100,7 @@ function kenduArgazkia() {
 	//alert("Argazkia kentzen");
 	
 	// Argazkiaren src-a hustu eta ezkutatu
-	$('#proposamen-berria-argazkia-aurrebista').src = '';
+	$('#proposamen-berria-argazkia-aurrebista').attr("src", "");
 	$('#proposamen-berria-argazkia-aurrebista').hide();
 	
 	// Argazkirik ez dagoela dioen mezua erakutsi
