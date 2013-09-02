@@ -966,8 +966,8 @@ function eguneratuZerbitzaritik(tx, results, atzera_deia) {
 	
 	$.ajax({
 		type: 'GET',
-		url: 'http://argia2012.ametza.com/ihesi/mugikorrak/eguneraketak.php',
-		//url: 'http://argia.com/ihesi/mugikorrak/eguneraketak.php',
+		//url: 'http://argia2012.ametza.com/ihesi/mugikorrak/eguneraketak.php',
+		url: 'http://argia.com/ihesi/mugikorrak/eguneraketak.php',
 		contentType: "application/json",
 		dataType: 'jsonp',
 		data: {'herriak_azken_alta_data': herriak_azken_alta_data, 'herriak_elementuak_azken_alta_data': herriak_elementuak_azken_alta_data, 'herriak_interesa_azken_id': herriak_interesa_azken_id, 'herriak_elementuak_botoak_azken_id': herriak_elementuak_botoak_azken_id},
@@ -1118,8 +1118,8 @@ function bozkatuEtaEguneratuBotuakZerbitzaritikArrakasta(tx, results, botoa, atz
 	
 	$.ajax({
 		type: 'GET',
-		url: 'http://argia2012.ametza.com/ihesi/mugikorrak/bozkatu.php',
-		//url: 'http://www.argia.com/ihesi/mugikorrak/bozkatu.php',
+		//url: 'http://argia2012.ametza.com/ihesi/mugikorrak/bozkatu.php',
+		url: 'http://www.argia.com/ihesi/mugikorrak/bozkatu.php',
 		contentType: "application/json",
 		dataType: 'jsonp',
 		data: {'erab': unekoErabiltzailea, 'pasa': unekoPasahitza, 'herria': unekoLekuaIdHerria, 'elementua': idUnekoLekua, 'botoa': botoa, 'herriak_elementuak_botoak_azken_id': herriak_elementuak_botoak_azken_id},
