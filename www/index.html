@@ -855,8 +855,8 @@
 				// prevent default posting of form
 			    event.preventDefault();
 				
-				var url = 'http://argia2012.ametza.com/ihesi/mugikorrak/pasahitza_ahaztuta.php';
-				//var url = 'http://www.argia.com/ihesi/mugikorrak/pasahitza_ahaztuta.php';
+				//var url = 'http://argia2012.ametza.com/ihesi/mugikorrak/pasahitza_ahaztuta.php';
+				var url = 'http://www.argia.com/ihesi/mugikorrak/pasahitza_ahaztuta.php';
 				
 				var e_posta = $.trim($('#pasahitza-ahaztuta-form-e-posta').val());
 				
@@ -935,8 +935,8 @@
 					return false;
 				}
 				
-				var url = 'http://argia2012.ametza.com/ihesi/mugikorrak/login.php';
-				//var url = 'http://www.argia.com/ihesi/mugikorrak/login.php';
+				//var url = 'http://argia2012.ametza.com/ihesi/mugikorrak/login.php';
+				var url = 'http://www.argia.com/ihesi/mugikorrak/login.php';
 				
 				$.ajax({
 		            type: 'GET',
@@ -996,8 +996,8 @@
 				// prevent default posting of form
 			    event.preventDefault();
 				
-				var url = 'http://argia2012.ametza.com/ihesi/mugikorrak/erabiltzaile_berria.php';
-				//var url = 'http://www.argia.com/ihesi/mugikorrak/erabiltzaile_berria.php';
+				//var url = 'http://argia2012.ametza.com/ihesi/mugikorrak/erabiltzaile_berria.php';
+				var url = 'http://www.argia.com/ihesi/mugikorrak/erabiltzaile_berria.php';
 				
 				var izena = $.trim($("#erabiltzaile-berria-izena").val());
 				var abizenak = $.trim($("#erabiltzaile-berria-abizenak").val());
@@ -1123,8 +1123,8 @@
 				var fileTransfer = new FileTransfer();
 				
 				fileTransfer.download(
-					"http://argia2012.ametza.com/ihesi/" + zerbitzariko_bidea + fitxategiaren_izena,
-					//"http://argia.com/ihesi/" + zerbitzariko_bidea +  fitxategiaren_izena,
+					//"http://argia2012.ametza.com/ihesi/" + zerbitzariko_bidea + fitxategiaren_izena,
+					"http://argia.com/ihesi/" + zerbitzariko_bidea +  fitxategiaren_izena,
 					window.appRootDir.fullPath + "/" + fitxategiaren_izena,
 					function(theFile) {
 						console.log("download complete: " + theFile.toURI());
@@ -1238,8 +1238,8 @@
 					return false;
 				}
 				
-				var url = 'http://argia2012.ametza.com/ihesi/mugikorrak/proposamen_berria.php';
-				//var url = 'http://www.argia.com/ihesi/mugikorrak/proposamen_berria.php';
+				//var url = 'http://argia2012.ametza.com/ihesi/mugikorrak/proposamen_berria.php';
+				var url = 'http://www.argia.com/ihesi/mugikorrak/proposamen_berria.php';
 				
 				var imageURI = $("#proposamen-berria-argazkia-aurrebista").attr("src");
 				
@@ -1343,8 +1343,8 @@
 				} else { // Erabiltzaileak irudirik ez badu gehitu jquery.ajax erabili
 					//alert("Ez duzu irudirik gehitu");
 					
-					url = 'http://argia2012.ametza.com/ihesi/mugikorrak/proposamen_berria_irudirik_gabe.php';
-					//url = 'http://www.argia.com/ihesi/mugikorrak/proposamen_berria_irudirik_gabe.php';
+					//url = 'http://argia2012.ametza.com/ihesi/mugikorrak/proposamen_berria_irudirik_gabe.php';
+					url = 'http://www.argia.com/ihesi/mugikorrak/proposamen_berria_irudirik_gabe.php';
 					
 					var datuak = {'erab': unekoErabiltzailea, 'pasa': unekoPasahitza, 'izena': izena, 'deskribapena': deskribapena, 'herria': herria, 'atala': atala, 'webgunea': webgunea, 'legeoharra': lege_oharra};
 					
