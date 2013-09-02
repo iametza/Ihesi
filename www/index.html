@@ -1147,6 +1147,9 @@
 				// prevent default posting of form
 			    event.preventDefault();
 			    
+				// Botoia desgaituko dugu, erabiltzaileak behin baino gehiagotan sakatzea galarazteko.
+				$("#proposatu-form").addClass('ui-disabled');
+				
 			    var lurraldea = $("#proposamen-berria-lurraldea").val();
 				var herria = $("#proposamen-berria-herria").val();
 				var atala =$("#proposamen-berria-atala").val();
@@ -1163,6 +1166,10 @@
 						'Ados'                 	 					// botoiaren testua
 					);
 					$("#proposamen-berria-lurraldea").focus();
+					
+					// Botoia berriz ere gaitu
+					$("#proposatu-form").removeClass('ui-disabled');
+					
 					return false;
 				} else if (herria == "") {
 					navigator.notification.alert(
@@ -1172,6 +1179,10 @@
 							'Ados'                 	 					// botoiaren testua
 						);
 					$("#proposamen-berria-herria").focus();
+					
+					// Botoia berriz ere gaitu
+					$("#proposatu-form").removeClass('ui-disabled');
+					
 					return false;
 				} else if (atala == "") {
 					navigator.notification.alert(
@@ -1181,6 +1192,10 @@
 							'Ados'                 	 					// botoiaren testua
 						);
 					$("#proposamen-berria-atala").focus();
+					
+					// Botoia berriz ere gaitu
+					$("#proposatu-form").removeClass('ui-disabled');
+					
 					return false;
 				} else if (izena == "") {
 					navigator.notification.alert(
@@ -1190,6 +1205,10 @@
 							'Ados'                 	 					// botoiaren testua
 						);
 					$("#proposamen-berria-izena").focus();
+					
+					// Botoia berriz ere gaitu
+					$("#proposatu-form").removeClass('ui-disabled');
+					
 					return false;
 				} else if (deskribapena == "") {
 					navigator.notification.alert(
@@ -1199,6 +1218,10 @@
 							'Ados'                 	 					// botoiaren testua
 						);
 					$("#proposamen-berria-deskribapena").focus();
+					
+					// Botoia berriz ere gaitu
+					$("#proposatu-form").removeClass('ui-disabled');
+					
 					return false;
 				} else if (lege_oharra != 1) {
 					navigator.notification.alert(
@@ -1208,6 +1231,10 @@
 							'Ados'                 	 					// botoiaren testua
 						);
 					$("#proposamen-berria-lege-oharra").focus();
+					
+					// Botoia berriz ere gaitu
+					$("#proposatu-form").removeClass('ui-disabled');
+					
 					return false;
 				}
 				
@@ -1251,6 +1278,9 @@
 									zoom_maila = proposamen_berria.zoom;
 								}
 							 	
+								// Botoia berriz ere gaitu
+								$("#proposatu-form").removeClass('ui-disabled');
+								
 								// Datu-basea eguneratu behar da bidalitako proposamena eta gainerako proposamen berriak txertatzeko.
 								// Bukatzean proposamen berriaren xehetasunak erakutsi
 						        ihesidb.transaction(function(tx){eguneratuBeharOteDa(tx, function() {bistaratuGomendioa(erantzuna.id_gomendioa, lat, lng)})},
@@ -1267,6 +1297,9 @@
 								);
 							    console.log("upload error source " + error.source);
 							    console.log("upload error target " + error.target);
+							    
+								// Botoia berriz ere gaitu
+							    $("#proposatu-form").removeClass('ui-disabled');
 							}
 			
 							var options = new FileUploadOptions();
@@ -1345,6 +1378,10 @@
 			                	if (res.mezua == "Sartutako erabiltzaile-izena edo pasahitza okerra da.") {
 			                		$.mobile.changePage("hasi-saioa.html");
 			                	}
+			                	
+								// Botoia berriz ere gaitu
+			                	$("#proposatu-form").removeClass('ui-disabled');
+								
 			                } else if (res.arrakasta == true) {
 			                	var lng = 0.0;
 							    var lat = 0.0;
@@ -1357,6 +1394,9 @@
 									zoom_maila = proposamen_berria.zoom;
 								}
 							    
+								// Botoia berriz ere gaitu
+								$("#proposatu-form").removeClass('ui-disabled');
+								
 								// Datu-basea eguneratu behar da bidalitako proposamena eta gainerako proposamen berriak txertatzeko.
 								// Bukatzean proposamen berriaren xehetasunak erakutsi
 						        ihesidb.transaction(function(tx){eguneratuBeharOteDa(tx, function() {bistaratuGomendioa(res.id_gomendioa, lat, lng)})},
@@ -1366,6 +1406,9 @@
 			            },
 			            error: function(e) {
 			                console.log("Errorea: " + e.message);
+			                
+							// Botoia berriz ere gaitu
+							$("#proposatu-form").removeClass('ui-disabled');
 			            },
 			            complete: function(data) {
 			                console.log("Osatuta: " + data.message);
