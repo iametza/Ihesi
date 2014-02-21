@@ -1,0 +1,374 @@
+/* --------------------------- index.html orriaren estiloen hasiera --------------------------- */
+
+#sarrera {
+	background: black;
+}
+
+#sarrera-edukia {
+	padding: 0;
+	text-align: center;
+	background: black;
+}
+
+#sarrera-goiburua {
+	text-align: center;
+}
+
+#sarrera-menua {
+	margin: 0;
+}
+
+#sarrera-irudia-div {
+	position: relative;
+}
+
+#sarrera-irudia {
+	width: 100%;
+}
+
+#sarrera-irudia-testua {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+
+#sarrera-irudia-testua-lerroa { 
+   color: white; 
+   font: bold 24px/45px Helvetica, Sans-Serif; 
+   letter-spacing: -1px;  
+   background: rgb(0, 0, 0); /* fallback color */
+   background: rgba(0, 0, 0, 0.1);
+   padding: 10px;
+   text-align: left;
+   width: 100%; 
+}
+
+/* Sarrerako botoiak txikiegiak ziren */
+#sarrera-menua li {
+    height: 60px;
+}
+
+/* Sarrerako botoien testua bertikalki zentratu */
+#sarrera-menua li div div a {
+    top: 50%;
+    font-size: 20px;
+}
+
+/* --------------------------- index.html orriaren estiloen amaiera --------------------------- */
+
+/* --------------------------- proposatu-mapa orriaren hasiera --------------------------- */
+
+#proposatu-mapa-edukia {
+	padding: 0;
+}
+
+#proposatu-mapa-mapa {
+	//height: 100%;
+	width: 100%;
+}
+
+#proposatu-mapa-botoiak-ados, #proposatu-mapa-botoiak-utzi {
+	margin-top: 4px; /* Bestela 8px da eta beheragi agertzen dira botoiak. */
+	margin-bottom: 4px;
+}
+
+/* --------------------------- proposatu-mapa orriaren amaiera --------------------------- */
+
+/* --------------------------- proposamen-berria orriaren hasiera --------------------------- */
+
+#proposamen-berria-deskribapena-labela {
+	float: left;
+}
+
+#proposamen-berria-deskribapena-kont {
+	float: right;
+}
+
+#proposamen-berria-argazkia-aurrebista {
+	width: 100%;
+}
+
+#proposatu-form .ui-field-contain label {
+    font-weight: bold;
+}
+
+/* --------------------------- proposamen-berria orriaren amaiera --------------------------- */
+
+/* --------------------------- xehetasunak-mapa.html orriaren hasiera --------------------------- */
+
+#xehetasunak-mapa-edukia {
+	padding: 0;
+	background-image: url(../ikonoak/nature2x.jpg);
+}
+
+#xehetasunak-mapa-goikoa {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	text-align: center;
+}
+
+/* Google maps-eko jarraibideen ohar-kaxaren estiloa */
+.warnbox-content {
+	background: #eeeeee;
+	border: 1px solid silver;
+}
+
+/* Ohar-kaxaren goian eta behean agertzen diren marrak ezkutatu */ 
+.warnbox-c1, .warnbox-c2 {
+	background: transparent;
+}
+
+/* Lege-oharraren kaxaren estiloa*/
+.adp-legal {
+	background: none repeat scroll 0 0 #EEEEEE;
+    border: 1px solid silver;
+    color: black;
+}
+
+.adp-summary, .adp-substep {
+	text-shadow: none;
+}
+
+/* --------------------------- xehetasunak-mapa.html orriaren amaiera --------------------------- */
+
+/* --------------------------- xehetasunak orriaren hasiera --------------------------- */
+
+#xehetasunak-izenburua {
+	/* font: font-height font-size/line-height font-family */
+   	font: bold 28px/36px Helvetica, Sans-Serif;
+   	/*font-family: Arial, Verdana, Helvetica, sans-serif;
+	font-weight:normal;
+	font-size: 36px;*/
+}
+
+#xehetasunak-edukia {
+	background-color: transparent;
+}
+
+#xehetasunak-info {
+	margin-top: 10px;
+}
+
+#xehetasunak-irudia {
+	width: 125px;
+	max-width: 100%;
+}
+
+#xehetasunak-irudia-div {
+	float: left;
+	margin-right: 15px;
+}
+
+#xehetasunak-deskribapena {
+	font-size: 18px;
+}
+
+#xehetasunak-bozka-batura {
+	font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#xehetasunak-bozketak {
+	float: right;
+}
+
+#xehetasunak-mapa-botoia {
+	float: left;
+}
+
+#xehetasunak-mapa-botoia .ui-icon, #info-mapa-botoia .ui-icon {
+	background-image: url("../ikonoak/mapa-zuria.png");
+	background-position: 8px 6px;
+    background-repeat: no-repeat;
+    height: 32px;
+    width: 40px;
+    margin-left: -20px;
+    top: 6px;
+}
+
+/* --------------------------- xehetasunak orriaren amaiera --------------------------- */
+
+/* --------------------------- informazioa.html orriaren estiloaren hasiera --------------------------- */
+
+#info-izenburua {
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	font-weight:normal;
+	font-size: 36px;
+}
+
+#info-argazkia {
+	margin-top: 10px;
+	width: 100%;
+	max-width: 100%;
+}
+
+#info-lotura-interesgarriak li a {
+	 white-space: normal;
+}
+
+#info-url-botoia .ui-icon {
+	background-image: url("../ikonoak/webgunea.png");
+	background-position: 5px 1px;
+    background-repeat: no-repeat;
+    height: 32px;
+    width: 40px;
+    margin-left: -20px;
+    top: 6px;
+}
+
+/* --------------------------- informazioa.html orriaren estiloaren hasiera --------------------------- */
+
+/* --------------------------- informazioa-mapa.html orriaren estiloaren hasiera --------------------------- */
+
+#informazioa-mapa-edukia {
+	padding: 0;
+}
+
+#informazioa-mapa-mapa {
+	width: 100%;
+}
+
+/* --------------------------- informazioa-mapa.html orriaren estiloaren amaiera --------------------------- */
+
+/* --------------------------- lekuak orriaren hasiera --------------------------- */
+
+#lekuak-kategoriaka-ordena, #hautatu-kokapena-aukerak, #hasi-saioa-aukerak {
+	text-align: center;
+	margin-top: 0;
+}
+
+#lekuak-kategoriaka-edukia-helbidea {
+	padding-bottom: 1em;
+}
+
+#lekuak-kategoriaka-zerrenda {
+	padding-top: 15px;
+}
+
+#koadro-txikia {
+	height: 100%;
+}
+
+/* --------------------------- lekuak orriaren amaiera --------------------------- */
+
+/* --------------------------- hautatu-kokapena orriaren hasiera --------------------------- */
+
+#hautatu-kokapena-edukia {
+	padding-top: 15px;
+	padding-bottom: 0;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+#hautatu-kokapena-aukerak-unekoa-label .ui-btn-inner .ui-btn-text, #hautatu-kokapena-aukerak-zerrenda-label .ui-btn-inner .ui-btn-text, #hautatu-kokapena-aukerak-mapa-label .ui-btn-inner .ui-btn-text {
+	font-size: 14px;
+}
+
+#ui-ul-herriak {
+	margin: 0;
+}
+
+#hautatu-kokapena-gorputza .ui-input-text {
+	color: black;
+}
+
+#hautatu-kokapena-gorputza-geokokapena, #hautatu-kokapena-gorputza-lurraldeak-div {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+/* --------------------------- hautatu-kokapena orriaren amaiera --------------------------- */
+
+/* --------------------------- hasi-saioa orriaren amaiera --------------------------- */
+
+#hasi-saioa-erabiltzailea-zara {
+	text-align: center;
+}
+
+input.password-field {
+	-webkit-text-security: disc;
+}
+
+/* --------------------------- hasi-saioa orriaren amaiera --------------------------- */
+
+/* --------------------------- honi-buruz orriaren hasiera --------------------------- */
+
+#honi-buruz-argia-div, #honi-buruz-iametza-div, #honi-buruz-ej-div, #honi-buruz-app-lizentzia-div, #honi-buruz-edukiak-lizentzia-div, #honi-buruz-webgunea-div, #honi-buruz-helbidea-div, #honi-buruz-bertsioa-div {
+	text-align: center;
+}
+
+#honi-buruz-iametza-etiketa, #honi-buruz-ej-etiketa, #honi-buruz-bertsioa-etiketa {
+	font-size: 1em;
+}
+
+#honi-buruz-argia, #honi-buruz-iametza, #honi-buruz-ej, #honi-buruz-edukiak-lizentzia, #honi-buruz-app-lizentzia {
+	width: 90%;
+	max-width: 284px;
+}
+
+#honi-buruz-cc-botoia .ui-btn-text, #honi-buruz-gpl-botoia .ui-btn-text {
+	white-space: normal;
+}
+
+#honi-buruz-edukia ul #honi-buruz-bertsioa-li {
+	text-align: center;
+	padding-bottom: 5px;
+	margin-top: -15px;
+	padding-top: 5px;
+}
+
+/* --------------------------- honi-buruz orriaren amaiera --------------------------- */
+
+#erabiltzaile-berria-info-nahi-label .ui-icon-checkbox-on, #proposamen-berria-lege-oharra-label .ui-icon-checkbox-on {
+	background-color: #a21026;
+}
+
+.txt_lodia {
+	font-weight: bold;
+}
+
+/* Google maps-eko infoWindow-aren testuaren kolorea aldatu, bestela zuriz agertzen da. */
+.gm-iw {
+	color: black;
+}
+
+/* --------------------------- jquery-mobile-1.3.0.css fitxategiko estiloari egindako aldaketen hasiera --------------------------- */
+
+.ui-body-a {
+	background-image: url(../ikonoak/nature2x.jpg);
+}
+
+/* Hau jartzen ez badut kargatzen ari dela adierazten duen mezuaren atzeko planoa gardena da -> .ui-content-etik heredatuta? */
+div.ui-loader.ui-body-a { 
+	background: black;
+}
+
+.ui-btn-active {
+	border: 1px solid 		#91051a /*{global-active-border}*/;
+	background: 			#b9122b /*{global-active-background-color}*/;
+	
+	background-image: -webkit-gradient(linear, left top, left bottom, from( #b9122b /*{global-active-background-start}*/), to( #91051a /*{global-active-background-end}*/)); /* Saf4+, Chrome, Android 2.3 phonegap webview */
+	background-image: -webkit-linear-gradient( #b9122b /*{global-active-background-start}*/, #91051a /*{global-active-background-end}*/); /* Chrome 10+, Saf5.1+ */
+	background-image:    -moz-linear-gradient( #b9122b /*{global-active-background-start}*/, #91051a /*{global-active-background-end}*/); /* FF3.6 */
+	background-image:     -ms-linear-gradient( #b9122b /*{global-active-background-start}*/, #91051a /*{global-active-background-end}*/); /* IE10 */
+	background-image:      -o-linear-gradient( #b9122b /*{global-active-background-start}*/, #91051a /*{global-active-background-end}*/); /* Opera 11.10+ */
+	background-image:         linear-gradient( #b9122b /*{global-active-background-start}*/, #91051a /*{global-active-background-end}*/);
+}
+
+.ui-content, li[data-role="fieldcontain"] { background-color: transparent; color: black;}
+
+.ui-listview-filter {
+	margin: 0px 0px 0px 0px;
+}
+
+.ui-icon-checkbox-off {
+    background-color: white;
+}
+
+/* Botoien erpinek radio-button-eak bezalakoak izan behar dute */
+.ui-btn-corner-all {
+    border-radius: 0.6em 0.6em 0.6em 0.6em;
+}
+
+/* --------------------------- jquery-mobile-1.3.0.css fitxategiko estiloari egindako aldaketen amaiera --------------------------- */

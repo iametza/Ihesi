@@ -1,0 +1,1445 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.3.0.css" />
+        <link rel="stylesheet" type="text/css" href="css/gurea.css" />
+        <title>Euskal Herrian Ihesi</title>
+	</head>
+	<body>
+		<div id="sarrera" data-role="page" data-theme="a">
+			<div id="sarrera-goiburua" data-role="header" data-position="fixed">
+				<a href="html/honi-buruz.html" data-icon="info" data-iconpos="notext"></a>
+				<img id="sarrera-logoa" src="ikonoak/Ihesi-horizontala.png">
+				<a href="html/hautatu-kokapena.html" data-icon="search" data-iconpos="notext"></a>
+			</div>
+			<div id="sarrera-edukia" data-role="content" data-theme="a">
+				<div id="sarrera-irudia-div">
+					<img id="sarrera-irudia" src="irudiak/herriak/irunea.jpg">
+					
+					<div id="sarrera-irudia-testua">
+					  	<div id="sarrera-irudia-testua-lerroa">
+					  		<span id="sarrera-irudia-testua-lerroa-span"></span>
+					  	</div>
+					</div>
+				</div>
+				<ul id="sarrera-menua" data-role="listview">
+					<li id="sarrera-menua-gomendioak-li"><a href="html/lekuak-kategoriaka.html">Gomendioak</a></li>
+					<li id="sarrera-menua-informazioa-li"><a href="html/informazioa.html">Herriaren informazioa</a></li>
+					<li id="sarrera-menua-proposatu-li"><a id="sarrera-menua-proposatu" href="">Proposatu</a></li>
+				</ul>
+			</div><!-- /content -->
+		</div><!-- /page -->
+		
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="js/jquery-2.0.0.min.js"></script>
+		<script type="text/javascript" src="js/jquery.mobile-1.3.0.min.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+		<script type="text/javascript" src="js/datu-base-lokala.js"></script>
+		<script type="text/javascript" src="js/sortu-datu-base-lokala.js"></script>
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true&amp;language=eu&libraries=geometry"></script>
+		<script type="text/javascript" src="js/google-maps-fun.js"></script>
+		<script type="text/javascript"src="js/kamera.js"></script>
+		<script type="text/javascript"src="js/funtzioak.js"></script>
+		<script type="text/javascript">
+            app.initialize();
+        </script>
+		<script type="text/javascript">
+			// Phonegap-en datu-base objektu bat sortu
+			var ihesidb;
+			
+			var ezarpenak = {
+				bertsioa: "1.3.0",
+				db_bertsioa: "2.0",
+				herriak_azken_alta_data: '2013-08-20 21:48:02',
+				herriak_elementuak_azken_alta_data: "2013-06-27 09:38:54",
+				herriak_interesa_azken_id: "108",
+				herriak_elementuak_botoak_azken_id: "402",
+				rootDirektorioa: 'com.iametza.ihesi'
+			}
+			
+			// Une honetan aukeratutako herriaren id-a, longitudea, latitudea, izena eta zein lurraldetakoa den
+			var idUnekoHerria;
+			var unekoLongitudea;
+			var unekoLatitudea;
+			var unekoHerria;
+			var unekoLurraldea;
+			var unekoHerriaZoom;
+			
+			// Une honetan aukeratutako lekuaren id-a, longitudea, latitudea eta bere herriaren id-a
+			var idUnekoLekua;
+			var idUnekoLekuaLongitudea;
+			var idUnekoLekuaLatitudea;
+			var unekoLekuaIdHerria;
+			
+			// Uneko kategoriaren id-a, gomendioen orrian zein kategoriakoak erakutsiko diren erabakitzen du.
+			var idUnekoKategoria;
+			var unekoKategoria = "Kategoria guztiak"; // Hasierako balioa
+			
+			// Hautatu kokapena orrian zein lurraldetako herriak erakutsiko diren
+			var hautatuKokapenaIdLurraldea;
+			var hautatuKokapenaLurraldea = "Lurralde guztiak"; // Hasierako balioa
+			
+			// Gomendioak zeren arabera erakutsi behar diren: "gertukoenak" edo "bozkatuenak"
+			var lekuak_nola_erakutsi = "gertukoenak";
+			
+			// Uneko erabiltzailearen izena eta pasahitza
+			var unekoErabiltzailea;
+			var idUnekoErabiltzailea;
+			var unekoPasahitza;
+			var erabiltzailearen_botoak;
+			
+			var irudien_bidea = "irudiak/";
+			var irudien_bide_erlatiboa = "../" + irudien_bidea;
+			
+			var pictureSource;   // picture source
+		    var destinationType; // sets the format of returned value
+		    
+		    // Proposamen berri baten kokapena aldibaterako gordetzeko aldagaiak.
+		    // Erabiltzaileak Ados sakatzean finko bihurtzen dira (proposamen_berria objektuan gordez).
+		    var proposamena_lat_tmp;
+		    var proposamena_lng_tmp;
+		    var proposamena_zoom_tmp;
+		    
+		    var proposamen_berria = {
+		    	'idLurraldea': undefined,
+		    	'idHerria': undefined,
+		    	'idKategoria': undefined,
+		    	'izena': undefined,
+		    	'deskribapena': undefined,
+		    	'webgunea': undefined,
+		    	'srcArgazkia': undefined,
+		    	'lat': undefined,
+		    	'lng': undefined,
+		    	'zoom': undefined,
+		    	'baldintzak': undefined
+		    };
+		    
+		    // Zein orritatik gatozen gordetzeko aldagaia.
+		    // hasi_saioa.html orrira bi lekutatik joan gaitezke:
+		    //		* Saiorik hasi gabe sarrerako orrian Proposatu sakatzean -> Proposamen berria egiteko orrira joan behar dugu.
+		    //		* Saiorik hasi gabe xehetasunen orrian botatzen saiatzean -> Xehetasunen orrira itzuli behar dugu.
+		    var nondik_nator;
+		    
+		    // hautatu-kokapena.html orrian momentuko kokapena geolokalizazio bidez ezartzeko eskatu dugun ala ez.
+		    // Sarrerako orrian herriaren irudia jartzeko arazoak ditugulako erabiltzen dugu hau (Android 4.x eta iPhone vs Android 2.x -> irudiaren bide erlatiboak !=ak dira).
+		    var geokokatzetik = false;
+		    
+		    $(document).on("click", "#proposatu-mapa-botoiak-ados", function() {
+		    	// Erabilzaileak kokapena onartu duenez aldi baterako aldagaiak finkatu
+		    	proposamen_berria.lat = proposamena_lat_tmp;
+		    	proposamen_berria.lng = proposamena_lng_tmp;
+		    	proposamen_berria.zoom = proposamena_zoom_tmp;
+		    	
+		    	// Aldibaterako aldagaiak berrezarri
+		    	proposamena_lat_tmp = undefined;
+		    	proposamena_lng_tmp = undefined;
+		    	proposamena_zoom_tmp = undefined;
+		    	
+		    	$.mobile.changePage('proposatu.html');
+		    });
+            
+		    // Estekak gailuaren nabigatzailean irekitzeko erabiltzen dut hau.
+		    // Bestela, iPhonean arazoak nituen, URL-a webview-aren barruan irekitzen baitzuen
+		    // eta aplikazioa blokeatuta gelditzen baitzen, ez baitzegoen atzera egiteko modurik.
+		    // Ikusi: http://stackoverflow.com/questions/15067412/cordova-2-3-0-open-links-in-safari-on-ios
+            $(document).on('click', '.external', function(event) {
+				event.preventDefault();
+                
+                var url = $(this).attr('href');
+                var that = this;
+                
+                // Hau gabe botoia emanda bezala gelditzen da.
+                var timeoutID = window.setTimeout(function() {
+						$(that).removeClass("ui-btn-active");
+						irekiURLnabigatzailean(url);
+			  		}, 300
+				);
+            });
+            
+		    $(document).on("click", "#proposatu-mapa-botoiak-utzi", function() {
+		    	// Erabiltzaileak hautatutako kokapena ez erabiltzea erabaki duenez aldibaterako aldagaiak berrezarri
+		    	proposamena_lat_tmp = undefined;
+		    	proposamena_lng_tmp = undefined;
+		    	proposamena_zoom_tmp = undefined;
+		    	
+		    	$.mobile.changePage('proposatu.html');
+		    });
+		    
+			$(document).on("mobileinit", function(){
+				$.extend(  $.mobile , {
+					defaultPageTransition: 'none',
+					defaultDialogTransition: 'none'
+				});
+				$.mobile.allowCrossDomainPages = true;
+			});
+			
+			function herriarenDatuakGorde(uneko_helbidea) {
+				// Uneko herriaren izena eta herrialdea dagozkien aldagai globaletan gorde
+				unekoHerria = uneko_helbidea.herria;
+				unekoLurraldea = uneko_helbidea.herrialdea;
+				
+				// Uneko herriaren id-a eskuratu eta idUnekoHerria aldagaian gorde gero erabiltzeko.
+				// Uneko herriaren argazkia ere bilatu eta bistaratzen da transakzio honetan. Baita bere zoom_maila ere (unekoHerriaZoom aldagaian gordetzen da).
+				// Google maps-ek itzulitako herriaren izena (adb: Donostia-San Sebastián) ez badator bat
+				// gure datu-baseko izenarekin (adb: Donostia) unekoHerria aldagai globalaren balioa
+				// gure izenarekin ordezkatu eta bistaratzen da.
+				// Guztia prest edukitzean sarrerako orriko botoiak gaitu behar dira.
+				// Begiratu itzuliHerriaIdPorrotaArrakasta funtzioa datu-base-lokala.js fitxategian.
+				ihesidb.transaction(function(tx) {itzuliHerriaId(tx, uneko_helbidea.herria)});
+			}
+			
+			function desgaituSarrerakoBotoiak() {
+				$("#sarrera-menua-gomendioak-li").addClass("ui-disabled");
+				$("#sarrera-menua-informazioa-li").addClass("ui-disabled");
+				$("#sarrera-menua-proposatu-li").addClass("ui-disabled");
+			}
+			
+			function gaituSarrerakoBotoiak() {
+				$("#sarrera-menua-gomendioak-li").removeClass("ui-disabled");
+				$("#sarrera-menua-informazioa-li").removeClass("ui-disabled");
+				$("#sarrera-menua-proposatu-li").removeClass("ui-disabled");
+			}
+			
+			$(document).on("pageshow", "#sarrera", function() {
+				// Sarrerako logoaren zabalera kalkulatu eta erakutsi
+		        $("#sarrera-logoa").width("50%");
+		        
+				// Sarrerako irudiak izan behar duten altuera kalkulatu eta ezarri.
+				// CSS bidez zabalera %100ean ezarri dut, ondorioz, irudiak pixka bat luzatzen dira.
+				var pantailaAlt = $(window).height();
+				var goiburuaAlt = $("#sarrera-goiburua").height();
+				var menuaAlt = $("#sarrera-menua").height();
+				
+				$("#sarrera-irudia").height(pantailaAlt - goiburuaAlt - menuaAlt - 8);
+				
+				nondik_nator = "sarrera";
+				
+				// Proposatu botoia sakatutakoan egin beharrekoa:
+				// Saioa hasi gabe -> Saioa hasi edo erregistratzeko orria erakutsi.
+				if (unekoErabiltzailea == undefined && unekoPasahitza == undefined) {
+					$("#sarrera-menua-proposatu").attr("href", "html/hasi-saioa.html");
+				} else {
+					// Saioa hasita dago -> Proposamena egiteko orria erakutsi.
+					$("#sarrera-menua-proposatu").attr("href", "html/proposatu.html");
+				}
+				
+				// idUnekoHerria ez badago hutsik unekoHerria eta unekoLurraldea bistaratuko ditugu
+				// bestela geokokapena erabiltzen saiatu behar dugu.
+				if (idUnekoHerria != undefined) {
+					$("#sarrera-irudia-testua-lerroa-span").text(unekoHerria + ' (' + unekoLurraldea + ')');
+				} else if (geokokatzetik === true) {
+					// Geokokapena eskuratzen ari garela adierazi
+					$("#sarrera-irudia-testua-lerroa-span").text('Kokapena eskuratzen...');
+					
+					// Uneko posizioa eskuratzen saiatu eta mapa edo errore-mezua bistaratu
+					// timeout: milisegundo kopuru hori igarotakoan ez bada posizioa eskuratu google_maps_errorea atzera-dei funtzioa exekutatuko da.
+				    navigator.geolocation.getCurrentPosition(onSuccess, onError, {timeout: 10000});
+					
+					// Posizioa eskuratu bitartean sarrerako orriko botoiak desgaitu behar dira
+					desgaituSarrerakoBotoiak();
+					
+				    function onSuccess(position) {
+				    	// Erabiltzailearen uneko posizioaren longitudea eta latitudea
+				    	unekoLatitudea = position.coords.latitude;
+				    	unekoLongitudea = position.coords.longitude;
+				    	
+						var latLng = new google.maps.LatLng(
+							position.coords.latitude,
+							position.coords.longitude);
+						
+						// Helbidea eskuratzeko atzera-dei funtzio bat erabili beharra dago, geokodetzailearen funtzioa asinkronoa baita.
+						// Atzera-dei funtzioak botoiak berriz gaitu behar ditu -> Ikusi herriarenDatuakGorde funtzioa
+						itzuliUnekoHelbidea(latLng, herriarenDatuakGorde);
+				    }
+				    
+				    function onError(errorea) {
+				    	geokokatzetik = false;
+				    	google_maps_errorea(errorea);
+				    }
+				}
+			});
+			
+			$(document).on("pageinit", "#kategoriak", function() {
+				if (ihesidb) {
+					ihesidb.transaction(eskuratuAzpiatalak, function(tx, err){errorCB(tx, err, "eskuratuAzpiatalak")});
+				}
+			});
+			
+			$(document).on("pagehide", "#kategoriak", function() {
+				// Elkarrizketa bat irekitzean (data-rel="dialog") "#&ui-state=dialog" gehitzen zaio aurreko orriaren url-ari eta leihoaren historian agertzen da.
+				// Hori dela eta, elkarrizketa itxi eta aurreko orrira itzultzean Atzera botoia bi aldiz sakatu behar dugu azken aurreko orrira joateko.
+				// Konponbide bezala elkarrizketa ixtean historian orri bat atzera joango gara.
+				window.history.back();
+			});
+			
+			$(document).on("pagehide", "#lurraldeak", function() {
+				// Elkarrizketa bat irekitzean (data-rel="dialog") "#&ui-state=dialog" gehitzen zaio aurreko orriaren url-ari eta leihoaren historian agertzen da.
+				// Hori dela eta, elkarrizketa itxi eta aurreko orrira itzultzean Atzera botoia bi aldiz sakatu behar dugu azken aurreko orrira joateko.
+				// Konponbide bezala elkarrizketa ixtean historian orri bat atzera joango gara.
+				window.history.back();
+			});
+			
+			function bistaratuHautatuUnekoPosizioa() {
+				// div-a garbitu
+				$("#hautatu-kokapena-gorputza").empty();
+				
+				// Bilaketak egiteko ul-a gehitu
+				$("#hautatu-kokapena-gorputza").append('<div id="hautatu-kokapena-gorputza-geokokapena"><p>Sakatu beheko botoia zure mugikorraren geokokapen zerbitzua erabiliz zure momentuko kokapena ezartzeko.</p><button id="ezarri-uneko-kokapena" type="button">Ezarri uneko kokapena</button></div>');
+				$("#hautatu-kokapena-gorputza").trigger("create");
+			};
+			
+			$(document).on("click", "#ezarri-uneko-kokapena", function() {
+				// idUnekoHerria undefined bezala jarri kokapena berriz bila dezan eta azaleko orrira joan.
+				idUnekoHerria = undefined;
+				geokokatzetik = true;
+				$.mobile.changePage("../index.html");
+			});
+			
+			function bistaratuHerrienZerrenda() {
+				// div-a garbitu
+				$("#hautatu-kokapena-gorputza").empty();
+				
+				// div-aren altuera berrezarri. Bestela, herrien mapa bistaratzean ezarritako altueran finkatuta gelditzen da eta ezin da beherantz korritu.
+				$('#hautatu-kokapena-gorputza').height('auto');
+				
+				// Lurraldea hautatzeko botoia gehitu
+				$("#hautatu-kokapena-gorputza").append('<div id="hautatu-kokapena-gorputza-lurraldeak-div"><a id="hautatu-kokapena-gorputza-lurraldeak" data-rel="dialog" data-role="button" href="lurraldeak.html">' + hautatuKokapenaLurraldea + '</a></div>');
+				
+				// Gehitu dugun botoiari estiloa eman
+				$("#hautatu-kokapena-gorputza-lurraldeak").button();
+				
+				// Bilaketak egiteko ul-a gehitu
+				$("#hautatu-kokapena-gorputza").append('<ul data-divider-theme="a" data-theme="a" data-filter-theme="a" data-filter-placeholder="Hautatu herria..." data-filter="true" data-role="listview" data-autodividers="true" class="ui-listview" id="ui-ul-herriak">');
+				
+				// Hau gehitu ezean, errorea ematen du zerrendara herriak gehitu ondoren freskatzean: .listview("refresh").
+				// Errore-mezua: "Cannot call methods on listview prior to initialization, attempted to call method refresh".
+				$("#ui-ul-herriak").listview();
+				
+				// Herrien zerrenda kargatu 
+				ihesidb.transaction(function(tx) {bistaratuHerriak(tx, hautatuKokapenaIdLurraldea)}, function(tx, err){errorCB(tx, err, "bistaratuHerriak")});
+			};
+			
+			$(document).on("pageshow", "#hautatu-kokapena", function() {
+				// Zerrenda kargatu bitartean mezua erakutsi
+				bistaratuKargatzenMezua("Kargatzen...");
+				
+				if (ihesidb) {
+					//$("#hautatu-kokapena-edukia-helbidea").text(unekoHelbidea);
+					$('#hautatu-kokapena-aukerak-unekoa').prop("checked", false).checkboxradio("refresh");
+					$('#hautatu-kokapena-aukerak-zerrenda').prop("checked", true).checkboxradio("refresh");
+					
+					bistaratuHerrienZerrenda();
+					//bistaratuHautatuUnekoPosizioa();
+				}
+			});
+
+			$(document).on("change", "#hautatu-kokapena-aukerak input[type='radio']", function(event, ui) {
+				if ($(this).val() == "hautatu-kokapena-aukerak-unekoa") {
+					bistaratuHautatuUnekoPosizioa();
+				} else if ($(this).val() == "hautatu-kokapena-aukerak-zerrenda") {
+					bistaratuHerrienZerrenda();
+				} else {
+					navigator.notification.alert(
+						"Errorea: Aukera baliogabea Hautatu kokapena menuan. Mesedez jakinarazi garatzaileei.", // mezua
+						undefined,         							// atzera-deia
+						'Errorea',            						// izenburua
+						'Ados'                 	 					// botoiaren testua
+					);
+				};
+			});
+			
+			$(document).on("pageshow", "#informazioa", function() {
+				if (ihesidb) {
+					ihesidb.transaction(function(tx) {bistaratuHerriarenDatuak(tx, idUnekoHerria)}, function(tx, err){errorCB(tx, err, "bistaratuHerriarenDatuak")});
+				}
+			});
+			
+			$(document).on("pageshow", "#informazioa-mapa", function() {
+				// Zerrenda kargatu bitartean mezua erakutsi
+				bistaratuKargatzenMezua("Kargatzen...");
+				
+				// Pantaila, goiburua eta oinaren altuerak eskuratu
+				var pantailaAlt = $(window).height();
+				var goiburuaAlt = $("#informazioa-mapa-goiburua").height();
+				
+				// Mapa bistaratuko duen div-aren altuera kalkulatu
+				var mapaAlt = pantailaAlt - goiburuaAlt;
+				
+				// Kalkulatutako altuera ezarri
+				$("#informazioa-mapa-mapa").height(mapaAlt);
+				
+				//prestatuHerriaMapa("informazioa-mapa-mapa", unekoLatitudea, unekoLongitudea, unekoHerriaZoom);
+				ihesidb.transaction(function(tx) {bistaratuHerrikoGomendioakMapan(tx, "informazioa-mapa-mapa", unekoLatitudea, unekoLongitudea, unekoHerriaZoom, idUnekoHerria)}, function(tx, err){errorCB(tx, err, "bistaratuHerrikoGomendioakMapan")});
+				
+			});
+			
+			// Erabiltzaileak aukeratutako lekuaren xehetasunak erakutsi.
+			// Lekuak zerrendako elementu batean sakatzean. 
+			$(document).on("pageshow", "#xehetasunak", function() {
+				if (ihesidb) {
+					// Erabiltzaileak gomendio hau dagoeneko botatu duen egiaztatu. Hala balitz bisualki adierazi dagokion botoiaren kolorea aldatuz.
+					if (erabiltzailearen_botoak) { // Saioa hasitako erabiltzaileetan bakarrik da erabiltzailearen_botoak != undefined
+						// Gomendio hau dagoeneko positibo botatu du?
+						if (erabiltzailearen_botoak.positiboak.indexOf(idUnekoLekua) > -1) {
+							$("#xehetasunak-bozka-pos .ui-icon").css({'background-color': 'rgba(255, 0, 0, 0.55)'});
+						}
+						
+						// Gomendio hau dagoeneko negatibo botatu du?
+						if (erabiltzailearen_botoak.negatiboak.indexOf(idUnekoLekua) > -1) {
+							$("#xehetasunak-bozka-neg .ui-icon").css({'background-color': 'rgba(255, 0, 0, 0.55)'});
+						}
+					}
+					
+					// eskuratuXehetasunak atzera-dei funtzioari parametro bat pasa ahal izateko funtzio batean bildu behar da.
+					ihesidb.transaction(function(tx) {eskuratuXehetasunak(tx, idUnekoLekua)}, function(tx, err){errorCB(tx, err, "eskuratuXehetasunak")});
+				}
+			});
+			
+			// informazioa-mapa.html orriko infoWindow-ko botoian klik egitean dagokion gomendioaren xehetasunak bistaratu
+			function bistaratuGomendioa(idGomendioa, lat, lng) {
+				// Erabiltzaileak hautatutako gomendioaren id-a, latitudea eta longitudea gorde
+				idUnekoLekua= idGomendioa;
+				idUnekoLekuaLatitudea = lat;
+				idUnekoLekuaLongitudea = lng;
+				
+				// xehetasunak mapara joan hautatutako gomendioaren informazioa ikusteko
+				$.mobile.changePage('xehetasunak.html');
+			}
+			
+			// informazioa-mapa.html orrian herri batean gomendiorik ez dagoenean proposatu.html orrira bideratu
+			function bistaratuGomendiorikEzDago() {
+				// xehetasunak mapara joan hautatutako gomendioaren informazioa ikusteko
+				$.mobile.changePage('proposatu.html');
+			}
+			
+			$(document).on("pageshow", "#proposatu", function(event, ui) {
+				// Select-ak bete dagozkien balioekin.
+				// Aurretik hautatutako baliorik balego horiek hautatuko ditugu. Horretarako argumentu bezala pasako dizkiegu ondorengo funtzioei.
+				// Erabiltzaileak lurralde bat hautatu bitartean herrien select-a desgaituta egongo da (Ikusi zerrendatuHerriak eta zerrendatuLurraldeak funtzioak).
+				ihesidb.transaction(function(tx){zerrendatuLurraldeak(tx, proposamen_berria.idLurraldea)}, function(tx, err){errorCB(tx, err, "zerrendatuLurraldeak")});
+				ihesidb.transaction(function(tx){zerrendatuKategoriak(tx, proposamen_berria.idKategoria)}, function(tx, err){errorCB(tx, err, "zerrendatuKategoriak")});
+				ihesidb.transaction(function(tx){zerrendatuHerriak(tx, proposamen_berria.idLurraldea, proposamen_berria.idHerria)}, function(tx, err){errorCB(tx, err, "zerrendatuHerriak")});
+				
+				console.log("idLurraldea: " + proposamen_berria.idLurraldea);
+				
+				console.log("idHerria: " + proposamen_berria.idHerria);
+				
+				console.log("idKategoria: " + proposamen_berria.idKategoria);
+								
+				console.log("Izena: " + proposamen_berria.izena);
+				
+				console.log("deskribapena: " + proposamen_berria.deskribapena);
+				
+				console.log("url: " + proposamen_berria.webgunea);
+				
+				console.log("src: " + proposamen_berria.srcArgazkia);
+				
+				if (proposamen_berria.baldintzak) {
+					console.log("baldintzak: true");	
+				} else {
+					console.log("baldintzak: undefined");
+				}
+				
+				// Aurretik gordetako balioak berrezarri
+				if (proposamen_berria.izena) {
+					$("#proposamen-berria-izena").val(proposamen_berria.izena);
+				}
+				
+				if (proposamen_berria.deskribapena) {
+					$("#proposamen-berria-deskribapena").text(proposamen_berria.deskribapena);
+					
+					// Testua ezarri ondoren zenbat karaktere gelditzen diren bistaratu (dirudienez ez da change gertaera ematen, bestela automatikoki egingo luke hau).
+					$("#proposamen-berria-deskribapena-kont").text(255 - $("#proposamen-berria-deskribapena").val().length);
+				}
+				
+				if (proposamen_berria.webgunea) {
+					$("#proposamen-berria-url").val(proposamen_berria.webgunea);
+				}
+				
+				if (proposamen_berria.srcArgazkia) {
+					argazkiaBildumatikEskuratzean(proposamen_berria.srcArgazkia);
+				}
+				
+				if (proposamen_berria.lat && proposamen_berria.lng && proposamen_berria.zoom) {
+					$("#proposamen-berria-kokapena-helbidea").text("Lat: " + proposamen_berria.lat + " - Lng: " + proposamen_berria.lng + " - Zooma: " + proposamen_berria.zoom);
+				} else {
+					$("#proposamen-berria-kokapena-helbidea").text("Ez duzu helbiderik zehaztu.");
+				}
+				
+				if (proposamen_berria.baldintzak) {
+					$("#proposamen-berria-lege-oharra").attr({checked: true}).checkboxradio('refresh');
+				} else {
+					$("#proposamen-berria-lege-oharra").attr({checked: false}).checkboxradio('refresh');
+				}
+			});
+			
+			// Proposamen berriaren kokapena zehazteko orria erakutsi aurretik erabiltzaileak sartutako datuak gorde.
+			$(document).on("click", "#proposamen-berria-kokapena", function(event, ui) {
+				if ($("#proposamen-berria-lurraldea").val() > 0) {
+					proposamen_berria.idLurraldea = $("#proposamen-berria-lurraldea").val();
+				} else {
+					proposamen_berria.idLurraldea = undefined;
+				}
+				
+				console.log("idLurraldea: " + proposamen_berria.idLurraldea);
+				
+				if ($("#proposamen-berria-herria").val() > 0) {
+					proposamen_berria.idHerria = $("#proposamen-berria-herria").val();
+				} else {
+					proposamen_berria.idHerria = undefined;
+				}
+				
+				console.log("idHerria: " + proposamen_berria.idHerria);
+				
+				if ($("#proposamen-berria-atala").val() > 0) {
+					proposamen_berria.idKategoria = $("#proposamen-berria-atala").val();
+				} else {
+					proposamen_berria.idKategoria = undefined;
+				}
+				
+				console.log("idKategoria: " + proposamen_berria.idKategoria);
+				
+				if ($.trim($("#proposamen-berria-izena").val()) != '') {
+					proposamen_berria.izena = $.trim($("#proposamen-berria-izena").val());
+				} else {
+					proposamen_berria.izena = undefined;
+				}
+				
+				console.log("Izena: " + proposamen_berria.izena);
+				
+				if ($.trim($("#proposamen-berria-deskribapena").val()) != '') {
+					proposamen_berria.deskribapena = $.trim($("#proposamen-berria-deskribapena").val());
+				} else {
+					proposamen_berria.deskribapena = undefined;
+				}
+				
+				console.log("deskribapena: " + proposamen_berria.deskribapena);
+				
+				if ($.trim($("#proposamen-berria-url").val()) != '') {
+					proposamen_berria.webgunea = $.trim($("#proposamen-berria-url").val());
+				} else {
+					proposamen_berria.webgunea = undefined;
+				}
+				
+				console.log("url: " + proposamen_berria.webgunea);
+				
+				if ($("#proposamen-berria-argazkia-aurrebista").attr("src") != '') {
+					proposamen_berria.srcArgazkia = $("#proposamen-berria-argazkia-aurrebista").attr("src");
+				} else {
+					proposamen_berria.srcArgazkia = undefined;
+				}
+				
+				console.log("src: " + proposamen_berria.srcArgazkia);
+				
+				if ($("#proposamen-berria-lege-oharra").is(':checked')) {
+					proposamen_berria.baldintzak = true;
+				} else {
+					proposamen_berria.baldintzak = undefined;
+				}
+				
+				if (proposamen_berria.baldintzak) {
+					console.log("baldintzak: true");	
+				} else {
+					console.log("baldintzak: undefined");
+				}
+			});
+			
+			// Erabiltzaileak lurralde bat hautatzean lurralde horretako herriak kargatu
+			$(document).on('change', '#proposamen-berria-lurraldea', function() {
+				ihesidb.transaction(function(tx){zerrendatuHerriak(tx, $('#proposamen-berria-lurraldea').val())}, function(tx, err){errorCB(tx, err, "zerrendatuHerriak")});
+			});
+			
+			// Mapa orria erakustean mapa prestatu eta bistaratu
+			$(document).on("pageshow", "#proposatu-mapa", function(event, ui) {
+				// Pantaila, goiburua eta oinaren altuerak eskuratu
+				var pantailaAlt = $(window).height();
+				var goiburuaAlt = $("#proposatu-mapa-goiburua").height();
+				var oinaAlt = $("#proposatu-mapa-botoiak").height();
+				
+				// Mapa bistaratuko duen div-aren altuera kalkulatu
+				// 8px gehitu ezean hutsune txiki bat gelditzen da mapa eta nabigazio-barraren artean.
+				// 6px gehituz gero zooma egitean oineko nabigazio-barraren azpian hutsune txiki bat agertu eta desagertzen da.
+				var mapaAlt = pantailaAlt - goiburuaAlt - oinaAlt;
+				
+				// Kalkulatutako altuera ezarri
+				$("#proposatu-mapa-mapa").height(mapaAlt);
+
+				// Mapa prestatu eta bistaratu
+				prestatuProposamenaMapa("proposatu-mapa-mapa");
+			});
+			
+			// Lekuaren xehetasunetatik bere kokapena erakusten duen mapa prestatu eta bistaratu
+			$(document).on("pageshow", "#xehetasunak-mapa", function(event, ui) {
+				// Mapa kargatu bitartean mezua erakutsi
+				bistaratuKargatzenMezua("Kargatzen...");
+				
+				// Aukera lehenetsia hautatu: oinez
+				$('#xehetasunak-mapa-oinez').prop("checked",true).checkboxradio("refresh");
+				$('#xehetasunak-mapa-busez').prop("checked",false).checkboxradio("refresh");
+				$('#xehetasunak-mapa-kotxez').prop("checked",false).checkboxradio("refresh");
+				
+				// Aukera lehenetsia hautatu: mapa
+				$('#xehetasunak-mapa-mapa').prop("checked",true).checkboxradio("refresh");
+				$('#xehetasunak-mapa-jarraibideak').prop("checked",false).checkboxradio("refresh");
+				
+				// Jarraibideak ezkutatu eta mapa erakutsi
+				$("#xehetasunak-jarraibideak").hide();
+				$("#xehetasunak-bidea").show();
+				
+				var pantailaAlt = $(window).height();
+				var goiburuaAlt = $("#xehetasunak-mapa-goiburua").height();
+				var goikoaAlt = $("#xehetasunak-mapa-goikoa").height();
+				
+				// Mapa bistaratuko duen div-aren altuera kalkulatu
+				// 8px kendu ezean maparen beheko ertza pantailatik kanpo gelditzen da.
+				var mapaAlt = pantailaAlt - goiburuaAlt - goikoaAlt - 8;
+				
+				// Kalkulatutako altuera ezarri
+				$("#xehetasunak-bidea").height(mapaAlt);
+				
+				prestatuLekuaMapa("xehetasunak-bidea", idUnekoLekuaLongitudea, idUnekoLekuaLatitudea, "WALKING");
+			});
+			
+			$(document).on("change", "#xehetasunak-mapa-nolabidea input[type='radio']", function(event, ui) {
+				// Mapa kargatu bitartean mezua erakutsi
+				bistaratuKargatzenMezua("Kargatzen...");
+				
+				if ($(this).val() == "xehetasunak-mapa-oinez") {
+					prestatuLekuaMapa("xehetasunak-bidea", idUnekoLekuaLongitudea, idUnekoLekuaLatitudea, "WALKING");
+				} else if ($(this).val() == "xehetasunak-mapa-busez") {
+					prestatuLekuaMapa("xehetasunak-bidea", idUnekoLekuaLongitudea, idUnekoLekuaLatitudea, "TRANSIT");
+				} else if($(this).val() == "xehetasunak-mapa-kotxez") {
+					prestatuLekuaMapa("xehetasunak-bidea", idUnekoLekuaLongitudea, idUnekoLekuaLatitudea, "DRIVING");
+				} else {
+					navigator.notification.alert(
+						"Errorea: Aukera baliogabea gomendioaren xehetasunen mapako menuan. Mesedez jakinarazi garatzaileei.", // mezua
+						undefined,         							// atzera-deia
+						'Errorea',            						// izenburua
+						'Ados'                 	 					// botoiaren testua
+					);
+				};				
+			});
+			
+			// Mapa ezkutatuta dagoela (hide) nolabidea aldatu ondoren mapa berriz bistaratzean ez da behar bezala agertzen.
+			// Hori saihesteko hide erabili ordez mapa ezkerretara mugitzen dugu eta edukiaren altuera egokitu.
+			// Nolabidea aldatzean ere berdina egin behar da, baina kasu honetan maparen idle gertaera erabili behar dugu. Ikusi google-maps-fun.js-ko prestatuLekuaMapa funtzioa.
+			$(document).on("change", "#xehetasunak-mapa-zer-erakutsi input[type='radio']", function(event, ui) {
+				if ($(this).val() == "xehetasunak-mapa-mapa") {
+					$("#xehetasunak-jarraibideak").hide();
+					$("#xehetasunak-bidea").css('left', 0);
+					$("#xehetasunak-mapa-edukia").height($("#xehetasunak-mapa-goiburua").height() + $("#xehetasunak-xehetasunak-mapa-goikoa").height() + $("#xehetasunak-bidea").height() + 8);
+				} else if ($(this).val() == "xehetasunak-mapa-jarraibideak") {
+					$("#xehetasunak-bidea").css('left', -5000);
+					$("#xehetasunak-jarraibideak").show();
+					$("#xehetasunak-mapa-edukia").height($("#xehetasunak-mapa-goiburua").height() + $("#xehetasunak-xehetasunak-mapa-goikoa").height() + $("#xehetasunak-jarraibideak").height() + 8);
+				} else {
+					navigator.notification.alert(
+						"Errorea: Aukera baliogabea gomendioaren xehetasunen mapako menuan. Mesedez jakinarazi garatzaileei.", // mezua
+						undefined,         							// atzera-deia
+						'Errorea',            						// izenburua
+						'Ados'                 	 					// botoiaren testua
+					);
+				};
+			});
+			
+			// Erabiltzaileak jarraibideen ikuspegiko pauso bat sakatzean mapan erakutsi
+			$(document).on("click", ".adp-substep, .adp-text", function() {
+				// Mapa ikuspegira pasa garela adierazi goiko ikonoetan
+				$('#xehetasunak-mapa-jarraibideak').prop("checked", false).checkboxradio("refresh");
+				$('#xehetasunak-mapa-mapa').prop("checked", true).checkboxradio("refresh");
+				
+				// Jarraibideak ezkutatu
+				$("#xehetasunak-jarraibideak").hide();
+				
+				// Mapa erakutsi
+				$("#xehetasunak-bidea").css('left', 0);
+				
+				// Edukiaren altuera egokitu, batzutan maparen azpiko hutsunea agertzen da bestela.
+				$("#xehetasunak-mapa-edukia").height($("#xehetasunak-mapa-goiburua").height() + $("#xehetasunak-xehetasunak-mapa-goikoa").height() + $("#xehetasunak-bidea").height() + 8);
+			});
+			
+			$(document).on("click", ".kategoria-zerrenda-li", function() {
+				// Erabiltzaileak hautatutako kategoria
+				idUnekoKategoria = $(this).attr("data-id-kategoria");
+				
+				unekoKategoria = $(this).text();
+				
+				// lekuak-kategoriaka-zerrenda hustu
+				$("#lekuak-kategoriaka-zerrenda").empty();
+			});
+			
+			$(document).on("click", ".lurralde-zerrenda-li", function(event, ui) {
+				hautatuKokapenaIdLurraldea = $(this).attr("data-id-lurraldea");
+				
+				hautatuKokapenaLurraldea = $(this).text();
+				
+				// herrien zerrenda hustu
+				$("ui-ul-herriak").empty();
+			});
+			
+			function bistaratuKargatzenMezua(testua) {
+				$.mobile.loadingMessageTextVisible = true;
+			    $.mobile.loadingMessage = testua;
+			    $.mobile.showPageLoadingMsg();
+			    // Ez ahaztu bukatutakoan ezkutatzea.
+			}
+			
+			$(document).on("pageshow", "#lekuak-kategoriaka", function() {
+				// Zerrenda kargatu bitartean mezua erakutsi
+				// KONTUZ! pageinit gertaeran ez du funtzionatzen. Buruhauste ederrak eman dizkit honek.
+				bistaratuKargatzenMezua("Kargatzen...");
+			    
+				// Uneko kategoria zein den bistaratu
+				$("#lekuak-kategoriaka-kategoriak .ui-btn-text").text(unekoKategoria);
+				
+				// Gertukoenak edo bozkatuenak bistaratu hautatutako aukeraren arabera. bistaratuElementuak arduratzen da aurreko elementuak ezabatzeaz.
+				// lekuak_nola_erakutsi aldagaia erabiltzen dut, zein aukera hautatu behar den jakiteko. Aukera bat hautatuz gero hori erakutsi behar da orrira itzultzean.
+				if (lekuak_nola_erakutsi == "gertukoenak") {
+					// gertukoenak ez badago hautatuta hautatu
+					if ($('#lekuak-kategoriaka-gertukoenak').prop("checked") != true) {
+						$('#lekuak-kategoriaka-gertukoenak').prop("checked", true).checkboxradio("refresh");
+						$('#lekuak-kategoriaka-bozkatuenak').prop("checked", false).checkboxradio("refresh");
+					}
+					ihesidb.transaction(function(tx) {bistaratuElementuak(tx, "gertukoenak", idUnekoKategoria);}, function(tx, err){errorCB(tx, err, "bistaratuElementuak")});
+				} else if (lekuak_nola_erakutsi == "bozkatuenak") {
+					if ($('#lekuak-kategoriaka-bozkatuenak').prop("checked") != true) {
+						$('#lekuak-kategoriaka-gertukoenak').prop("checked", false).checkboxradio("refresh");
+						$('#lekuak-kategoriaka-bozkatuenak').prop("checked", true).checkboxradio("refresh");
+					}
+					ihesidb.transaction(function(tx) {bistaratuElementuak(tx, "bozkatuenak", idUnekoKategoria);}, function(tx, err){errorCB(tx, err, "bistaratuElementuak")});
+				} else {
+					navigator.notification.alert(
+						"Errorea: Aukera baliogabea gomendioen zerrendaren menuan. Mesedez jakinarazi garatzaileei.", // mezua
+						undefined,         							// atzera-deia
+						'Errorea',            						// izenburua
+						'Ados'                 	 					// botoiaren testua
+					);
+				}
+			});
+			
+			// Erabiltzaileak leku batean klik egitean leku horren id-a, longitudea eta latitudea gorde, gero xehetasunetan erabiltzeko.
+			$(document).on("click", ".lekuak-zerrenda-li", function(event, ui) {
+				idUnekoLekua = $(this).attr("data-id-lekua");
+				idUnekoLekuaLongitudea = $(this).attr("data-id-lekua-lng");
+				idUnekoLekuaLatitudea = $(this).attr("data-id-lekua-lat");
+				unekoLekuaIdHerria = $(this).attr("data-lekua-id-herria");
+            });
+			
+			$(document).on("input", "#proposamen-berria-deskribapena", function(event, ui) {
+				$("#proposamen-berria-deskribapena-kont").text(255 - $(this).val().length);
+			});
+			
+			$(document).on("change", "#lekuak-kategoriaka-ordena input[type='radio']", function(event, ui) {
+				// Zerrenda kargatu bitartean mezua erakutsi
+				bistaratuKargatzenMezua("Kargatzen...");
+				
+				if($(this).val() == "lekuak-kategoriaka-gertukoenak") {
+					lekuak_nola_erakutsi = "gertukoenak";
+					ihesidb.transaction(function(tx) {bistaratuElementuak(tx, "gertukoenak", idUnekoKategoria);}, function(tx, err){errorCB(tx, err, "bistaratuElementuak")});
+				} else {
+					lekuak_nola_erakutsi = "bozkatuenak";
+					ihesidb.transaction(function(tx) {bistaratuElementuak(tx, "bozkatuenak", idUnekoKategoria);}, function(tx, err){errorCB(tx, err, "bistaratuElementuak")});
+				};
+			});
+			
+			// Erabiltzaileak herri batean klik egitean herri horren id-a eta kokalekua (lat, lng) eskuratu
+			$(document).on("click", ".ui-li-herria", function(event, ui) {
+				//alert("id-herria: " + $(this).attr("data-id-herria") + " izena: " + $(this).text() + " lat: " + $(this).attr("data-gmaps_lat") + " lng: " + $(this).attr("data-gmaps_lng"));
+				
+				// Hautatutako herriaren id-a, izena, herrialdea, latitudea eta longitudea dagozkien aldagaietan gorde.
+				idUnekoHerria = $(this).attr("data-id-herria");
+				unekoHerria = $(this).text();
+				unekoLatitudea = $(this).attr("data-gmaps_lat");
+				unekoLongitudea = $(this).attr("data-gmaps_lng");
+				
+				// Helbidea osatu (Herria (Lurraldea) <- lurraldea falta zaigu), geokokapena erabili gabe (konexiorik ez badago ere), unekoHelbidea aldagaian gorde eta bistaratu
+				// Argazkia ere egokitu
+				// Eta botoiak gaitu amaitzean
+				ihesidb.transaction(function(tx) {bistaratuHerriaHerrialdea(tx, idUnekoHerria, unekoHerria, "sarrera-irudia-testua-lerroa-span");}, function(tx, err){errorCB(tx, err, "bistaratuHerriaHerrialdea")});
+			});
+			
+			$(document).on("pageshow", "#honi-buruz", function() {
+				$('#honi-buruz-bertsioa-div').text(ezarpenak.bertsioa);
+			});
+			
+			$(document).on("pageinit", "#hasi-saioa", function(event, ui) {
+				// Orria bistaratzen den lehen aldian aukera lehenetsia erakutsi, hau da, "gertukoenak".
+				$('#hasi-saioa-aukerak-bai').prop("checked",true).checkboxradio("refresh");
+				$('#hasi-saioa-aukerak-ez').prop("checked",false).checkboxradio("refresh");
+				
+				$("#hasi-saioa-formularioa").append('<form id="erabiltzaile-erregistratua-form" data-ajax="false">' +
+				    	'<label for="erabiltzaile-erregistratua-izena">Erabiltzailea:</label>'+
+				    	'<input type="text" name="erabiltzaile-erregistratua-izena" autocomplete="off" id="erabiltzaile-erregistratua-izena" placeholder="erabiltzailea" value="" data-theme="b" />' +
+				    	'<label for="erabiltzaile-erregistratua-pasahitza">Pasahitza:</label>' +
+				    	'<input type="text" class="password-field" autocomplete="off" name="erabiltzaile-erregistratua-pasahitza" id="erabiltzaile-erregistratua-pasahitza" placeholder="pasahitza" value="" data-theme="b" />' +
+				    	'<button id="erabiltzaile-erregistratua-sartu" type="submit" data-theme="a">Sartu</button></form>' +
+				    	'<p><a href="pasahitza-ahaztuta.html" data-role="button" id="erabiltzaile-erregistratua-pasahitza-ahaztuta">Pasahitza ahaztu zait</a></p>').trigger("create");
+			});
+			
+			$(document).on("change", "#hasi-saioa input[type='radio']", function(event, ui) {
+				// Aurreko formularioa kendu
+				$("#hasi-saioa-formularioa").empty();
+				
+				// Erabiltzaileak egindako aukeraren arabera dagokion formularioa kargatu
+				if($(this).val() == "hasi-saioa-aukerak-bai") {
+					$("#hasi-saioa-formularioa").append('<form id="erabiltzaile-erregistratua-form" data-ajax="false">' +
+				    	'<label for="erabiltzaile-erregistratua-izena">Erabiltzailea:</label>'+
+				    	'<input type="text" autocomplete="off" name="erabiltzaile-erregistratua-izena" id="erabiltzaile-erregistratua-izena" placeholder="erabiltzailea" value="" data-theme="b" />' +
+				    	'<label for="erabiltzaile-erregistratua-pasahitza">Pasahitza:</label>' +
+				    	'<input type="text" class="password-field" autocomplete="off" name="erabiltzaile-erregistratua-pasahitza" id="erabiltzaile-erregistratua-pasahitza" placeholder="pasahitza" value="" data-theme="b" autocomplete="off" />' +
+				    	'<button id="erabiltzaile-erregistratua-sartu" type="submit" data-theme="a">Sartu</button></form>' +
+				    	'<p><a href="pasahitza-ahaztuta.html" data-role="button" id="erabiltzaile-erregistratua-pasahitza-ahaztuta">Pasahitza ahaztu zait</a></p>').trigger("create");
+				} else {
+					$("#hasi-saioa-formularioa").append('<p>Bete eremu gutxi hauek eta erregistratua egongo zara, oso erraza da!</p>' +
+					'<form id="erabiltzaile-berria-form" data-ajax="false">' +
+					    '<label for="erabiltzaile-berria-izena">Izena *:</label>' +
+					    '<input type="text" autocomplete="off" name="erabiltzaile-berria-izena" id="erabiltzaile-berria-izena" data-theme="b" />' +
+					    '<label for="erabiltzaile-berria-abizenak">Abizenak *:</label>' +
+					    '<input type="text" autocomplete="off" name="erabiltzaile-berria-abizenak" id="erabiltzaile-berria-abizenak" data-theme="b" />' +
+					    '<label for="erabiltzaile-berria-erabiltzaile-izena">Erabiltzaile-izena *:</label>' +
+					    '<input type="text" autocomplete="off" name="erabiltzaile-berria-erabiltzaile-izena" id="erabiltzaile-berria-erabiltzaile-izena" data-theme="b" />' +
+					    '<label for="erabiltzaile-berria-e-posta">E-posta *:</label>' +
+					    '<input type="text" autocomplete="off" name="erabiltzaile-berria-e-posta" id="erabiltzaile-berria-e-posta" data-theme="b" />' +
+					    '<label for="erabiltzaile-berria-pasahitza">Pasahitza *:</label>' +
+					    '<input type="text" class="password-field" autocomplete="off" name="erabiltzaile-berria-pasahitza" id="erabiltzaile-berria-pasahitza" data-theme="b" />' +
+					    '<label for="erabiltzaile-berria-errepikatu-pasahitza">Errepikatu pasahitza *:</label>' +
+					    '<input type="text" class="password-field" autocomplete="off" name="erabiltzaile-berria-errepikatu-pasahitza" id="erabiltzaile-berria-errepikatu-pasahitza" data-theme="b" />' +
+					    '<label id="erabiltzaile-berria-info-nahi-label"><input type="checkbox" id="erabiltzaile-berria-info-nahi" name="erabiltzaile-berria-info-nahi" />Etorkizunean lantzen diren herri eta eskaintza berrien informazioa jaso nahi dut e-posta bidez</label>' +
+					    '<button id="erabiltzaile-berria-alta-eman" type="submit" data-theme="a">Alta eman</button>' +
+					'</form>').trigger("create");
+				};
+			});
+			
+			// formularioari data-ajax="false" gehitu ezean ez da sartzen hemen
+			$(document).on("submit", "#pasahitza-ahaztuta-form", function(event, ui) {
+				// prevent default posting of form
+			    event.preventDefault();
+				
+				//var url = 'http://argia2012.ametza.com/ihesi/mugikorrak/pasahitza_ahaztuta.php';
+				var url = 'http://www.argia.com/ihesi/mugikorrak/pasahitza_ahaztuta.php';
+				
+				var e_posta = $.trim($('#pasahitza-ahaztuta-form-e-posta').val());
+				
+				if (!/^[^0-9][a-zA-Z0-9_]+([.-][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.-][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/.test(e_posta)) {
+					navigator.notification.alert(
+					    'E-posta eremuaren formatua ez da egokia.', // mezua
+					    undefined,         							// atzera-deia
+					    'Oharra',            						// izenburua
+					    'Ados'                 	 					// botoiaren testua
+					);
+
+					$("#pasahitza-ahaztuta-form-e-posta").focus();
+					return false;
+				}
+				
+				$.ajax({
+	                type: 'GET',
+	                url: url,
+	                contentType: "application/json",
+	                dataType: 'jsonp',
+	                data: {'eposta': e_posta},
+	                crossDomain: true,
+	                success: function(res) {
+	                	// Erabiltzaileari zer gertatu den azaldu, aukerak:
+	                	// * e-posta bidali da.
+	                	// * ezin izan da e-posta bidali.
+	                	// * ez da e-posta helbide hori duen erabiltzailerik existitzen.
+	                	//alert(res.mezua);
+	                	if (res.arrakasta) {
+	                		// Sarrerako orrira itzuli?
+	                	} else {
+	                		// Ez aldatu orriz? Berriz saia dadila
+	                	}
+	                },
+	                error: function(e) {
+	                	// Erabiltzaileari jakinarazi errore bat gertatu dela.
+	                	navigator.notification.alert(
+	    					'Errore bat gertatu da zerbitzariarekin konektatzean.', // mezua
+	    					undefined,         							// atzera-deia
+	    				    'Oharra',            						// izenburua
+	    				    'Ados'                 	 					// botoiaren testua
+	    				);
+	                    console.log("Errorea: " + e.message);
+	                },
+	                complete: function(data) {
+	                    console.log("Osatuta: " + data.message);
+	                }
+	            });
+			});
+			
+			// formularioari data-ajax="false" gehitu ezean ez da sartzen hemen
+			$(document).on("submit", "#erabiltzaile-erregistratua-form", function(event, ui) {
+				// prevent default posting of form
+			    event.preventDefault();
+				
+				var erabiltzaile_izena = $.trim($("#erabiltzaile-erregistratua-izena").val());
+				var pasahitza = $.trim($("#erabiltzaile-erregistratua-pasahitza").val());
+				
+				if (erabiltzaile_izena == "") {
+					navigator.notification.alert(
+	    				'Ezin duzu Erabiltzaile-izena eremua hutsik utzi.', // mezua
+	    				undefined,         							// atzera-deia
+	    			    'Oharra',            						// izenburua
+	    			    'Ados'                 	 					// botoiaren testua
+	    			);
+					$("#erabiltzaile-erregistratua-izena").focus();
+					return false;
+				} else if (pasahitza == "") {
+					navigator.notification.alert(
+		    			'Ezin duzu Pasahitza eremua hutsik utzi.', // mezua
+		    			undefined,         							// atzera-deia
+		    		    'Oharra',            						// izenburua
+		    		    'Ados'                 	 					// botoiaren testua
+		    		);
+					$("#erabiltzaile-erregistratua-pasahitza").focus();
+					return false;
+				}
+				
+				//var url = 'http://argia2012.ametza.com/ihesi/mugikorrak/login.php';
+				var url = 'http://www.argia.com/ihesi/mugikorrak/login.php';
+				
+				$.ajax({
+		            type: 'GET',
+		            url: url,
+		            contentType: "application/json",
+		            dataType: 'jsonp',
+		            data: {'erab': erabiltzaile_izena, 'pasa': pasahitza},
+		            crossDomain: true,
+		            success: function(res) {
+		                //alert("Arrakasta: " + res.arrakasta +
+		                //  	  "\nMezua: " + res.mezua);
+		                navigator.notification.alert(
+		                	res.mezua, // mezua
+				    		undefined,         							// atzera-deia
+				    	    'Oharra',            						// izenburua
+				    	    'Ados'                 	 					// botoiaren testua
+				    	);
+		                if (res.arrakasta) {
+	                		// Erabiltzaile-izena eta pasahitza gorde aldagai globaletan
+		                	unekoErabiltzailea = erabiltzaile_izena;
+	                		unekoPasahitza = pasahitza;
+	                		
+	                		// Erabiltzailearen id-a ere gorde
+	                		idUnekoErabiltzailea = res.id;
+	                		
+	                		// Erabiltzailearen botoak gorde
+	                		erabiltzailearen_botoak = res.botoak;
+	                		
+	                		// Sarreratik bagatoz proposatu.html orrira joan behar dugu
+	                		if (nondik_nator == "sarrera") {
+	                			// Proposamena egiteko orria bistaratu
+	                			console.log("Proposamen berria egitera");
+		        				$.mobile.changePage("proposatu.html");
+	                		// Xehetasunen orrian bozkatzen saiatzetik bagatoz berriz bertara itzuli behar dugu
+	                		} else if (nondik_nator == "xehetasunak"){
+	                			// Proposamena egiteko orria bistaratu berriz (historian atzera joanez)
+		        				console.log("Xehetasunetara itzuli");
+	                			history.go(-1);
+	                		} else {
+	                			console.log("nondik_nator aldagaiaren balioa okerra da edo hutsik dago.");
+	                		}
+	                	} else {
+	                		// Berriz saia dadila
+	                	}
+		            },
+		            error: function(e) {
+		                console.log("Errorea: " + e.message);
+		            },
+		            complete: function(data) {
+		                console.log("Osatuta: " + data.message);
+		            }
+		        });
+			});
+			
+			// formularioari data-ajax="false" gehitu ezean ez da sartzen hemen
+			$(document).on("submit", "#erabiltzaile-berria-form", function(event, ui) {
+				// prevent default posting of form
+			    event.preventDefault();
+				
+				//var url = 'http://argia2012.ametza.com/ihesi/mugikorrak/erabiltzaile_berria.php';
+				var url = 'http://www.argia.com/ihesi/mugikorrak/erabiltzaile_berria.php';
+				
+				var izena = $.trim($("#erabiltzaile-berria-izena").val());
+				var abizenak = $.trim($("#erabiltzaile-berria-abizenak").val());
+				var erabiltzaile_izena = $.trim($("#erabiltzaile-berria-erabiltzaile-izena").val());
+				var e_posta = $.trim($("#erabiltzaile-berria-e-posta").val());
+				var pasahitza = $.trim($("#erabiltzaile-berria-pasahitza").val());
+				var errepikatu_pasahitza = $.trim($("#erabiltzaile-berria-errepikatu-pasahitza").val());
+				var info_nahi = $("#erabiltzaile-berria-info-nahi").is(':checked') ? 1 : 0;
+				
+				if (izena == "") {
+					navigator.notification.alert(
+						'Ezin duzu Izena eremua hutsik utzi.', // mezua
+				    	undefined,         							// atzera-deia
+				        'Oharra',            						// izenburua
+				        'Ados'                 	 					// botoiaren testua
+				    );
+					$("#erabiltzaile-berria-izena").focus();
+					return false;
+				} else if (abizenak == "") {
+					navigator.notification.alert(
+						'Ezin duzu Abizenak eremua hutsik utzi.', // mezua
+					    undefined,         							// atzera-deia
+					    'Oharra',            						// izenburua
+						'Ados'                 	 					// botoiaren testua
+					);
+					$("#erabiltzaile-berria-abizenak").focus();
+					return false;
+				} else if (erabiltzaile_izena == "") {
+					navigator.notification.alert(
+						'Ezin duzu Erabiltzaile-izena eremua hutsik utzi.', // mezua
+					    undefined,         							// atzera-deia
+					    'Oharra',            						// izenburua
+						'Ados'                 	 					// botoiaren testua
+					);
+					$("#erabiltzaile-berria-erabiltzaile-izena").focus();
+					return false;
+				} else if (!/^[a-zA-Z0-9\.]+$/.test(erabiltzaile_izena)) {
+					navigator.notification.alert(
+						'Erabiltzaile-izenean letrak, zenbakiak eta puntuak bakarrik erabil daitezke.', // mezua
+					    undefined,         							// atzera-deia
+					    'Oharra',            						// izenburua
+						'Ados'                 	 					// botoiaren testua
+					);
+					$("#erabiltzaile-berria-erabiltzaile-izena").focus();
+					return false;
+				} else if (!/^[^0-9][a-zA-Z0-9_]+([.-][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.-][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/.test(e_posta)) {
+					navigator.notification.alert(
+						'E-posta eremuaren formatua ez da egokia.', // mezua
+						undefined,         							// atzera-deia
+						'Oharra',            						// izenburua
+						'Ados'                 	 					// botoiaren testua
+					);
+					$("#erabiltzaile-berria-e-posta").focus();
+					return false;
+				} else if (pasahitza == "") {
+					navigator.notification.alert(
+						'Ezin duzu Pasahitza eremua hutsik utzi.', // mezua
+						undefined,         							// atzera-deia
+						'Oharra',            						// izenburua
+						'Ados'                 	 					// botoiaren testua
+					);
+					$("#erabiltzaile-berria-pasahitza").focus();
+					return false;
+				} else if (errepikatu_pasahitza == "") {
+					navigator.notification.alert(
+						'Ezin duzu Errepikatu pasahitza eremua hutsik utzi.', // mezua
+						undefined,         							// atzera-deia
+						'Oharra',            						// izenburua
+						'Ados'                 	 					// botoiaren testua
+					);
+					$("#erabiltzaile-berria-errepikatu-pasahitza").focus();
+					return false;
+				} else if (pasahitza != errepikatu_pasahitza) {
+					navigator.notification.alert(
+						'Pasahitza eta errepikapena ez datoz bat.', // mezua
+						undefined,         							// atzera-deia
+						'Oharra',            						// izenburua
+						'Ados'                 	 					// botoiaren testua
+					);
+					$("#erabiltzaile-berria-pasahitza").focus();
+					return false;
+				}
+				
+				$.ajax({
+		            type: 'GET',
+		            url: url,
+		            contentType: "application/json",
+		            dataType: 'jsonp',
+		            data: {'izena': izena, 'abizenak': abizenak, 'eposta': e_posta, 'erabiltzailea': erabiltzaile_izena, 'pasa1': pasahitza, 'pasa2': errepikatu_pasahitza, 'info': info_nahi},
+		            crossDomain: true,
+		            success: function(res) {
+		                //alert("Arrakasta: " + res.arrakasta +
+		                //  	  "\nMezua: " + res.mezua);
+						navigator.notification.alert(
+							res.mezua, // mezua
+							undefined,         							// atzera-deia
+							'Oharra',            						// izenburua
+							'Ados'                 	 					// botoiaren testua
+						);
+		             	// Sarreratik bagatoz proposatu.html orrira joan behar dugu
+                		if (nondik_nator == "sarrera") {
+                			// Proposamena egiteko orria bistaratu
+	        				$.mobile.changePage("proposatu.html");
+                		// Xehetasunen orrian bozkatzen saiatzetik bagatoz berriz bertara itzuli behar dugu
+                		} else if (nondik_nator == "xehetasunak"){
+                			// Proposamena egiteko orria bistaratu berriz (historian atzera joanez)
+	        				history.go(-1);
+                		} else {
+                			console.log("nondik_nator aldagaiaren balioa okerra da edo hutsik dago.");
+                		}
+		            },
+		            error: function(e) {
+		                console.log("Errorea: " + e.message);
+		            },
+		            complete: function(data) {
+		                console.log("Osatuta: " + data.message);
+		            }
+		        });
+			});
+			
+			// window.appRootDir.fullPath desberdina da Android eta IOSen eta deviceReady gertaeran eskuratzen dugu.
+			function deskargatuIrudia(fitxategiaren_izena, zerbitzariko_bidea, gorde_datubasean){
+				var fileTransfer = new FileTransfer();
+				
+				fileTransfer.download(
+					//"http://argia2012.ametza.com/ihesi/" + zerbitzariko_bidea + fitxategiaren_izena,
+					"http://argia.com/ihesi/" + zerbitzariko_bidea +  fitxategiaren_izena,
+					window.appRootDir.fullPath + "/" + fitxategiaren_izena,
+					function(theFile) {
+						console.log("download complete: " + theFile.toURI());
+						
+						// Atzera-dei funtzioa pasa bazaio funtzioari exekutatu
+						if (gorde_datubasean) {
+							gorde_datubasean(sPath); // Funtzioari pasatako atzera-dei funtzioa exekutatu gomendio berria datu-basean gordetzeko.
+						}
+					},
+					function(error) {
+						console.log("download error source " + error.source);
+						console.log("download error target " + error.target);
+						console.log("upload error code: " + error.code);
+					}
+				);
+			}
+			
+			// formularioari data-ajax="false" gehitu ezean ez da sartzen hemen
+			$(document).on("submit", "#proposatu-form", function(event, ui) {
+				// prevent default posting of form
+			    event.preventDefault();
+			    
+				// Botoia desgaituko dugu, erabiltzaileak behin baino gehiagotan sakatzea galarazteko.
+				$("#proposatu-form").addClass('ui-disabled');
+				
+			    var lurraldea = $("#proposamen-berria-lurraldea").val();
+				var herria = $("#proposamen-berria-herria").val();
+				var atala =$("#proposamen-berria-atala").val();
+				var webgunea = $("#proposamen-berria-url").val();
+				var izena = $.trim($("#proposamen-berria-izena").val());
+				var deskribapena = $.trim($("#proposamen-berria-deskribapena").val());
+				var lege_oharra = $("#proposamen-berria-lege-oharra").is(':checked') ? 1 : 0;
+				
+				if (lurraldea == "") {
+					navigator.notification.alert(
+						'Lurralde bat hautatu behar duzu.', // mezua
+						undefined,         							// atzera-deia
+						'Oharra',            						// izenburua
+						'Ados'                 	 					// botoiaren testua
+					);
+					$("#proposamen-berria-lurraldea").focus();
+					
+					// Botoia berriz ere gaitu
+					$("#proposatu-form").removeClass('ui-disabled');
+					
+					return false;
+				} else if (herria == "") {
+					navigator.notification.alert(
+							'Herri bat hautatu behar duzu.', // mezua
+							undefined,         							// atzera-deia
+							'Oharra',            						// izenburua
+							'Ados'                 	 					// botoiaren testua
+						);
+					$("#proposamen-berria-herria").focus();
+					
+					// Botoia berriz ere gaitu
+					$("#proposatu-form").removeClass('ui-disabled');
+					
+					return false;
+				} else if (atala == "") {
+					navigator.notification.alert(
+							'Atal bat hautatu behar duzu.', // mezua
+							undefined,         							// atzera-deia
+							'Oharra',            						// izenburua
+							'Ados'                 	 					// botoiaren testua
+						);
+					$("#proposamen-berria-atala").focus();
+					
+					// Botoia berriz ere gaitu
+					$("#proposatu-form").removeClass('ui-disabled');
+					
+					return false;
+				} else if (izena == "") {
+					navigator.notification.alert(
+							'Ezin duzu Izena eremua hutsik utzi.', // mezua
+							undefined,         							// atzera-deia
+							'Oharra',            						// izenburua
+							'Ados'                 	 					// botoiaren testua
+						);
+					$("#proposamen-berria-izena").focus();
+					
+					// Botoia berriz ere gaitu
+					$("#proposatu-form").removeClass('ui-disabled');
+					
+					return false;
+				} else if (deskribapena == "") {
+					navigator.notification.alert(
+							'Ezin duzu Deskribapena eremua hutsik utzi.', // mezua
+							undefined,         							// atzera-deia
+							'Oharra',            						// izenburua
+							'Ados'                 	 					// botoiaren testua
+						);
+					$("#proposamen-berria-deskribapena").focus();
+					
+					// Botoia berriz ere gaitu
+					$("#proposatu-form").removeClass('ui-disabled');
+					
+					return false;
+				} else if (lege_oharra != 1) {
+					navigator.notification.alert(
+							'Ihesiren lege baldintzak onartzea derrigorrezkoa da proposamen bat bidali ahal izateko.', // mezua
+							undefined,         							// atzera-deia
+							'Oharra',            						// izenburua
+							'Ados'                 	 					// botoiaren testua
+						);
+					$("#proposamen-berria-lege-oharra").focus();
+					
+					// Botoia berriz ere gaitu
+					$("#proposatu-form").removeClass('ui-disabled');
+					
+					return false;
+				}
+				
+				//var url = 'http://argia2012.ametza.com/ihesi/mugikorrak/proposamen_berria.php';
+				var url = 'http://www.argia.com/ihesi/mugikorrak/proposamen_berria.php';
+				
+				var imageURI = $("#proposamen-berria-argazkia-aurrebista").attr("src");
+				
+				console.log("imageURI: " + imageURI);
+				
+				// Zerbitzarira informazioa bidali eta erantzunaren zain gaudela jakinarazi erabiltzaileari.
+				bistaratuKargatzenMezua("Itxaron mesedez...");
+				
+				// Erabiltzaileak irudi bat gehitu badu, phonegap-en ft.upload erabili
+				if (imageURI) {
+					window.resolveLocalFileSystemURI(imageURI, function(fileEntry) {
+				        fileEntry.file(function(fileObj) {
+
+				            var fileName = fileObj.fullPath;
+							
+							var win = function(r) {
+								var erantzuna = jQuery.parseJSON(r.response);
+								
+								navigator.notification.alert(
+									erantzuna.mezua, // mezua
+									undefined,         							// atzera-deia
+									'Oharra',            						// izenburua
+									'Ados'                 	 					// botoiaren testua
+								);
+								
+							    console.log("Code = " + r.responseCode);
+							    console.log("Response = " + r.response);
+							    console.log("Sent = " + r.bytesSent);
+							    
+							    var lng = 0.0;
+							    var lat = 0.0;
+							    var zoom_maila = 0;
+							    
+							 	// Erabiltzaileak gomendioa mapan kokatu badu (hautazkoa da), dagozkion eremuak prestatu
+								if (proposamen_berria.lat && proposamen_berria.lng && proposamen_berria.zoom) {
+									lat = proposamen_berria.lat;	
+									lng = proposamen_berria.lng;
+									zoom_maila = proposamen_berria.zoom;
+								}
+							 	
+								// Botoia berriz ere gaitu
+								$("#proposatu-form").removeClass('ui-disabled');
+								
+								// Datu-basea eguneratu behar da bidalitako proposamena eta gainerako proposamen berriak txertatzeko.
+								// Bukatzean proposamen berriaren xehetasunak erakutsi
+						        ihesidb.transaction(function(tx){eguneratuBeharOteDa(tx, function() {bistaratuGomendioa(erantzuna.id_gomendioa, lat, lng)})},
+						        					function(tx, err){errorCB(tx, err, "eguneratuBeharOteDa-exec")}
+						        );
+							}
+							
+							var fail = function(error) {
+								navigator.notification.alert(
+									"Errore bat gertatu da: Kodea = " + error.code + ". Mesedez jakinarazi garatzaileei.", // mezua
+									undefined,         							// atzera-deia
+									'Errorea',            						// izenburua
+									'Ados'                 	 					// botoiaren testua
+								);
+							    console.log("upload error source " + error.source);
+							    console.log("upload error target " + error.target);
+							    
+								// Botoia berriz ere gaitu
+							    $("#proposatu-form").removeClass('ui-disabled');
+							}
+			
+							var options = new FileUploadOptions();
+							options.fileKey="irudia";
+							
+							// Kasu batzutan resize.jpg?149871298741987 bezalako izenak dauzkagu (android 2.3 galeriatik hartzean),
+							// 149871298741987.jpg bihurtuko ditugu???
+							//options.fileName=fileURI.substr(fileURI.lastIndexOf('?')+1) + ".jpg";
+							options.fileName=fileName.substr(fileName.lastIndexOf('/')+1);
+							
+							// Irudia ez bada jpg formatukoa arazoak izango ditugu???
+							options.mimeType="image/jpeg";
+							
+							var params = {};
+							params.erab = unekoErabiltzailea;
+							params.pasa = unekoPasahitza;
+							params.izena = izena;
+							params.deskribapena = deskribapena;
+							params.herria = herria;
+							params.atala = atala;
+							params.url = webgunea;
+							
+							// Erabiltzaileak gomendioa mapan kokatu badu (hautazkoa da), dagozkion eremuak prestatu
+							if (proposamen_berria.lat && proposamen_berria.lng && proposamen_berria.zoom) {
+								params.kokatu = 1;
+								params.gmaps_lat = proposamen_berria.lat;
+								params.gmaps_lng = proposamen_berria.lng;
+								params.gmaps_zoom = proposamen_berria.zoom;
+							}
+							
+							params.legeoharra = lege_oharra;
+							
+							options.params = params;
+							
+							var ft = new FileTransfer();
+							ft.upload(fileName, url, win, fail, options);
+				        });
+					});
+				} else { // Erabiltzaileak irudirik ez badu gehitu jquery.ajax erabili
+					//alert("Ez duzu irudirik gehitu");
+					
+					//url = 'http://argia2012.ametza.com/ihesi/mugikorrak/proposamen_berria_irudirik_gabe.php';
+					url = 'http://www.argia.com/ihesi/mugikorrak/proposamen_berria_irudirik_gabe.php';
+					
+					var datuak = {'erab': unekoErabiltzailea, 'pasa': unekoPasahitza, 'izena': izena, 'deskribapena': deskribapena, 'herria': herria, 'atala': atala, 'webgunea': webgunea, 'legeoharra': lege_oharra};
+					
+					// Erabiltzaileak gomendioa mapan kokatu badu (hautazkoa da), dagozkion eremuak prestatu
+					if (proposamen_berria.lat && proposamen_berria.lng && proposamen_berria.zoom) {
+						datuak.kokatu = "1";
+						datuak.gmaps_lat = proposamen_berria.lat;
+						datuak.gmaps_lng = proposamen_berria.lng;
+						datuak.gmaps_zoom = proposamen_berria.zoom;
+					}
+					
+					//alert(JSON.stringify(datuak));
+					
+					$.ajax({
+			            type: 'GET',
+			            url: url,
+			            contentType: "application/json",
+			            dataType: 'jsonp',
+			            data: datuak,
+			            crossDomain: true,
+			            success: function(res) {
+			                //alert("Arrakasta: " + res.arrakasta +
+			                //  	  "\nMezua: " + res.mezua);
+							navigator.notification.alert(
+								res.mezua, // mezua
+								undefined,         							// atzera-deia
+								'Oharra',            						// izenburua
+								'Ados'                 	 					// botoiaren testua
+							);
+							
+			                if (res.arrakasta == false) {
+			                	// Saioa hasi gabe edo erabiltzaile-izena edota pasahitza okerrak dira
+			                	if (res.mezua == "Sartutako erabiltzaile-izena edo pasahitza okerra da.") {
+			                		$.mobile.changePage("hasi-saioa.html");
+			                	}
+			                	
+								// Botoia berriz ere gaitu
+			                	$("#proposatu-form").removeClass('ui-disabled');
+								
+			                } else if (res.arrakasta == true) {
+			                	var lng = 0.0;
+							    var lat = 0.0;
+							    var zoom_maila = 0;
+							    
+							 	// Erabiltzaileak gomendioa mapan kokatu badu (hautazkoa da), dagozkion eremuak prestatu
+								if (proposamen_berria.lat && proposamen_berria.lng && proposamen_berria.zoom) {
+									lat = proposamen_berria.lat;	
+									lng = proposamen_berria.lng;
+									zoom_maila = proposamen_berria.zoom;
+								}
+							    
+								// Botoia berriz ere gaitu
+								$("#proposatu-form").removeClass('ui-disabled');
+								
+								// Datu-basea eguneratu behar da bidalitako proposamena eta gainerako proposamen berriak txertatzeko.
+								// Bukatzean proposamen berriaren xehetasunak erakutsi
+						        ihesidb.transaction(function(tx){eguneratuBeharOteDa(tx, function() {bistaratuGomendioa(res.id_gomendioa, lat, lng)})},
+						        					function(tx, err){errorCB(tx, err, "eguneratuBeharOteDa-exec")}
+						        );
+			                }
+			            },
+			            error: function(e) {
+			                console.log("Errorea: " + e.message);
+			                
+							// Botoia berriz ere gaitu
+							$("#proposatu-form").removeClass('ui-disabled');
+			            },
+			            complete: function(data) {
+			                console.log("Osatuta: " + data.message);
+			            }
+			        });
+				}
+			});
+			
+			// botoa: 'positiboa', 'negatiboa' (edo 'kendu' -> oraingoz ez)
+			function bozkatu(botoa) {
+				// Aldaketa datu-basean gorde
+        		ihesidb.transaction(function(tx) {bozkatuEtaEguneratuBotuakZerbitzaritik(tx, botoa)},
+        			function(tx, err){errorCB(tx, err, "bozkatuEtaEguneratuBotuakZerbitzaritik-exec")}
+		        );	
+			}
+			
+			function bozkatuPos() {
+				// Saioa hasi gabe -> Bozkatzeko saioa hasi beharra dagoela jakinarazi.
+				if (unekoErabiltzailea == undefined || unekoPasahitza == undefined) {
+					navigator.notification.alert(
+						"Bozkatzeko erregistratutako erabiltzailea izan beharra dago.", // mezua
+						undefined,         							// atzera-deia
+						'Oharra',            						// izenburua
+						'Ados'                 	 					// botoiaren testua
+					);
+					// Saioa hasteko orrira nondik goazen gorde eta orri hori bistaratu
+					nondik_nator = "xehetasunak";
+					$.mobile.changePage("hasi-saioa.html");
+				// Erabiltzaileak dagoeneko botatu badu gomendio hau -> Ez utzi berriz botatzen
+				} else if (erabiltzailearen_botoak && (erabiltzailearen_botoak.positiboak.indexOf(idUnekoLekua) > -1 || erabiltzailearen_botoak.negatiboak.indexOf(idUnekoLekua) > -1)) {
+					navigator.notification.alert(
+						"Ezin duzu berriz botatu.", // mezua
+						undefined,         							// atzera-deia
+						'Oharra',            						// izenburua
+						'Ados'                 	 					// botoiaren testua
+					);
+				} else {
+					bozkatu("positiboa");
+				}
+			}
+			
+			function bozkatuNeg() {
+				// Saioa hasi gabe -> Bozkatzeko saioa hasi beharra dagoela jakinarazi.
+				if (unekoErabiltzailea == undefined || unekoPasahitza == undefined) {
+					navigator.notification.alert(
+						"Bozkatzeko erregistratutako erabiltzailea izan beharra dago.", // mezua
+						undefined,         							// atzera-deia
+						'Oharra',            						// izenburua
+						'Ados'                 	 					// botoiaren testua
+					);
+					// Saioa hasteko orrira nondik goazen gorde eta orri hori bistaratu
+					nondik_nator = "xehetasunak";
+					$.mobile.changePage("hasi-saioa.html");
+				} else if (erabiltzailearen_botoak && (erabiltzailearen_botoak.positiboak.indexOf(idUnekoLekua) > -1 || erabiltzailearen_botoak.negatiboak.indexOf(idUnekoLekua) > -1)) {
+					navigator.notification.alert(
+						"Ezin duzu berriz botatu.", // mezua
+						undefined,         			// atzera-deia
+						'Oharra',            		// izenburua
+						'Ados'                 	 	// botoiaren testua
+					);
+				} else {
+					// Saioa hasita dago -> Zerbitzarira bidali botoa.
+					bozkatu("negatiboa");
+				}
+			}
+		</script>
+	</body>
+</html>
