@@ -25,6 +25,7 @@
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/assets/_where-is-www.txt \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/assets/www/js \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/assets/www/css \
+/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/assets/www/res \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/assets/www/html \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/assets/www/index.html \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/assets/www/cordova.js \
