@@ -7,6 +7,7 @@
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/com/iametza/ihesi/R.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/com/iametza/ihesi/R$xml.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/com/iametza/ihesi/Ihesi.class \
+/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/splashscreen/SplashScreen.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$11.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/file/LocalFilesystem.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$18.class \

@@ -26,6 +26,9 @@
     <feature name="InAppBrowser">
         <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
     </feature>
+    <feature name="SplashScreen">
+        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+    </feature>
     <name>Ihesi</name>
     <description>
         Zazpi lurraldeak kontuan hartzen dituen Euskal Herriko lehen turismo aplikazioa da Ihesi.
@@ -35,4 +38,6 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
+    <preference name="splashscreen" value="splash" />
+    <preference name="SplashScreenDelay" value="6000" />
 </widget>
