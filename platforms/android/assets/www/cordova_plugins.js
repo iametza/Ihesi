@@ -231,7 +231,6 @@ module.exports = [
 module.exports.metadata = 
 // TOP OF METADATA
 {
-    "com.jamiestarke.webviewdebug": "1.0.8",
     "org.apache.cordova.camera": "0.2.7",
     "org.apache.cordova.dialogs": "0.2.6",
     "org.apache.cordova.file": "1.0.0",
