@@ -1,5 +1,4 @@
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes.dex : \
-/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/com/jamiestarke/webviewdebug/WebViewDebug.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/com/iametza/ihesi/R$attr.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/com/iametza/ihesi/BuildConfig.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/com/iametza/ihesi/R$string.class \
@@ -49,13 +48,8 @@
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/file/NoModificationAllowedException.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$8.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/file/EncodingException.class \
-/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/geolocation/NetworkListener.class \
-/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/geolocation/CordovaLocationListener.class \
-/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/geolocation/GeoBroker.class \
-/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/geolocation/CordovaLocationListener$LocationTimeoutTask.class \
-/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/geolocation/GPSListener.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/dialogs/Notification$3$1.class \
-/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/dialogs/Notification$1$2.class \
+/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/dialogs/Notification$4$4.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/dialogs/Notification$5$1.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/dialogs/Notification$3$2.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/dialogs/Notification.class \
@@ -68,10 +62,11 @@
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/dialogs/Notification$4$1.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/dialogs/Notification$2$2.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/dialogs/Notification$4.class \
-/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/dialogs/Notification$2$3.class \
+/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/dialogs/Notification$6$1.class \
+/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/dialogs/Notification$4$2.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/dialogs/Notification$5.class \
-/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/dialogs/Notification$1$1.class \
-/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/dialogs/Notification$2$4.class \
+/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/dialogs/Notification$4$3.class \
+/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/dialogs/Notification$6.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$TrackingGZIPInputStream.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer$2.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/filetransfer/FileTransfer.class \
@@ -93,9 +88,10 @@
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$5$3.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$4.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser.class \
+/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$4$1.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$5$4.class \
+/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowserDialog.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$5.class \
-/home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$5$5.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppChromeClient.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/inappbrowser/InAppBrowser$1.class \
 /home/asier/mnt/weblanak/ihesi-cordova/ihesi/platforms/android/ant-build/classes/org/apache/cordova/camera/CameraLauncher.class \

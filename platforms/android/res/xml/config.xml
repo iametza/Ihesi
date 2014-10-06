@@ -1,9 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.iametza.ihesi" version="1.4.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.iametza.ihesi" version="1.4.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <preference name="loglevel" value="DEBUG" />
-    <feature name="App">
-        <param name="android-package" value="org.apache.cordova.App" />
-    </feature>
     <feature name="Camera">
         <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
     </feature>
@@ -12,12 +9,10 @@
     </feature>
     <feature name="File">
         <param name="android-package" value="org.apache.cordova.file.FileUtils" />
+        <param name="onload" value="true" />
     </feature>
     <feature name="FileTransfer">
         <param name="android-package" value="org.apache.cordova.filetransfer.FileTransfer" />
-    </feature>
-    <feature name="Geolocation">
-        <param name="android-package" value="org.apache.cordova.geolocation.GeoBroker" />
     </feature>
     <feature name="InAppBrowser">
         <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
@@ -25,6 +20,14 @@
     <feature name="SplashScreen">
         <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
     </feature>
+    <splash density="ldpi" src="res/screen/android/splash-ldpi.png" />
+    <splash density="mdpi" src="res/screen/android/splash-mdpi.png" />
+    <splash density="hdpi" src="res/screen/android/splash-hdpi.png" />
+    <splash density="xhdpi" src="res/screen/android/splash-xhdpi.png" />
+    <icon density="ldpi" src="res/android/ldpi.png" />
+    <icon density="mdpi" src="res/android/mdpi.png" />
+    <icon density="hdpi" src="res/android/hdpi.png" />
+    <icon density="xhdpi" src="res/android/xhdpi.png" />
     <name>Ihesi</name>
     <description>
         Zazpi lurraldeak kontuan hartzen dituen Euskal Herriko lehen turismo aplikazioa da Ihesi.
@@ -34,6 +37,12 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
-    <preference name="splashscreen" value="splash" />
+    <preference name="EnableViewportScale" value="true" />
+    <preference name="fullscreen" value="true" />
+    <preference name="webviewbounce" value="false" />
+    <preference name="UIWebViewBounce" value="false" />
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="6000" />
+    <preference name="Orientation" value="portrait" />
 </widget>
